@@ -1,0 +1,13 @@
+name: claim-detection-env
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - numpy
+  - pandas
+  - seaborn
+  - mlflow
+  - demoji
+  - transformers
+  - pytorch
+  
