@@ -6,6 +6,8 @@ channels:
 dependencies:
   - numpy
   - pandas
+  - pyspark
+  - spacy
   - seaborn
   - mlflow
   - demoji

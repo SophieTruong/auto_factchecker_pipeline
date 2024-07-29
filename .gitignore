@@ -8,6 +8,7 @@
 
 /claim_detection/data
 /claim_detection/xml-roberta-model/
+/claim_detection/mlruns/
 /claim_detection/sbert_array_job*
 /claim_detection/submit.sh
 /claim_detection/hyperparameter_tuning.ipynb
