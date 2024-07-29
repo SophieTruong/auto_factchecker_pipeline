@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='xmlroberta-tunning.log', encoding='utf-8', level=logging.DEBUG)
@@ -199,7 +203,7 @@ if __name__ == "__main__":
     config.update({"id2label": id2label})
 
     # Set up tracking
-    experiment_name = "/Users/sophietruong1992@gmail.com/xml-roberta-claim-detection-dime"
+    experiment_name = f"/Users/{os.getenv('MLFLOW_TRACKING_USERNAME')}/xml-roberta-claim-detection-dime"
     experiment_id = get_or_create_experiment(experiment_name)
 
     mlflow.set_experiment(

@@ -4,6 +4,7 @@ channels:
   - anaconda
   - pytorch
 dependencies:
+  - python-dotenv
   - numpy
   - pandas
   - pyspark
