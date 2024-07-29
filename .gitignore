@@ -7,3 +7,9 @@
 */._.DS_Store/*
 
 /claim_detection/data
+/claim_detection/xml-roberta-model/
+/claim_detection/sbert_array_job*
+/claim_detection/submit.sh
+/claim_detection/hyperparameter_tuning.ipynb
+/claim_detection/._hyperparameter_tuning.py
+/claim_detection/xmlroberta-tunning.log

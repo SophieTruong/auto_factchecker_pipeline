@@ -1,6 +1,7 @@
 name: claim-detection-env
 channels:
   - conda-forge
+  - anaconda
   - pytorch
 dependencies:
   - numpy
@@ -9,5 +10,10 @@ dependencies:
   - mlflow
   - demoji
   - transformers
+  - accelerate
+  - sentencepiece
+  - sentence-transformers
+  - mlflow
+  - optuna
   - pytorch
-  
+  - evaluate
