@@ -7,11 +7,12 @@
 ._.DS_Store
 */._.DS_Store/*
 
-/claim_detection/data
-/claim_detection/xml-roberta-model/
-/claim_detection/mlruns/
-/claim_detection/sbert_array_job*
-/claim_detection/submit.sh
-/claim_detection/hyperparameter_tuning.ipynb
-/claim_detection/._hyperparameter_tuning.py
-/claim_detection/xmlroberta-tunning.log
+/claim_detection/xml_model_finetune/data
+/claim_detection/xml_model_finetune/xml-roberta-model/
+/claim_detection/xml_model_finetune/mlruns/
+/claim_detection/xml_model_finetune/sbert_array_job*
+/claim_detection/xml_model_finetune/submit.sh
+/claim_detection/xml_model_finetune/.env
+/claim_detection/xml_model_finetune/hyperparameter_tuning.ipynb
+/claim_detection/xml_model_finetune/._hyperparameter_tuning.py
+/claim_detection/xml_model_finetune/xmlroberta-tunning.log
