@@ -4,13 +4,19 @@ from transformers import (
     XLMRobertaForSequenceClassification,
 )
 
+import spacy
+
 model_id = "SophieTr/xlm-roberta-base-claim-detection-clef21-24"
 
 # Preprocessing
-tokenizer = XLMRobertaTokenizer.from_pretrained(model_id)
+tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base")
 
 # Get model from local disk
-model = XLMRobertaForSequenceClassification.from_pretrained("model_id")
+model = XLMRobertaForSequenceClassification.from_pretrained(model_id)
+
+nlp = spacy.load("fi_core_news_lg")
+
+sentencizer = nlp.add_pipe("sentencizer")
 
 def get_sentence_array(doc: str):
     return [str(s) for s in nlp(doc).sents]
