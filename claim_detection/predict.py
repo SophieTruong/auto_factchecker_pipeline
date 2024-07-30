@@ -6,13 +6,17 @@ from transformers import (
 
 import spacy
 
-model_id = "SophieTr/xlm-roberta-base-claim-detection-clef21-24"
-
 # Preprocessing
-tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base")
+tokenizer = XLMRobertaTokenizer.from_pretrained(
+    "FacebookAI/xlm-roberta-base", 
+    cache_dir="xml-roberta-model"
+)
 
 # Get model from local disk
-model = XLMRobertaForSequenceClassification.from_pretrained(model_id)
+model = XLMRobertaForSequenceClassification.from_pretrained(
+    "SophieTr/xlm-roberta-base-claim-detection-clef21-24", 
+    cache_dir="xml-roberta-model"
+)
 
 nlp = spacy.load("fi_core_news_lg")
 
