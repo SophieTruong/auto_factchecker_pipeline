@@ -21,7 +21,7 @@ export MLFLOW_TRACKING_URI=databricks
 export MLFLOW_TRACKING_USERNAME="email"
 export MLFLOW_TRACKING_PASSWORD="password" 
 
-srun python3 /scratch/work/truongl3/DIME/auto_factchecker_pipeline/claim_detection/hyperparameter_tuning.py
+srun python3 /scratch/work/truongl3/DIME/auto_factchecker_pipeline/claim_detection/xml_model_finetune/hyperparameter_tuning.py
 
 # Remove conda env
 conda deactivate
