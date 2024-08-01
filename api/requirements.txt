@@ -1,0 +1,10 @@
+fastapi==0.111.1
+uvicorn[standard]==0.30.3
+huggingface_hub==0.24.2
+python-dotenv==1.0.1
+spacy==3.7.5
+torch==2.3.1
+torchvision==0.18.1
+transformers==4.43.3
+sentencepiece==0.2.0
+pydantic==2.8.2
