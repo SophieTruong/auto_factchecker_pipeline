@@ -12,7 +12,7 @@ tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base", c
 # Get model from local disk
 model = XLMRobertaForSequenceClassification.from_pretrained("SophieTr/xlm-roberta-base-claim-detection-clef21-24", cache_dir="xml-roberta-model")
 
-nlp = spacy.load("fi_core_news_lg")
+nlp = spacy.load("fi_core_news_sm")
 
 sentencizer = nlp.add_pipe("sentencizer")
 
