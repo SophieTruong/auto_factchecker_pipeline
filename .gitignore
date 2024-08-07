@@ -18,3 +18,5 @@ running_script.txt
 /claim_detection/xml_model_finetune/hyperparameter_tuning.ipynb
 /claim_detection/xml_model_finetune/._hyperparameter_tuning.py
 /claim_detection/xml_model_finetune/xmlroberta-tunning.log
+
+/database/data
