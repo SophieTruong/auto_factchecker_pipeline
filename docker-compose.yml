@@ -1,0 +1,45 @@
+services:
+  db:
+    hostname: db
+    container_name: postgres_db_container
+    image: ankane/pgvector
+    ports:
+     - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_DB=vectordb
+      - POSTGRES_USER=vector
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: apidev
+    command: ["fastapi", "run", "main.py", "--port", "80"]
+    environment:
+      - HF_HOME=/xml-roberta-model
+    ports:
+     - 8080:8080
+    restart: always
+    volumes:
+      - xml-roberta-model:/app/xml-roberta-model
+    depends_on:
+      -  db
+  dbseeding:
+    build:
+      context: .
+      dockerfile: database/Dockerfile
+    depends_on:
+      -  db
+    volumes:
+      - ./database/data:/db/data
+      - sentence-transformer-model:/db/sentence-transformer-model
+
+volumes:
+  database:
+  xml-roberta-model:
+  sentence-transformer-model:
