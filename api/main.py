@@ -1,11 +1,10 @@
-from pydantic import BaseModel
-
 from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from predict import predicts
+from .predict import predicts
 
+from .schemas import Input
 
 app = FastAPI()
 origins = ["*"]
@@ -17,9 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-class Input(BaseModel):
-    text: str
     
 @app.get("/")
 async def root():
