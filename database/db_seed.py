@@ -1,21 +1,26 @@
 import os
+from datetime import datetime
 import time 
+import traceback
 
 import logging
 logger = logging.getLogger(__name__)
 
 import pandas as pd 
 import numpy as np
+import numpy.typing as npt
 
 from sentence_transformers import SentenceTransformer
 
+import sqlalchemy
 from sqlalchemy import create_engine, Column, Integer, String, text
-from sqlalchemy.orm import sessionmaker,mapped_column, declarative_base
+from sqlalchemy.orm import Session, sessionmaker,mapped_column, declarative_base
 from sqlalchemy.sql import expression
 from sqlalchemy.types import DateTime
 from sqlalchemy.ext.compiler import compiles
 
 from pgvector.sqlalchemy import Vector
+from psycopg2._psycopg import IntegrityError
 
 
 ## TODO: use arguments
@@ -51,22 +56,25 @@ class TextEmbedding(Base):
         return output
 
 
-def insert_embeddings(embeddings, session):
-    for embedding in embeddings:
-        new_embedding = TextEmbedding(id = embedding["id"], text=embedding["text"], embedding=embedding["vector"])
-        session.add(new_embedding)
-    session.commit()
+def table_exists(engine,name):
+    """ 
+    Check if table exist. Source:  https://stackoverflow.com/questions/64861610/easily-check-if-table-exists-with-python-sqlalchemy-on-an-sql-database
+    """
+    ins = sqlalchemy.inspect(engine)
+    ret =ins.dialect.has_table(engine.connect(),name)
+    print('Table "{}" exists: {}'.format(name, ret))
+    return ret
 
-def find_similar_embeddings(query_embedding, limit=5):
-    k = 5
-    similarity_threshold = 0.7
-    query = session.query(TextEmbedding, TextEmbedding.embedding.cosine_distance(query_embedding) \
-                    .label("distance")) \
-                    .filter(TextEmbedding.embedding.max_inner_product(query_embedding) < similarity_threshold) \
-                    .order_by("distance") \
-                    .limit(k) \
-                    .all()
-    return query
+
+def insert_embeddings(db: Session, embeddings:npt.ArrayLike):
+    for embedding in embeddings:
+        new_embedding = TextEmbedding(text=embedding["text"], embedding=embedding["embedding"])
+        db.add(new_embedding)
+    try:
+        db.commit()
+    except IntegrityError as err:
+        traceback.print_exc()
+        db.rollback()            
 
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', filename='vector_database_seeding.log', level=logging.DEBUG)
@@ -75,7 +83,21 @@ def main():
     # Encode data into vector embedding
     df = pd.read_json(os.path.join(DATAPATH, FILENAME), lines=True)
 
-    model = SentenceTransformer(MODEL)
+    # Connect to PostgreSQL
+    engine = create_engine('postgresql://vector:password@db:5432/vectordb')
+
+    # Create a session
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    
+    # drop all existing table
+    Base.metadata.drop_all(engine)
+    
+    # create table
+    Base.metadata.create_all(engine)
+
+    # Text embedding
+    model = SentenceTransformer(MODEL, cache_folder='sentence-transformer-model')
 
     # Encode the data
     start = time.time()
@@ -87,39 +109,43 @@ def main():
     
 
     end = time.time()
-    elapsed = end - start
-    logger.info(f"elapsed time to encode data: {elapsed}")
+
+    logger.info(f"elapsed time to encode data: {end - start}")
+    
     logger.info(f"shape of encoded_data: {encoded_data.shape}")
     
     docs = df.statement.values
     data = [
-        {"id": i, "vector": encoded_data[i], "text": docs[i]}
+        {
+            "id": i, 
+            "embedding": encoded_data[i], 
+            "text": docs[i]
+        }
         for i in range(len(encoded_data))
     ]
     logger.info(f"Length of seeding data: {len(data)}")
-    
-    # Connect to PostgreSQL
-    engine = create_engine('postgresql://vector:password@db:5432/vectordb')
-
-    # Create a session
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    session.execute(text('CREATE EXTENSION IF NOT EXISTS vector'))
-    
-    # create table
-    Base.metadata.create_all(engine)
 
     # Insert embeddings to database
     start = time.time()
     
-    insert_embeddings(data, session)
+    insert_embeddings(session, data)
     
     end = time.time()
     
     logger.info(f"elapsed time to insert vector embedding data: {end - start}")
 
-    logger.info('Finished')
+    # Update the ID columns so the the id_sequence is point at the last id of the newly greated table
+    table_name = 'text_embeddings'
+    statement = text(f"""BEGIN;
+                LOCK TABLE {table_name} IN EXCLUSIVE MODE;
+                SELECT setval('{table_name}_id_seq', COALESCE((SELECT MAX(id)+1 FROM {table_name}),1),FALSE); 
+                COMMIT;"""
+                )
 
+    with engine.connect() as conn:
+        conn.execute(statement)
+        
+    logger.info('Finished')
 
 if __name__ == "__main__":
     main()
