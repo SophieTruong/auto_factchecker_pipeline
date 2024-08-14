@@ -19,14 +19,16 @@ services:
       context: .
       dockerfile: api/Dockerfile
     container_name: apidev
-    command: ["fastapi", "run", "main.py", "--port", "80"]
+    command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8080"]
     environment:
       - HF_HOME=/xml-roberta-model
+      - SENTENCE_TRANSFORMERS_HOME=/sentence-transformer-model
     ports:
      - 8080:8080
     restart: always
     volumes:
       - xml-roberta-model:/app/xml-roberta-model
+      - sentence-transformer-model:/app/sentence-transformer-model
     depends_on:
       -  db
   dbseeding:

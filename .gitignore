@@ -8,6 +8,8 @@
 */._.DS_Store/*
 
 running_script.txt
+/api/file_planning.md
+/api/.env
 
 /claim_detection/xml_model_finetune/data
 /claim_detection/xml_model_finetune/xml-roberta-model/
