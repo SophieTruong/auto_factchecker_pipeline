@@ -13,7 +13,7 @@ import numpy.typing as npt
 from sentence_transformers import SentenceTransformer
 
 import sqlalchemy
-from sqlalchemy import create_engine, Column, Integer, String, text
+from sqlalchemy import create_engine, Column, Integer, String, Date, text
 from sqlalchemy.orm import Session, sessionmaker,mapped_column, declarative_base
 from sqlalchemy.sql import expression
 from sqlalchemy.types import DateTime
@@ -40,11 +40,24 @@ class utcnow(expression.FunctionElement):
 def pg_utcnow(element, compiler, **kw):
     return "TIMEZONE('utc', CURRENT_TIMESTAMP)"
 
+def get_datetimeobj(datetimestr):
+    try:
+        return datetime.strptime(datetimestr, '%m/%d/%Y')
+
+    except Exception as e:
+        print(f"Error converting datetimestr: {e}")
+        return None
+    
 class TextEmbedding(Base):
     __tablename__ = 'text_embeddings'
     id = Column(Integer, primary_key=True, autoincrement=True)
     text = Column(String)
     embedding = mapped_column(Vector(N_DIM))
+    label = Column(String)
+    source = Column(String, nullable=True)
+    statement_date = Column(Date, nullable=True)
+    factcheck_date = Column(Date, nullable=True)
+    factcheck_analysis_link = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=utcnow())
     updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow())
     
@@ -66,9 +79,18 @@ def table_exists(engine,name):
     return ret
 
 
-def insert_embeddings(db: Session, embeddings:npt.ArrayLike):
+def insert_embeddings(db: Session, embeddings):
     for embedding in embeddings:
-        new_embedding = TextEmbedding(text=embedding["text"], embedding=embedding["embedding"])
+        new_embedding = TextEmbedding(
+            text=embedding["text"], 
+            embedding=embedding["embedding"],
+            label=embedding["label"],
+            source=embedding["source"],
+            statement_date=embedding["statement_date"],
+            factcheck_date=embedding["factcheck_date"],
+            factcheck_analysis_link=embedding["factcheck_analysis_link"]
+            
+            )
         db.add(new_embedding)
     try:
         db.commit()
@@ -114,12 +136,16 @@ def main():
     
     logger.info(f"shape of encoded_data: {encoded_data.shape}")
     
-    docs = df.statement.values
     data = [
         {
             "id": i, 
             "embedding": encoded_data[i], 
-            "text": docs[i]
+            "text": df.at[i, 'statement'],
+            "label": df.at[i, 'verdict'],
+            "source": df.at[i,'statement_source'],
+            "statement_date": get_datetimeobj(df.at[i,"statement_date"]),
+            "factcheck_date": get_datetimeobj(df.at[i,"factcheck_date"]),
+            "factcheck_analysis_link": df.at[i,"factcheck_analysis_link"]
         }
         for i in range(len(encoded_data))
     ]
@@ -135,10 +161,9 @@ def main():
     logger.info(f"elapsed time to insert vector embedding data: {end - start}")
 
     # Update the ID columns so the the id_sequence is point at the last id of the newly greated table
-    table_name = 'text_embeddings'
-    statement = text(f"""BEGIN;
-                LOCK TABLE {table_name} IN EXCLUSIVE MODE;
-                SELECT setval('{table_name}_id_seq', COALESCE((SELECT MAX(id)+1 FROM {table_name}),1),FALSE); 
+    statement = text("""BEGIN;
+                LOCK TABLE text_embeddings IN EXCLUSIVE MODE;
+                SELECT setval('text_embeddings_id_seq', COALESCE((SELECT MAX(id)+1 FROM text_embeddings),1),FALSE); 
                 COMMIT;"""
                 )
 
