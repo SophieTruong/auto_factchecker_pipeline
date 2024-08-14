@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # python output i.e. the stdout and stderr streams are sent straight to terminal
 ENV PYTHONUNBUFFERED 1
 
-COPY api/requirements.txt api/main.py claim_detection/predict.py ./
+COPY /api claim_detection/predict.py semantic_search/pgvector_search.py /app/
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
 # final stage
@@ -22,11 +22,11 @@ COPY --from=builder /app/requirements.txt .
 RUN pip install --no-cache --no-cache-dir /wheels/* \
 && python -m spacy download fi_core_news_sm
 
-COPY --from=builder /app/predict.py /app/main.py ./
+COPY --from=builder /app/.env /app/predict.py /app/main.py /app/models.py /app/schemas.py /app/postgres.py /app/utils.py /app/crud.py /app/pgvector_search.py /app/
 
-ENV HF_HOME=xml-roberta-model
+ENV HF_HOME=xml-roberta-model SENTENCE_TRANSFORMERS_HOME=sentence-transformer-model
 
 EXPOSE 8080
-
-CMD ["fastapi", "run", "main.py", "--port", "80"]
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8080"]
+# CMD ["fastapi", "run", "main.py", "--port", "80"]
 
