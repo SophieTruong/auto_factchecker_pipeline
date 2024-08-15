@@ -31,3 +31,13 @@ def update_sql_id_sequence(engine, table_name):
     with engine.connect() as con:
         con.execute(statement)
 
+
+def table_exists(engine, name):
+    """ 
+    Check if table exist. Source:  https://stackoverflow.com/questions/64861610/easily-check-if-table-exists-with-python-sqlalchemy-on-an-sql-database
+    """
+    ins = sqlalchemy.inspect(engine)
+    ret =ins.dialect.has_table(engine.connect(),name)
+    print('Table "{}" exists: {}'.format(name, ret))
+    return ret
+

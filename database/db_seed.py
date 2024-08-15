@@ -31,6 +31,7 @@ FILENAME = "politifact_factcheck_data.json"
 Base = declarative_base()
 N_DIM = 768
 
+#___________START: api/utils.py___________
 ## Source for database timestamp: https://stackoverflow.com/questions/13370317/sqlalchemy-default-datetime
 class utcnow(expression.FunctionElement):
     type = DateTime()
@@ -40,6 +41,8 @@ class utcnow(expression.FunctionElement):
 def pg_utcnow(element, compiler, **kw):
     return "TIMEZONE('utc', CURRENT_TIMESTAMP)"
 
+#___________END: api/utils.py___________
+
 def get_datetimeobj(datetimestr):
     try:
         return datetime.strptime(datetimestr, '%m/%d/%Y')
@@ -47,7 +50,8 @@ def get_datetimeobj(datetimestr):
     except Exception as e:
         print(f"Error converting datetimestr: {e}")
         return None
-    
+
+#___________START: api/models.py___________
 class TextEmbedding(Base):
     __tablename__ = 'text_embeddings'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -68,16 +72,9 @@ class TextEmbedding(Base):
                 output += '{}: {}\n'.format(c.name, getattr(self, c.name))
         return output
 
+#___________END: api/models.py___________
 
-def table_exists(engine,name):
-    """ 
-    Check if table exist. Source:  https://stackoverflow.com/questions/64861610/easily-check-if-table-exists-with-python-sqlalchemy-on-an-sql-database
-    """
-    ins = sqlalchemy.inspect(engine)
-    ret =ins.dialect.has_table(engine.connect(),name)
-    print('Table "{}" exists: {}'.format(name, ret))
-    return ret
-
+#___________START: api/crud.py___________
 
 def insert_embeddings(db: Session, embeddings):
     for embedding in embeddings:
@@ -97,6 +94,7 @@ def insert_embeddings(db: Session, embeddings):
     except IntegrityError as err:
         traceback.print_exc()
         db.rollback()            
+#___________END: api/crud.py___________
 
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', filename='vector_database_seeding.log', level=logging.DEBUG)
