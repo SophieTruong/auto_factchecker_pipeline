@@ -29,6 +29,7 @@ services:
     volumes:
       - xml-roberta-model:/app/xml-roberta-model
       - sentence-transformer-model:/app/sentence-transformer-model
+      - logging:/app/logging
     depends_on:
       -  db
   dbseeding:
@@ -40,8 +41,10 @@ services:
     volumes:
       - ./database/data:/db/data
       - sentence-transformer-model:/db/sentence-transformer-model
+      - logging:/db/logging
 
 volumes:
   database:
   xml-roberta-model:
   sentence-transformer-model:
+  logging:

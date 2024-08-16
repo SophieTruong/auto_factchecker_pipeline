@@ -1,5 +1,6 @@
-import datetime as datetime
+from datetime import datetime
 
+import sqlalchemy
 from sqlalchemy import text
 from sqlalchemy.sql import expression
 from sqlalchemy.ext.compiler import compiles
@@ -16,6 +17,14 @@ def pg_utcnow(element, compiler, **kw):
     Source: https://docs.sqlalchemy.org/en/20/core/compiler.html#utc-timestamp-function
     '''
     return "TIMEZONE('utc', CURRENT_TIMESTAMP)"
+
+def get_datetimeobj(datetimestr):
+    try:
+        return datetime.strptime(datetimestr, '%m/%d/%Y')
+
+    except Exception as e:
+        print(f"Error converting datetimestr: {e}")
+        return None
 
 def update_sql_id_sequence(engine, table_name):
     '''
