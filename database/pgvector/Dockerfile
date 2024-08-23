@@ -8,7 +8,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # python output i.e. the stdout and stderr streams are sent straight to terminal
 ENV PYTHONUNBUFFERED 1
 
-COPY database/db_seed.py database/postgres.py database/models.py database/utils.py database/.env database/requirements.txt ./
+COPY database/pgvector/db_seed.py \
+database/pgvector/postgres.py database/pgvector/models.py database/pgvector/crud.py \
+database/pgvector/utils.py database/pgvector/.env \
+database/requirements.txt \
+./
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /db/wheels -r requirements.txt
 
 FROM python:3.12.2-slim
@@ -19,7 +23,9 @@ COPY --from=builder /db/wheels /wheels
 COPY --from=builder /db/requirements.txt .
 RUN pip install --no-cache --no-cache-dir /wheels/*
 
-COPY --from=builder /db/db_seed.py /db/postgres.py /db/models.py /db/utils.py /db/.env ./
+COPY --from=builder /db/db_seed.py /db/.env \
+/db/postgres.py /db/models.py /db/crud.py /db/utils.py \
+./
 
 ENV SENTENCE_TRANSFORMERS_HOME=sentence-transformer-model
 

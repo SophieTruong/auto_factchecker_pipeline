@@ -18,28 +18,16 @@ from sqlalchemy import text, insert
 from postgres import engine, Base, SessionLocal
 from utils import get_datetimeobj
 from models import TextEmbedding, N_DIM
+from crud import insert_embeddings
 
 ## TODO: use arguments
-MODEL = 'msmarco-distilbert-base-dot-prod-v3'
 DATAPATH = "./data"
 FILENAME = "politifact_factcheck_data.json"
+MODEL = 'msmarco-distilbert-base-dot-prod-v3'
 
-def insert_embeddings(db: Session, inputs, embeddings:list[npt.ArrayLike]):
-    data = [dict(inp, **{'embedding':embeddings[i]}) for i, inp in enumerate(inputs)]
-
-    try:
-        test_embeddings_ids = db.scalars(
-            insert(TextEmbedding).returning(TextEmbedding.id, sort_by_parameter_order=True),
-            data
-        )
-        db.commit()
-    except IntegrityError as err:
-        traceback.print_exc()
-        db.rollback()
-    finally:
-        db.close()
-    
-    return len(test_embeddings_ids.all()) == len(embeddings) # Sucessfully insert all rows
+# Text embedding
+model = SentenceTransformer(MODEL,
+                            cache_folder='./sentence-transformer-model')
 
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', filename='./logging/vector_database_seeding.log', level=logging.DEBUG)
@@ -47,9 +35,6 @@ def main():
         
     # Encode data into vector embedding
     df = pd.read_json(os.path.join(DATAPATH, FILENAME), lines=True)
-
-    # Text embedding
-    model = SentenceTransformer(MODEL, cache_folder='./sentence-transformer-model')
 
     # Encode the data
     start = time.time()

@@ -7,6 +7,9 @@
 ._.DS_Store
 */._.DS_Store/*
 
+*/venv/*
+*__init.py__
+
 running_script.txt
 /api/file_planning.md
 /api/.env
@@ -22,3 +25,6 @@ running_script.txt
 /claim_detection/xml_model_finetune/xmlroberta-tunning.log
 
 /database/data
+/database/sentence-transformer-model
+
+volumes

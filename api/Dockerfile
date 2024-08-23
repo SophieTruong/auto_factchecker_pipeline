@@ -10,7 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY /api \
-database/.env database/models.py database/postgres.py database/utils.py \
+database/pgvector/.env database/pgvector/models.py database/pgvector/crud.py database/pgvector/postgres.py database/pgvector/utils.py \
 claim_detection/predict.py \
 semantic_search/pgvector_search.py \
 /app/

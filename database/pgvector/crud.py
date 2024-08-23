@@ -7,7 +7,7 @@ from sqlalchemy import insert, delete, update
 
 from psycopg2._psycopg import IntegrityError
 
-import models, schemas
+import models
 
 def get_text(db: Session, id:int) -> models.TextEmbedding | None:
     '''
@@ -33,12 +33,12 @@ def get_texts_by_embeddings(
                 .all()
     return query
 
-def insert_embedding(db: Session, input: schemas.TextEmbeddingCreate, embedding:npt.ArrayLike):
+def insert_embedding(db: Session, input: dict, embedding:npt.ArrayLike):
     '''
     Insert ONE fact-checked content to the database
     '''
     new_embedding = models.TextEmbedding(
-        **input.model_dump(),
+        **input,
         embedding=embedding
         )
     
@@ -52,14 +52,14 @@ def insert_embedding(db: Session, input: schemas.TextEmbeddingCreate, embedding:
     
     return new_embedding
 
-def insert_embeddings(db: Session, inputs:list[schemas.TextEmbeddingCreate], embeddings:list[npt.ArrayLike]):
+def insert_embeddings(db: Session, inputs:list[dict], embeddings:list[npt.ArrayLike]):
     # Bulk insert: https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html#orm-bulk-insert-statements
     '''
     Insert MULTIPLE fact-checked contents to the database
     '''
     data = [
         {
-            **inputs[i].model_dump(), 
+            **inputs[i], 
             "embedding": embeddings[i]
         } 
         for i in range(len(inputs))

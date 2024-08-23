@@ -1,3 +1,5 @@
 file_planning.md
 Dockerfile
 .DS_Store
+
+/database/sentence-transformer-model
