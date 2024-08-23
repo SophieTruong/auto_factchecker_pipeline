@@ -75,9 +75,9 @@ def create_semantic_search_text(input: schemas.Input, db: Session = Depends(get_
 @app.post("/fact_checked_text/insert_text", response_model=schemas.TextEmbedding)
 def create_fact_checked_text(input: schemas.TextEmbeddingCreate, db: Session = Depends(get_db)):
     encoded_vector = get_sentence_transformers_encode(input.text)
-    
+    input_embedding = input.model_dump()
     try:
-        fact_checked_text = crud.insert_embedding(db,input,encoded_vector)
+        fact_checked_text = crud.insert_embedding(db,input_embedding,encoded_vector)
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"{e}")
     
@@ -87,9 +87,9 @@ def create_fact_checked_text(input: schemas.TextEmbeddingCreate, db: Session = D
 @app.post("/fact_checked_text/insert_texts", response_model=list[schemas.TextEmbedding])
 def create_fact_checked_texts(input_arr: list[schemas.TextEmbeddingCreate], db: Session = Depends(get_db)):
     encoded_vector = get_sentence_transformers_encode([input.text for input in input_arr])
-    
+    input_embedding_arr = [input.model_dump() for input in input_arr]
     try:
-        bulk_insert_res = crud.insert_embeddings(db,input_arr, encoded_vector)
+        bulk_insert_res = crud.insert_embeddings(db,input_embedding_arr, encoded_vector)
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"{e}")
     
