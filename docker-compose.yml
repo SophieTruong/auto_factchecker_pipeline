@@ -14,6 +14,9 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
       - ./database/pgvector/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
   api:
     build:
       context: .
@@ -31,18 +34,25 @@ services:
       - sentence-transformer-model:/app/sentence-transformer-model
       - logging:/app/logging
     depends_on:
-      -  db
+      - "db"
+      - "milvus"
+    networks:
+      - backend
+
   pgvectorseeding:
     build:
       context: .
       dockerfile: database/pgvector/Dockerfile
     depends_on:
-      -  db
+      -  "db"
     volumes:
       - ./database/data:/db/data
       - sentence-transformer-model:/db/sentence-transformer-model
       - logging:/db/logging
+    networks:
+      - backend
 
+  # https://github.com/milvus-io/milvus/blob/master/deployments/docker/standalone/docker-compose.yml
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.5
@@ -59,6 +69,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - backend
 
   minio:
     container_name: milvus-minio
@@ -77,8 +89,10 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - backend
 
-  standalone:
+  milvus-standalone:
     container_name: milvus-standalone
     image: milvusdb/milvus:v2.3.0
     command: ["milvus", "run", "standalone"]
@@ -101,11 +115,13 @@ services:
     depends_on:
       - "etcd"
       - "minio"
+    networks:
+      - backend
 
 networks:
-  default:
-    name: milvus
-    
+  backend:
+    # Specify driver options
+    driver: bridge    
 volumes:
   database:
   xml-roberta-model:
