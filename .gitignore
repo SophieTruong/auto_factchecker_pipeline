@@ -12,7 +12,7 @@
 
 running_script.txt
 /api/file_planning.md
-/api/.env
+.env
 
 /claim_detection/xml_model_finetune/data
 /claim_detection/xml_model_finetune/xml-roberta-model/
@@ -25,6 +25,7 @@ running_script.txt
 /claim_detection/xml_model_finetune/xmlroberta-tunning.log
 
 /database/data
+/database/test*
 /database/sentence-transformer-model
 
 volumes
