@@ -5,6 +5,7 @@ from transformers import (
 )
 
 import spacy
+from spacy.language import Language
 
 # Preprocessing
 tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base", cache_dir="xml-roberta-model")
@@ -12,9 +13,17 @@ tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base", c
 # Get model from local disk
 model = XLMRobertaForSequenceClassification.from_pretrained("SophieTr/xlm-roberta-base-claim-detection-clef21-24", cache_dir="xml-roberta-model")
 
-nlp = spacy.load("fi_core_news_sm")
+@Language.component("set_custom_boundaries")
+def set_custom_boundaries(doc):
+    for token in doc[:-1]:
+        if token.text in [".", "?", "!"]:
+            doc[token.i+1].is_sent_start = True
+        else:
+            doc[token.i+1].is_sent_start = False
+    return doc
 
-sentencizer = nlp.add_pipe("sentencizer")
+nlp = spacy.load("fi_core_news_sm")
+nlp.add_pipe("set_custom_boundaries", before="parser")
 
 def get_sentence_array(doc: str):
     return [str(s) for s in nlp(doc).sents]
