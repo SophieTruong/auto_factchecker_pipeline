@@ -35,18 +35,48 @@ def get_db():
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/claim_detection/", response_model=dict)
-async def create_claim_detection_predicts(input: schemas.Input):
+# CREATE
+@app.post("/claim_detection/insert_claims", response_model=list[schemas.Claim])
+def create_claim_detection_predicts(input: schemas.Input, db: Session = Depends(get_db)):
+    """
+    This function calls the claim detection model and saves model inputs and outputs to the Claim DB
+    Args:
+        input (schemas.Input): Long text string as input of the claim detection pipeline
+        db (Session): a Claim DB session 
+    Returns:
+        If DB insertion successes, return the inserted data; else, throws a 404 error code. 
+    """
+    # TODO: does input.text has length limit? E.g., data validation
+    
+    # calls the claim detection model
     sent_arr, pred_arr = predicts(input.text)
     
-    ret = {}
-    for i, sent in enumerate(sent_arr):
-        ret[i] = {
-            "text": sent.strip(),
-            "prediction": pred_arr[i]
-        }
-        
-    return ret
+    claim_io_array = [{k.strip(): v} for (k,v) in list(zip(sent_arr, pred_arr))]
+            
+    try:
+        bulk_insert_res = crud.insert_claims(db,claim_io_array)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"{e}")
+    
+    return bulk_insert_res
+
+# READ
+@app.get("/claim_detection/{id}", response_model=schemas.Claim)
+def read_claim_text(id: int, db: Session = Depends(get_db)):
+    """
+    The function looks up a Claim detection model output by ID
+    Args:
+        id (int): ID of claim for DB lookup
+        db (Session): a Claim DB session 
+    Returns:
+        If ID is found from the Claim DB; else, throws a 404 error code. 
+    """
+    db_text = crud.get_claim_by_id(db, id=id)
+    
+    if db_text is None:
+        raise HTTPException(status_code=404, detail=f"Claim with ID={id} not found")
+    
+    return db_text
 
 # READ
 @app.get("/fact_checked_text/{id}", response_model=schemas.TextEmbedding)

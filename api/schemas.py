@@ -24,3 +24,15 @@ class TextEmbedding(TextEmbeddingBase):
     
     class Config:
         from_attributes = True
+        
+class ClaimBase(BaseModel):
+    text: str = ""
+    label: bool
+    
+class ClaimCreate(ClaimBase):
+    pass
+
+class Claim(ClaimBase):
+    id: int
+    created_at: datetime = None
+    updated_at: datetime = None

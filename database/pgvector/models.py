@@ -32,3 +32,17 @@ class TextEmbedding(Base):
             if c != "embedding":
                 output += '{}: {}\n'.format(c.name, getattr(self, c.name))
         return output
+
+class Claim(Base):
+    __tablename__ = 'claim'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    text = Column(String)
+    label = Column(String)
+    created_at = Column(DateTime(timezone=True), server_default=utcnow())
+    updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow())
+    
+    def __str__(self):
+        output = ''
+        for c in self.__table__.columns:
+            output += '{}: {}\n'.format(c.name, getattr(self, c.name))
+        return output

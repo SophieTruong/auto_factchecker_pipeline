@@ -115,3 +115,32 @@ def delete_embedding(db: Session, id:int):
         db.rollback()  
     
     return stmt.all()
+
+def get_claim_by_id(db: Session, id:int) -> models.Claim | None:
+    '''
+    Retrieve the text embedding instance from the database for the given ID.
+    '''
+    return db.query(models.Claim).filter(models.Claim.id == id).first()
+
+def insert_claims(db: Session, inputs:list[dict]):
+    # Bulk insert: https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html#orm-bulk-insert-statements
+    '''
+    Insert MULTIPLE fact-checked contents to the database
+    '''
+    data = inputs
+    
+    try:
+        test_embeddings_ids = db.scalars(
+            insert(models.Claim).returning(models.Claim.id, sort_by_parameter_order=True),
+            data
+        )
+        db.commit()
+    except Exception as err:
+        traceback.print_exc()
+        db.rollback()  
+    
+    for test_embeddings_id, input_record in zip(test_embeddings_ids, data):
+        input_record["id"] = test_embeddings_id
+        input_record.pop("embedding",None)
+        
+    return data
