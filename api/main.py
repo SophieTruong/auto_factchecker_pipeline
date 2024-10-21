@@ -2,11 +2,12 @@ from fastapi import Depends, FastAPI, HTTPException
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from sqlalchemy.orm import Session
-
 from claim_detection.predict import predicts
-from pgvector_search import get_sentence_transformers_encode
+
+from sqlalchemy.orm import Session
 from postgres import SessionLocal, engine
+
+from pgvector_search import get_sentence_transformers_encode
 import crud, models, schemas
 
 # Set up FastAPI
@@ -39,7 +40,7 @@ async def root():
 @app.post("/claim_detection/insert_claims", response_model=list[schemas.Claim])
 def create_claim_detection_predicts(input: schemas.Input, db: Session = Depends(get_db)):
     """
-    This function calls the claim detection model and saves model inputs and outputs to the Claim DB
+    This function calls the claim detection model, and saves model inputs and outputs to the Claim DB
     Args:
         input (schemas.Input): Long text string as input of the claim detection pipeline
         db (Session): a Claim DB session 
@@ -63,20 +64,20 @@ def create_claim_detection_predicts(input: schemas.Input, db: Session = Depends(
     return bulk_insert_res
 
 # READ
-@app.get("/claim_detection/{id}", response_model=schemas.Claim)
-def read_claim_text(id: int, db: Session = Depends(get_db)):
+@app.get("/claim_detection/", response_model=schemas.Claim)
+def read_claim_text(claim_id: str, db: Session = Depends(get_db)):
     """
     The function looks up a Claim detection model output by ID
     Args:
-        id (int): ID of claim for DB lookup
+        claim_id (int): ID of claim for DB lookup
         db (Session): a Claim DB session 
     Returns:
         If ID is found from the Claim DB; else, throws a 404 error code. 
     """
-    db_text = crud.get_claim_by_id(db, id=id)
+    db_text = crud.get_claim_by_id(db, id=int(claim_id.strip()))
     
     if db_text is None:
-        raise HTTPException(status_code=404, detail=f"Claim with ID={id} not found")
+        raise HTTPException(status_code=404, detail=f"Claim with ID={claim_id} not found")
     
     return db_text
 
