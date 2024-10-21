@@ -4,14 +4,13 @@ FROM python:3.12.2-slim AS builder
 WORKDIR /app
 
 # Python will no longer write .pyc files to disk, and keep the development environment nice and clean
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # python output i.e. the stdout and stderr streams are sent straight to terminal
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 COPY /api \
 database/pgvector/.env database/pgvector/models.py database/pgvector/crud.py database/pgvector/postgres.py database/pgvector/utils.py \
-claim_detection/predict.py \
 semantic_search/pgvector_search.py \
 /app/
 
@@ -28,10 +27,15 @@ RUN pip install --no-cache --no-cache-dir /wheels/* \
 && python -m spacy download fi_core_news_sm
 
 COPY --from=builder \
-/app/.env /app/main.py /app/schemas.py /app/crud.py \
+/app/.env /app/main.py \
+/app/schemas.py /app/crud.py \
 /app/models.py /app/postgres.py /app/utils.py \
-/app/predict.py /app/pgvector_search.py \
+/app/pgvector_search.py \
 /app/
+
+COPY --from=builder \
+/app/claim_detection/predict.py \
+/app/claim_detection/
 
 ENV HF_HOME=xml-roberta-model SENTENCE_TRANSFORMERS_HOME=sentence-transformer-model
 

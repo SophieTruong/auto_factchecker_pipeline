@@ -14,15 +14,15 @@ running_script.txt
 /api/file_planning.md
 .env
 
-/claim_detection/xml_model_finetune/data
-/claim_detection/xml_model_finetune/xml-roberta-model/
-/claim_detection/xml_model_finetune/mlruns/
-/claim_detection/xml_model_finetune/sbert_array_job*
-/claim_detection/xml_model_finetune/submit.sh
-/claim_detection/xml_model_finetune/.env
-/claim_detection/xml_model_finetune/hyperparameter_tuning.ipynb
-/claim_detection/xml_model_finetune/._hyperparameter_tuning.py
-/claim_detection/xml_model_finetune/xmlroberta-tunning.log
+api/claim_detection/xml_model_finetune/data
+api/claim_detection/xml_model_finetune/xml-roberta-model/
+api/claim_detection/xml_model_finetune/mlruns/
+api/claim_detection/xml_model_finetune/sbert_array_job*
+api/claim_detection/xml_model_finetune/submit.sh
+api/claim_detection/xml_model_finetune/.env
+api/claim_detection/xml_model_finetune/hyperparameter_tuning.ipynb
+api/claim_detection/xml_model_finetune/._hyperparameter_tuning.py
+api/claim_detection/xml_model_finetune/xmlroberta-tunning.log
 
 /database/data
 /database/test*

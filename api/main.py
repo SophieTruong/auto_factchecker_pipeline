@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy.orm import Session
 
-from predict import predicts
+from claim_detection.predict import predicts
 from pgvector_search import get_sentence_transformers_encode
 from postgres import SessionLocal, engine
 import crud, models, schemas
@@ -51,7 +51,9 @@ def create_claim_detection_predicts(input: schemas.Input, db: Session = Depends(
     # calls the claim detection model
     sent_arr, pred_arr = predicts(input.text)
     
-    claim_io_array = [{k.strip(): v} for (k,v) in list(zip(sent_arr, pred_arr))]
+    claim_io_array = [{ "text": t.strip(),
+                        "label": l
+                       } for (t,l) in list(zip(sent_arr, pred_arr))]
             
     try:
         bulk_insert_res = crud.insert_claims(db,claim_io_array)
