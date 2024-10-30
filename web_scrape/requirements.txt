@@ -1,0 +1,7 @@
+python-dateutil==2.9.0
+python-dotenv==1.0.1
+spacy==3.7.5
+fi_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/fi_core_news_sm-3.8.0/fi_core_news_sm-3.8.0-py3-none-any.whl
+beautifulsoup4==4.12.3
+requests==2.32.3
+typing-extensions==4.12.2
