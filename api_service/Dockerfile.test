@@ -1,0 +1,16 @@
+FROM python:3.12.2-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Set PYTHONPATH to include app directory
+ENV PYTHONPATH=/app/app
+
+# Command to run tests
+CMD ["python", "-m", "pytest", "tests/test_main.py", "-W", "ignore::DeprecationWarning", "--capture=no", "--showlocals"]
