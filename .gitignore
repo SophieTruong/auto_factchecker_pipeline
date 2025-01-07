@@ -13,6 +13,8 @@
 running_script.txt
 /api/file_planning.md
 .env
+.env.*
+!.env.example
 
 api/claim_detection/xml_model_finetune/data
 api/claim_detection/xml_model_finetune/xml-roberta-model/
@@ -24,8 +26,10 @@ api/claim_detection/xml_model_finetune/hyperparameter_tuning.ipynb
 api/claim_detection/xml_model_finetune/._hyperparameter_tuning.py
 api/claim_detection/xml_model_finetune/xmlroberta-tunning.log
 
-/database/data
-/database/test*
-/database/sentence-transformer-model
+api/databases/data
+api/databases/venv/
+api/databases/test*
+api/databases/sentence-transformer-model/*
 
 volumes
+mlruns/

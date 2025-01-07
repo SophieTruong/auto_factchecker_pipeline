@@ -1,0 +1,12 @@
+# Ignore all .env files except .env.example
+.env
+.env.*
+!.env.example
+
+# Common files/directories to ignore
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.pytest_cache/
+mlruns/ 

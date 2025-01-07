@@ -1,0 +1,505 @@
+id;Lauseet;Kategoria
+3-12394959;Sitten yksi sotilaista kehotti toista “lopettamaan hänet”, jonka jälkeen miestä ammuttiin päähän.;Ei_tarkistettavissa_oleva_väite
+3-12394959;Amnestyn haastatteleman todistajan mukaan mies ei kuollut heti, vaan vasta aamuyöllä.;Muu
+3-12394959;Naapurissa asuva henkilö on vahvistanut Amnestylle sotilaiden tunkeutuneen taloon ja nähneensä ammutun miehen ruumiin makaamassa pannuhuoneen nurkassa.;Muu
+3-12394959;Idässä tullaan näkemään sodan suurimmat taistelut;Ennuste
+3-12394959;Ruotsin maanpuolustuskorkeakoulun sotatieteen dosentin Ilmari Käihkön mukaan Venäjä on nyt muuttanut strategiaansa.;Muu
+3-12394959;– Joukkoja keskitetään itään ja nyt keskitytään Donbassin alueeseen.;Muu
+3-12394959;Strategia ja retoriikka ovat muuttuneet.;Muu
+3-12394959;Venäjällä puhutaan nyt sotilasoperaation sijaan “Donbassin puolustuksesta”.;Muu
+3-12394959;Käihkö uskoo, että idässä tullaan näkemään sodan suurimmat taistelut.;Henkilökohtainen_kokemus
+3-12394959;Ukraina ja Venäjä keskittävät nyt joukkojaan sinne.;Muu
+3-12394959;Käihkön mukaan ukrainalaisten vastarinta kovenee entisestään eikä Butšan jälkeen ole mitään mahdollisuutta myönnytyksiin.;Muu
+3-12394959;– Nyt on nähty, mikä hinta on maksettu.;Henkilökohtainen_kokemus
+3-12394959;Jos rauhansopimus menee kansanäänestykseen, kuten Zelenskyi on sanonut, on todella vaikea nähdä muuta vaihtoehtoa rauhalle, kuin se, että Venäjä perääntyy täysin.;Henkilökohtainen_kokemus
+3-11407709;Kotiteollisuus-yhtye sai 70 000 euroa korona-avustusta – myös Nuijamies ja Imatran kaupunkikeskustat saivat tukea;Määrä
+3-11407709;Eteläkarjalaiset kulttuurin toimijat ovat saaneet tiede- ja kulttuuriministeriöltä tukea koronavirustilanteesta selviämiseen.;Korrelaatio/kaussatio
+3-11407709;Eteläkarjalaisille kulttuurin ja taiteen tekijöille on [myönnetty rahaa](https://minedu.fi/documents/1410845/22108576/Korona-avustukset%2Byhteis%C3%B6ille%2BWWW.pdf/96004b58-23ce-82c7-a58c-52ea87d01563/Korona-avustukset%2Byhteis%C3%B6ille%2BWWW.pdf) koronapandemiasta selviämiseen.;Korrelaatio/kaussatio
+3-11407709;Etelä-Karjalan suurimman summan eli 70 000 euroa tiede- ja kulttuuriministeri Hanna Kosonen antoi lappeenrantalaiselle Kotiteollisuus-yhtyeelle.;Määrä
+3-11407709;Vajaat 40 000 euroa myönnettiin Imatran kaupunkikeskustat-yhdistykselle ja Lappeenrannan kulttuuritila Nuijamiehelle.;Määrä
+3-11407709;Kotkaniemi-säätiö sai 10 000 euroa.;Määrä
+3-11407709;Kaikkiaan suomalaisille kulttuurin toimijoille myönnettiin lähes 11 miljoonaa euroa maaliskuun puolivälin ja toukokuun lopun välisenä aikana koronaviruksen vuoksi syntyneiden talousongelmien lieventämiseen.;Määrä
+3-12015343;Parainen varoittaa yökerhoaltistumisista;Muu
+3-12015343;Paraisilla sijaitsevassa yökerho Frendissä on tapahtunut mahdollisia koronavirusaltistumisia.;Muu
+3-12015343;Useampi seurue on liikkunut muissakin paikoissa, joten altistumisia on voinut tapahtua myös muualla.;Muu
+3-12015343;Paraisilla sijaitsevassa yökerho Frendissä on tapahtunut mahdollisia koronavirusaltistumisia viime viikonloppuna 3. ja 4. heinäkuuta.;Muu
+3-12015343;Paraisten tartuntatautiyksikön tiedotteen mukaan moni seurue on liikkunut muissakin paikoissa, joten altistumisia on voinut tapahtua myös muualla.;Muu
+3-12015343;Paraisten terveydenhuolto kehottaa kaikkia tarkkailemaan vointiaan.;Muu
+3-12015343;Pienistäkin oireista tulisi hakeutua koronatestiin.;Lait/toimintasäännot
+3-12015343;Paraisten terveydenhuollon puhelinlinjat ovat ajoittain ruuhkautuneet.;Muu
+3-12015343;Kaupunki suosittelee verkon Omaolo-palvelun käyttöä.;Lait/toimintasäännot
+3-11939848;Pitääkö asuntovelallisen huolestua inflaatiosta?;Ei_tarkistettavissa_oleva_väite
+3-11939848;Kokeile‌ ‌laskurilla,‌ ‌miten‌ ‌koronnousu‌ ‌vaikuttaa‌ ‌lainakuluihisi;Ei_tarkistettavissa_oleva_väite
+3-11939848;Inflaatio on kiihtynyt, mutta asuntolainakuluissa se ei näy vielä moneen vuoteen, sanovat asiantuntijat.;Ennuste
+3-11939848;Mahdollisen korkosuojauksen hintaa se kuitenkin jo nostaa.;Korrelaatio/kaussatio
+3-11939848;Asuntolainojen suositut viitekorot eli euriborit ovat olleet pitkään miinuksella, joten lainasta on maksettu vain marginaalia.;Korrelaatio/kaussatio
+3-11939848;Kun inflaatio eli yleinen hintojen nousu on alkanut osoittaa[ kiihtymisen merkkejä](https://yle.fi/uutiset/3-11927768), moni miettii, nousevatko myös korot eli alkaako lainanmaksu pian kallistua.;Määrä
+3-11939848;Monella tuoreella asuntovelallisella on paljon lainaa ja kokemusta vain alhaisten korkojen maailmasta, sanoo LähiTapiolan yksityistalouden ekonomisti Hannu Nummiaro.;Määrä
+3-11939848;– Jos talous on viritetty valmiiksi liian tiukalle, korkojen nousu voi aiheuttaa arjessa niukkuutta.;Korrelaatio/kaussatio
+3-11939848;Yöunia ei kannata kuitenkaan vielä menettää korkojen takia.;Henkilökohtainen_kokemus
+3-11939848;Merkkejä siitä, että euroalueen inflaatiota vahtiva Euroopan keskuspankki EKP olisi nostamassa ohjauskorkoa lähiaikoina, ei ole, sanoo Swedbankin Suomen-pääekonomisti Heidi Schauman.;Ennuste
+3-11939848;– Pitää vielä odottaa aika monta vuotta, ennen kuin lyhyet korot nousevat mitenkään merkittävästi.;Määrä
+3-11939848;Euriborien kiivettävä ensin miinukselta nollan yli;Määrä
+3-11939848;Euroalueen inflaation nousua pidetään lyhytaikaisena.;Ennuste
+3-11939848;Osin se johtuu siitä, että vuosi sitten, kun koronapandemia alkoi, öljyn hinta romahti.;Korrelaatio/kaussatio
+3-11939848;Kun öljyn hintaa verrataan nyt vuoden takaiseen, nousuprosentti on suuri, Heidi Schauman sanoo.;Määrä
+3-11939848;Euroopassa talouskasvu ei välttämättä pääse vielä niin vakaalle pohjalle, että ohjauskorkoa nostettaisiin, sanoo Hannu Nummiaro.;Ennuste
+3-11939848;– Olettaisin että ainakaan pariin vuoteen ei nosteta korkoa, ja senkin jälkeen tahti on maltillinen.;Henkilökohtainen_kokemus
+3-11939848;Voi olla niinkin että koronnosto alkaa, sitten se pysähtyy, ja jopa kääntyy ohjauskoron laskuksi, koska talous ei kestäkään sitä korkojen nousua.;Henkilökohtainen_kokemus
+3-11939848;Lisäksi suosituin asuntolainan viitekorko, [kahdentoista kuukauden euribor](https://www.suomenpankki.fi/fi/Tilastot/korot/kuviot/korotkuviot/euriborkorotpvchrtfi/), on lähes puoli prosenttia miinuksella, Schauman muistuttaa.;Määrä
+3-11939848;Vasta kun se kipuaa nollan yli, vaikutus alkaa näkyä asuntolainan kuluissa.;Korrelaatio/kaussatio
+3-11939848;– Matka siihen, että tavalliset korot olisivat korkeita asuntolain-asiakkaan näkökulmasta, on pitkä.;Määrä
+3-11939848;– Toki on olemassa riski, että tulee jokin yllätys ja inflaatio jää pysyvämmäksi kuin mitä nyt arivoidaan.;Muu
+3-11939848;Kokeile, miten koronnousu vaikuttaa lainan kuluihin;Ei_tarkistettavissa_oleva_väite
+3-11939848;Korkojen nousuun kannattaa kuitenkin varautua joka tapauksessa, ekonomistit sanovat.;Henkilökohtainen_kokemus
+3-11939848;Laina-ajat ovat pitkiä, eikä tulevaisuuden ennustaminen ole helppoa.;Henkilökohtainen_kokemus
+3-11939848;Pankit arvioivat asuntovelallisen maksukykyä niin sanotun kuuden prosentin stressitestin avulla eli laskemalla, miten paljon lainanhoito maksaa, jos korko on kuusi prosenttia.;Lait/toimintasäännot
+3-11939848;– Juuri nyt kuusi prosenttia tuntuu kaukaiselta, mutta ei siitä niin pitkä aika ole, kun meillä oli ihan merkittävän suuruisia korkoja euroalueella, Schauman sanoo.;Muu
+3-11939848;Kannattaa miettiä, miten erilaiset korkotasot vaikuttavat omaan talouteen, lainan kuukausierään tai lainan pituuteen, hän vinkkaa.;Henkilökohtainen_kokemus
+3-11939848;– Itse laskin viimeksi asuntolainaa ottaessa, miten kulut muuttuvat, jos korko on kymmenen prosenttia.;Henkilökohtainen_kokemus
+3-11939848;Se on hyvin epätodennäköinen toteuma juuri nyt, mutta emme tiedä hirveän paljon maailmasta kahdenkymmenen vuoden kuluttua.;Henkilökohtainen_kokemus
+3-11939848;Hannu Nummiaro suosittelee varautumaan koronnousuun maltillisemman vertailun avulla.;Henkilökohtainen_kokemus
+3-11939848;– Moni ei edes tiedä sitä, miten paljon lainan kulut nousevat, jos korko nousee kahteen prosenttiin.;Muu
+3-11939848;Oma talous kannattaa hänen mukaansa jo nyt sopeuttaa siihen, että asuntolainan korko olisi kaksi prosenttia.;Henkilökohtainen_kokemus
+3-11939848;– Ylijäävän rahan voi siirtää joka kuukausi kasvamaan esimerkiksi matalariskiseen rahastoon ja kerryttämään puskuria, jonka voi purkaa, kun ne korkeat korot tulevat, Nummiaro sanoo.;Henkilökohtainen_kokemus
+3-11939848;Ylen laskurilla voit vertailla, miten oman lainan kuukausikulut nousevat, kun korot alkavat kivuta ylöspäin.;Muu
+3-11939848;Inflaatio näkyy jo korkosuojauksessa;Korrelaatio/kaussatio
+3-11939848;Pankit myyvät asuntolainaa ottaville erilaisia korkosuojaustuotteita, kuten korkokattoja ja korkoputkia.;Muu
+3-11939848;Ne sanelevat enimmäismäärän, johon korko voi laina-aikana nousta.;Lait/toimintasäännot
+3-11939848;Suojauksen hintaa inflaatio on jo voinut nostaa.;Korrelaatio/kaussatio
+3-11939848;Erityisesti niille kotitalouksille, joilla on paljon velkaa ja koronnousu voisi tarkoittaa talousvaikeuksia, korkosuoja voi olla järkevä.;Muu
+3-11939848;Suojausta hankkiessa kannattaa olla tarkkana esimerkiksi sen suhteen, miten pitkään suoja on voimassa, Hannu Nummiaro muistuttaa.;Henkilökohtainen_kokemus
+3-11939848;– Jos puhutaan rahoitusmarkkinatermein, niin siinähän ostetaan optioita.;Muu
+3-11939848;Hinnoitteluun vaikuttavat korkomarkkinoiden odotukset sekä volatiliteetti eli epävarmuus markkinoilla.;Korrelaatio/kaussatio
+3-11939848;Sen päälle pankki ottaa omat järjestelykustannuksensa.;Lait/toimintasäännot
+3-11939848;Sitä, onko korkosuojauksen hinta kallis vai halpa, on kuluttajan vaikea arvioida, sanoo Heidi Schauman.;Muu
+3-11939848;– Se on todella vaikea kysymys, jos ajattelee, että kuluttajan pitäisi luoda oma arvio siitä, miten todennäköisesti korko nousee tietyn rajan yläpuolelle.;Muu
+3-11939848;Kannattaa kilpailuttaa pankkeja ja pyytää kahdesta–kolmesta pankista tarjous, Schauman neuvoo.;Henkilökohtainen_kokemus
+3-11939848;– Siitä voi jo vähän arvioida, mikä on kallis ja mikä ei.;Henkilökohtainen_kokemus
+3-11939848;Ostamalla mielenrauhaa;Ei_tarkistettavissa_oleva_väite
+3-11939848;Vaihtoehto korkosuojalle on lainan sitominen kiinteään korkoon joko kokonaan tai osittain, kuten on tapana monissa Euroopan maissa.;Lait/toimintasäännot
+3-11939848;Lainatyyppikin vaikuttaa: esimerkiksi tasaerälainassa koronnousu ei vaikuta kuukausierään, vaan laina-aika pitenee.;Lait/toimintasäännot
+3-11939848;Joka tapauksessa kannattaa jutella pankissa, mitkä omat vaihtoehdot ovat ja mikä itselle sopii, ettei maksa sellaista turvasta, mitä ei oikeasti tarvitse, Schauman sanoo.;Henkilökohtainen_kokemus
+3-11939848;– Jos ei ole niin paljon väliä, maksaako lainanhoito sata euroa enemmän ensi vuonna vai ei, niin silloin ei varmaan kannata suojata itseään liian paljon.;Henkilökohtainen_kokemus
+3-11939848;Korkosuojaa voi toisaalta ajatella vakuutuksena, joka voi tuoda mielenrauhaa.;Henkilökohtainen_kokemus
+3-11939848;Erityisesti ensimmäinen asuntolaina voi tuntua suurelta taakalta, hän sanoo.;Ei_tarkistettavissa_oleva_väite
+3-11939848;– Se on myös psykologiaa, että miten turvallinen olo pitää olla, että pystyy elämään lainan kanssa.;Henkilökohtainen_kokemus
+3-11939848;Juttua tarkennettu 25.5. kello 23:42: Kyse on matalan riskin, ei matalan koron rahastosta.;Muu
+74-20066111;”Lopettakaa Gazan kansanmurha” – mielenilmaukset ympäri maata vaativat tulitaukoa Palestiinaan mahdollisimman pian;Muu
+74-20066111;Eri puolilla maata on järjestetty mielenilmauksia palestiinalaisten tueksi.;Muu
+74-20066111;Tapahtumilla ei ole yhteistä järjestäjää.;Muu
+74-20066111;Ainakin Helsingissä, Vaasassa, Oulussa ja Jyväskylässä järjestettiin tänään keskiviikkona mielenilmauksia palestiinalaisten tueksi.;Muu
+74-20066111;Jokaisella tapahtumalla oli oma järjestäjä.;Muu
+74-20066111;Palestiinalaisia tukevia mielenilmauksia on järjestetty useita jo aikaisemmin loka-joulukuussa eri puolilla maata.;Muu
+74-20066111;Ne kaikki liittyvät [Israelin asevoimien massiiviseen hyökkäykseen Gazassa, Hamasin hallitsemalla palestiinalaisalueella.](https://yle.fi/a/74-20065614);Muu
+74-20066111;Israelin hyökkäys oli vastaus Hamasin lokakuun alussa siviilejä kohtaan tekemään terrori-iskuun Israelissa.;Korrelaatio/kaussatio
+74-20066111;Free Palestine Jkl -kynttiläkulkueeseen osallistui järjestäjän arvion mukaan noin 100 ihmistä.;Määrä
+74-20066111;Osallistujat vaativat palestiinalaisten sorron lopettamista Gazassa ja Länsirannalla.;Muu
+74-20066111;Mielenosoitus oli hiljainen, ja poliisi seurasi sitä.;Muu
+74-20066111;Yksi osallistujista kantoi kylttiä, jossa vaadittiin ”Stop the genocide in Gaza” eli lopettakaa Gazan kansanmurha.;Ei_tarkistettavissa_oleva_väite
+74-20066111;Tapahtuman taustalla ei ole virallista järjestäjäorganisaatiota.;Muu
+74-20066111;Free Palestine Jkl -ryhmän edustajan mukaan ryhmä koostuu yksittäisistä ihmisistä, jotka ovat järjestäytyneet sosiaalisen median kautta.;Muu
+74-20066111;”Kyse ei ole Israelin siviiliväestöstä”;Muu
+74-20066111;Vaasassa tapahtuman taustalla oli Vaasa for Palestine -nimeä kantava ryhmä, joka koostuu eri taustoista tulevista ja eri uskontoja edustavista vaasalaisista.;Muu
+74-20066111;Limamin mielestä tärkeintä olisi saada aikaan tulitauko Gazan alueella.;Muu
+74-20066111;– Tavoitteena on yksiselitteisesti tuomita Palestiinassa tapahtuvat julmuudet ja puolustaa ihmishenkiä ja -arvoa.;Muu
+74-20066111;Limam on yksi mielenilmauksen noin 40 järjestäjästä.;Muu
+74-20066111;Vaasa for Palestine oli alun perin kolmen ihmisen ajatus, josta on kasvanut paikallinen ilmiö.;Määrä
+74-20066111;Limamin mukaan mielenilmauksissa ei sallittu syrjivää käytöstä ketään kohtaan: se on varmistettu tapahtumien sosiaalisen median markkinoinnin avulla.;Muu
+74-20066111;– Kaikilla on yhteinen sävel siitä, millaisia kylttejä saa tuoda.;Henkilökohtainen_kokemus
+74-20066111;Sekin on tehty selväksi, että jokaisesta puhutaan tasa-arvoisesti ja kunnioittavasti, sanoi Limam.;Muu
+74-20066111;Limam korosti, että mielenilmaus kohdistuu Israelin hallituksen toimiin.;Muu
+74-20066111;– Missään nimessä kyse ei ole siviiliväestöstä Israelin puolella.;Muu
+74-20066111;Oulussa Solidarity with Gaza -kulkueen järjestäjänä oli yksityishenkilö.;Muu
+74-20066111;Kaupungin keskusta-alueen kiertänyt mielenilmaus pysähtyi Rotuaarin lavalle pitämään puheita.;Muu
+74-20066111;Artikkelia muokattu 21.12.2023 klo 11.13: Jyväskylän tapahtuman osallistujamäärä muutettu 70 henkilöstä järjestäjän arvioon, noin 100 henkilöä.;Määrä
+74-20066111;Lisäksi täsmennetty tietoa tapahtuman järjestäneestä ryhmästä.;Muu
+74-20066111;Artikkelia muokattu 22.12.2023 klo 17:28: Korjattu juttuun ajankohta, milloin palestiinalaisia tukevat mielenilmaukset ovat Suomessa alkaneet.;Muu
+74-20066111;Ensimmäiset olivat jo lokakuussa, ei marraskuussa, kuten jutussa aiemmin luki.;Muu
+74-20066111;Lisäksi täsmennetty sitä, mihin mielenilmauksen liittyvät.;Muu
+74-20066111;Mielenilmauksilla vastusteaan Israelin asevoimien hyökkäystä, tekstistä sai aiemmin käsityksen, että mielenilmaukset liittyvät Hamasin terrori-iskuun.;Muu
+74-20055698;Gazan rajalle siirrettiin puskutraktoreita, toimittajia pidetään loitolla rajasta;Muu
+74-20055698;Israel jatkaa raskasta ilmahyökkäystään Gazaan, mutta maajoukkojen hyökkäystä ei ole vielä aloitettu.;Muu
+74-20055698;Israelin ilmaiskujen aiheuttama pauke kuului selvästi ja savupatsaat nousivat Gazan puolelta tänäänkin päivällä.;Muu
+74-20055698;Samaan aikaan Israel näytti jatkavan maahyökkäyksen valmistelua Be'erin kibbutsin tuntumassa noin viiden kilometrin päässä Gazan rajasta.;Muu
+74-20055698;Kohti rajaa kuljetettiin myös useita puskutraktoreita, joita saatetaan käyttää Gazassa tuhottujen rakennusten raivaamisessa, jos Israel aloittaa maahyökkäyksen.;Määrä
+74-20055698;Aivan tarkastuspisteen vieressä Be'eriin johtavalla tiellä oli rivistö panssarivaunuja, joiden kuvaamisen sotilaat kielsivät Ylen kuvausryhmältä.;Muu
+74-20055698;Tarkastuspisteestä ei tiistaina päästetty eteenpäin kuin armeijan ajoneuvoja ja tukitoimintoihin liittyviä autoja.;Muu
+74-20055698;Muutamat siviiliautot kuuluivat niille alueella asuville, jotka eivät ole siirtyneet muualle Israeliin.;Ei_tarkistettavissa_oleva_väite
+74-20055698;Gazan rajan tuntumassa liikenne on tällä hetkellä muuten melko vähäistä.;Määrä
+74-20055698;kibbutsi oli yksi eniten kärsineistä kohteista Hamasin hyökätessä Israeliin puolitoista viikkoa sitten.;Määrä
+74-20055698;Sen jälkeen Israel on jatkanut raskasta ilmahyökkäystään Gazaan.;Muu
+3-12505101;Herätys: Kesämökki halutaan nyt läheltä kotia | Suomalaistaistelijan mukaan Ukrainan sodan luonne on muuttunut | Moni vieraskielinen ei äänestä;Ei_tarkistettavissa_oleva_väite
+3-12505101;Kerromme päivän uutiset ja puheenaiheet nopeasti.;Ei_tarkistettavissa_oleva_väite
+3-12505101;Lyhyt mökkimatka korostuu tänä vuonna ostajien toiveissa;Muu
+3-12505101;[Polttoaineen hinnan nousu heijastuu jo mökkikauppaan](https://yle.fi/uutiset/3-12503904), kerrotaan Suomen mökkirikkaimmasta kunnasta Kuopiosta.;Korrelaatio/kaussatio
+3-12505101;Tilastojen mukaan joka toinen matka kodin ja mökin välillä on enintään 39 kilometriä.;Määrä
+3-12505101;Tyypillinen suomalainen kesämökki on 1970-luvulla valmistunut, järven rannalla sijaitseva 40–50 neliön lauta- tai hirsimökki, johon tulee sähköt, mutta ei välttämättä vesi.;Muu
+3-12505101;"Suomalaistaistelija kertoo, kuinka Ukrainan sota on muuttunut ketteristä iskuista tykistösodaksi: ""Nyt vaaditaan lännen vahvaa aseapua""";Muu
+3-12505101;Topi Huhtala on yksi vajaasta kahdestakymmenestä suomalaisesta, jotka ovat Ukrainassa taistelutehtävissä.;Määrä
+3-12505101;Kaikki ovat lähteneet Ukrainaan sodan alkupuolella, Huhtala maaliskuun puolivälissä.;Muu
+3-12505101;Vantaalainen Sharangan Kenganathan, 18, seuraa herkeämättä politiikkaa – moni vieraskielinen ei edes äänestä;Määrä
+3-12505101;Vaalien tulosilta sai Sharangan Kenganathanin kiinnostumaan politiikasta.;Henkilökohtainen_kokemus
+3-12505101;Hän seuraa sitä nyt tarkemmin kuin moni suomalainen.;Ei_tarkistettavissa_oleva_väite
+3-12505101;[Usein vieraskieliset jättävät kuitenkin äänestämättä](https://yle.fi/uutiset/3-12498818), mikä huolestuttaa asiantuntijoita, koska vieraskielisten osuus kasvaa koko ajan, mutta äänestysinto ei.;Määrä
+3-12505101;Uhkana pidetään varjoyhteiskuntien syntyä, jotka ovat uhkana demokratialle.;Muu
+3-12505101;Sadealue liikkuu Suomen yli lännestä itään;Muu
+3-12505101;Kapea kylmä sadealue liikkuu Suomen yli itään ja tuo mukanaan sadekuuroja sekä tilapäisesti viileämpää ilmaa.;Korrelaatio/kaussatio
+3-12505101;Etelässä sää kuitenkin jatkuu pääosin poutaisena ja lämpötilat pysyttelevät 20 asteen vaiheilla.;Määrä
+3-11857639;Etelä-Karjalassa 20 uutta koronatartuntaa;Määrä
+3-11857639;Sairaalahoidossa on 16 koronatautipotilasta.;Määrä
+3-11857639;Etelä-Karjalassa on varmistunut 20 uutta koronatartuntaa.;Määrä
+3-11857639;Niistä 18 on Lappeenrannassa ja kaksi Imatralla.;Määrä
+3-11857639;Sairaalahoidossa on 16 koronapotilasta.;Määrä
+3-11857639;Koronatartunnat leviävät nyt Etelä-Karjalassa perheiden ja ystäväpiirien sisällä.;Määrä
+3-11857639;– Esimerkiksi tämän päivän 20 uudesta tartunnan saaneesta 15 on ollut valmiiksi karanteenissa, kun perheessä on koronapotilas, kertoo Eksoten tartuntatautien ylilääkäri Sami Raasakka.;Määrä
+3-11857639;Terveyden ja hyvinvoinnin laitoksen tilaston mukaan Etelä-Karjalassa on viimeisen kahden viikon aikana varmistunut 200 koronavirustartuntaa.;Määrä
+74-20013859;Satamien ja kuljetusalan työntekijöitä edustava AKT uhkaa työtaistelutoimilla, ellei työnantaja taivu merkittäviin palkankorotuksiin;Lait/toimintasäännot
+74-20013859;AKT:n työehtosopimukset päättyvät valtaosin tammikuun lopussa.;Lait/toimintasäännot
+74-20013859;Auto- ja kuljetusalan ammattiliitto AKT:n hallitus on antanut järjestölle valtuudet päättää työtaistelutoimista.;Lait/toimintasäännot
+74-20013859;Kyse ei ole vielä varsinaisesta lakkoilmoituksesta.;Muu
+74-20013859;Lakot ovat kuitenkin mahdollisia lähiaikoina, jos työmarkkinatilanteeseen ei löydy ratkaisua neuvottelemalla.;Muu
+74-20013859;– Neuvotteluratkaisuun pyritään ilman muuta, mutta sisältö ratkaisee.;Ei_tarkistettavissa_oleva_väite
+74-20013859;Palkkojen ja työehtojen on oltava riittävällä tasolla, jotta uusia sopimuksia saadaan solmittua, sanoo AKT:n puheenjohtaja Ismo Kokko tiedotteessa.;Muu
+74-20013859;AKT ja muut Suomen Ammattiliittojen Keskusjärjestöön (SAK) kuuluvat liitot ovat linjanneet, että ne tavoittelevat Saksassa saavutettua teollisuuden palkkaratkaisua.;Muu
+74-20013859;Saksan suurin ammattiliitto IG-Metall sopi marraskuussa 5,2 prosentin palkankorotuksesta vuodelle 2023 ja 3,3 prosentin korotuksesta sitä seuraavalle vuodelle.;Määrä
+74-20013859;AKT:n tekemät työehtosopimukset päättyvät valtaosin 31.1.2023, jonka jälkeen päättyy myös liiton työrauhavelvoite.;Lait/toimintasäännot
+74-20013859;Liitto sanookin tiedotteessaan, että mikäli neuvottelut eivät etene ennen kuunvaihdetta, työtaistelutoimet tulevat ajankohtaisiksi.;Muu
+74-20013859;Osa muista SAK:n liitoista on jo ilmoittanut omista työtaistelutoimista, joilla ne pyrkivät vauhdittamaan Teollisuusliiton ja Teknologiateollisuuden työnantajien välisiä neuvotteluita.;Muu
+74-20013859;Teollisuusliitto ja toimihenkilöjärjestöt YTN ja Pro ilmoittivat tiistaina ylityökiellosta ja kolmipäiväisistä lakoista teknologiateollisuudessa ja kemianteollisuudessa.;Muu
+74-20013859;Myös sähköliitto on antanut lakkovaroituksen.;Muu
+74-20013859;Palkansaajakeskusjärjestö SAK ilmoitti joulukuussa, että sen eri alojen liitot valmistautuvat tällä palkkakierroksella yhteisiin työtaistelutoimiin.;Muu
+74-20013859;On mahdollista, että palkansaajien painostustoimista kuullaan pian myös kaupan alalta, jossa vanha sopimus umpeutuu kuun lopussa.;Ei_tarkistettavissa_oleva_väite
+74-20013859;Kaupan alalla työntekijöiden sopimusneuvotteluja käy palvelualojen SAK:lainen ammattiliitto PAM.;Lait/toimintasäännot
+74-20013859;Herättikö artikkeli ajatuksia?;Ei_tarkistettavissa_oleva_väite
+74-20013859;Voit kommentoida sitä lauantaihin 21.1.2023 kello 23 asti.;Ei_tarkistettavissa_oleva_väite
+74-20020583;Sabotaasien määrä Venäjällä kasvaa – ovatko tekijät ukrainalaisia sissejä vai venäläisiä vastarintataistelijoita?;Määrä
+74-20020583;Venäjä syyttää Ukrainaa Venäjän puolelle tehdystä terrori-iskusta.;Muu
+74-20020583;"Ukraina kutsuu Venäjän syytöksiä ""tarkoitukselliseksi provokaatioksi"".";Muu
+74-20020583;Asiantuntijoiden mukaan mailla on syytöksille omat tarkoitusperänsä.;Muu
+74-20020583;Kreml väitti torstaina Ukrainan tehneen ”terrori-iskun” Venäjän Branjskissa lähellä maiden rajaa.;Muu
+74-20020583;Asiasta kertovat uutistoimistot AFP ja Reuters.;Muu
+74-20020583;Lisäksi Kreml syytti Ukrainaa panttivankien ottamisesta Ljubetšanen kylässä.;Muu
+74-20020583;Venäläisten uutistoimistojen mukaan venäläisjoukot taistelevat kahta ukrainalaista sabotööriosastoa vastaan Venäjän alueella.;Muu
+74-20020583;Ukrainan presidentin Volodymyr Zelenskyin avustaja Myhailo Podolyak tyrmäsi torstaina Kremlin väitteet perättöminä venäläisten pelotteluina.;Muu
+74-20020583;– Venäjän väite, jonka mukaan ukrainalaiset partisaanit olisivat tunkeutuneet Venäjän alueelle Brjanskin suunnalla on klassinen provokaatio, Podolyak sanoi.;Muu
+74-20020583;Venäläisillä Telegram-kanavilla on torstaina liikkunut huhuja mahdollisesta ukrainalaisen tiedusteluryhmän hyökkäyksestä Sushanyssa Brjanskin alueella.;Muu
+74-20020583;Uutistoimisto Reutersin tiedon mukaan Venäjän presidentti Vladimir Putin on kutsunut maan turvallisuusneuvoston hätäistuntoon Brjanskin tapahtumien vuoksi.;Muu
+74-20020583;– He (Venäjän sotilaat) suojelevat ihmisiä uusnatseilta ja terroristeilta, jotka kiduttivat ja tappovat kahdeksan vuoden ajan ihmisiä Donbasissa, tappoivat Daria Duginan Moskovassa ja tänään toteuttivat jälleen uuden terroristiteon ja uuden rikoksen, sanoi Putin.;Muu
+74-20020583;Kremlin tiedottajan mukaan hätäkokousta ei pidetä tänään, mutta Putinia pidetään ajantasalla tilanteesta.;Muu
+74-20020583;Toimenpiteitä tehdään ukrainalaisten ”terroristien” tuhoamiseksi, tiedottaja sanoo.;Muu
+74-20020583;Joakim Paasikivi: Kumpi vain voi olla iskujen takana;Ei_tarkistettavissa_oleva_väite
+74-20020583;Entinen ruotsalaisupseeri ja sota-analyytikko Mikael Valtersson jakoi torstaina Twitterissä videon Venäjän vapaaehtoisjoukoista, joiden hän uskoo olevan operaation takana.;Muu
+74-20020583;– Molemmat osapuolet syyttävät toisiaan, mutta näyttää siltä, että kyseessä oli Venäjän vapaaehtoispataljoonan itsenäinen ja typerä operaatio, Valtersson arvioi.;Muu
+74-20020583;Venäjän alueella on viime päivien aikana tehty useita iskuja sotilaallisiin kohteisiin ja energialaitoksiin.;Määrä
+74-20020583;Osa iskuista on epäonnistunut tai lennolle lähetetyt droonit eivät ole aina osuneet tarkasti maaleihinsa, mutta iskut osoittavat, että Venäjän kohteissa esiintyy uhkaa.;Muu
+74-20020583;Molemmat osapuolet syyttävät iskuista toisiaan, ja Venäjä on kohdistanut syytöksensä laajemmin länteen.;Muu
+74-20020583;[Ruotsalainen sanomalehti Dagens Nyheter](https://www.dn.se/varlden/expert-sabotagen-i-ryssland-har-okat-dramatiskt/) haastatteli asiantuntijoita, joiden mukaan Venäjällä ja Ukrainalla on omat syynsä etsiä iskujen tekijöiksi omat ehdokkaansa.;Muu
+74-20020583;Myös Ylen haastattelema Ruotsin puolustuskorkeakoulun sotastrategian professori, everstiluutnantti Joakim Paasikivi arvioi, että molemmat osapuolet voivat hyvinkin olla iskujen takana.;Muu
+74-20020583;Ukrainalla on Paasikiven mukaan hyvä syy hyökätä Venäjän kohteisiin.;Ei_tarkistettavissa_oleva_väite
+74-20020583;On selvää, että myös Venäjällä on tyytymättömyyttä, Paasikivi sanoo.;Henkilökohtainen_kokemus
+74-20020583;Venäjä syyttää iskuista länttä ja haluaa peittää mahdolliset kotimaiset ongelmat, joita Ukrainan sota tuo mukanaan, arvioi Paasikivi.;Muu
+74-20020583;Paasikivi sanoo Venäjän syyttävän mieluummin länttä kuin Ukrainaa.;Henkilökohtainen_kokemus
+74-20020583;– Venäjällä ollaan halukkaita osoittamaan syyttävää sormeaan esimerkiksi Britanniaa tai Yhdysvaltoja kohtaan, koska heistä ei Venäjällä pidetä.;Muu
+74-20020583;Hänen mukaansa ukrainalaisia ei ole venäläisille olemassa.;Henkilökohtainen_kokemus
+74-20020583;– Vaikka ukrainalaiset olisivatkin vihamielisiä Venäjää kohtaan, niin heitä pidetään vain lännen sätkynukkeina.;Henkilökohtainen_kokemus
+74-20020583;Paasikivi ei usko Venäjän haluavan laajentaa sotaa entisestään.;Henkilökohtainen_kokemus
+74-20020583;– Kysymys kuuluu, onko Venäjällä haluja laajentaa sotaa, sillä sen he tulisivat varmasti häviämään.;Henkilökohtainen_kokemus
+74-20020583;– Venäjän voittoon ei olisi mitään mahdollisuuksia, sillä he menettävät jo nyt viikottain tuhansia miehiä Ukrainassa, Paasikivi sanoo.;Määrä
+74-20020583;Mitä ajatuksia artikkeli herättää?;Ei_tarkistettavissa_oleva_väite
+74-20020583;Voit keskustella aiheesta perjantaihin kello 23:een saakka.;Ei_tarkistettavissa_oleva_väite
+3-12434387;Suurlähettiläs Mikko Hautala: Suomi elää nyt vaaran vuosia, jokaisen tulee pitää katse pallossa;Henkilökohtainen_kokemus
+3-12434387;Ulkopoliittisen johdon kantoja Suomen Nato-ratkaisuun voi tulla jo ensi viikolla.;Henkilökohtainen_kokemus
+3-12434387;Suomi varautuu Venäjän systemaattiseen valehteluun.;Muu
+3-12434387;Suomi valmistautuu hakemaan Naton jäsenyyttä.;Lait/toimintasäännot
+3-12434387;Käytännössä päätös on selvä silloin, kun tasavallan presidentti Sauli Niinistö ilmoittaa kantansa.;Lait/toimintasäännot
+3-12434387;Tämä voi tapahtua jo ensi viikolla.;Henkilökohtainen_kokemus
+3-12434387;Pitkän uran diplomaattina Kiovassa ja Moskovassa tehnyt ja parhaillaan Suomen Yhdysvaltain-suurlähettiläänä työskentelevä Mikko Hautala pitää Venäjän painostusta Suomea kohtaan todennäköisenä.;Muu
+3-12434387;– Kun varautuu pahimpaan, selviää varmasti vähemmästä.;Henkilökohtainen_kokemus
+3-12434387;Erilaisilla toimilla on erilaiset todennäköisyydet.;Ei_tarkistettavissa_oleva_väite
+3-12434387;Disinformaatio on käytännössä varmaa, ja muunlaistakin painostusta Venäjältä voi tulla, sanoo Hautala;Muu
+3-12434387;Hänen mukaansa Suomi on varautunut ja varautuu lisää.;Ei_tarkistettavissa_oleva_väite
+3-12434387;– Meillä on kykyä luotsata omaa kohtaloamme, emme ole ajopuu.;Henkilökohtainen_kokemus
+3-12434387;Myös tavallisten kansalaisten on hyvä tiedostaa, missä mennään.;Henkilökohtainen_kokemus
+3-12434387;– Kyllä jokaisen on varmasti perusteltua kohdaltaan hahmottaa, että eletään poikkeuksellista aikaa, vaaran vuosia.;Henkilökohtainen_kokemus
+3-12434387;Kauhuskenaarioiden ja huolestumisen sijaan pitäisi katseen kuitenkin olla pallossa eli omassa tekemisessä, Hautala painottaa.;Henkilökohtainen_kokemus
+3-12434387;Suomen Yhdysvaltain-suurlähettiläs Mikko Hautala oli lauantaina 7.5.;Määrä
+3-12434387;Ylen Ykkösaamun haastateltavana.;Ei_tarkistettavissa_oleva_väite
+3-12434387;Nato ja Yhdysvallat tukevat Suomea jäsenyyden hakuaikana;Lait/toimintasäännot
+3-12434387;Yhdysvallat on Naton johtava valtio.;Lait/toimintasäännot
+3-12434387;Sekä Naton pääsihteeri Jens Stoltenberg että Yhdysvaltain presidentti Joe Biden ovat toistaneet Naton avointen ovien politiikkaa Suomen ja Ruotsin harkitessa jäsenyyttä.;Muu
+3-12434387;Hautala luottaa, että Suomi saa tukea.;Henkilökohtainen_kokemus
+3-12434387;– Jäsenyysprosessinsa aikana Suomi saa Natolta ja sen jäsenmailta niin poliittista kuin sotilaallistakin tukea.;Lait/toimintasäännot
+3-12434387;Ei olisi mitenkään loogista hyväksyä maata jäsenyysprosessiin, mutta jättää sitten se kokonaan oman onnensa nojaan sen ajaksi, Hautala arvioi.;Henkilökohtainen_kokemus
+3-12434387;Mikko Hautalan mukaan Nato ja sen jäsenmaat ovat myös tuoneet selkeästi esiin tahdonilmaisunsa siitä, että Suomea tuetaan ja tarvittaessa turvataan, kun Suomen mahdollinen Nato-jäsenyyden hakemus on jätetty.;Muu
+3-12434387;Tärkein tuki, mikä Suomella on, on Hautalan mukaan kuitenkin oma vahva puolustus.;Henkilökohtainen_kokemus
+3-12434387;– Ei meillä ole sitä tilannetta, jossa olisimme avuttomina ja ulkoisen avun varassa.;Henkilökohtainen_kokemus
+3-12434387;Enemmänkin ulkoinen apu, sikäli kun sitä tarvitaan, on luonteeltaan täydentävää, läsnäoloa.;Henkilökohtainen_kokemus
+3-12434387;Lähtökohtana meillä on se oma pärjääminen, Hautala totesi Ykkösaamun lähetyksessä.;Ei_tarkistettavissa_oleva_väite
+3-12434387;Amerikkalaisten avusta ja tuesta suurlähettiläällä on mielessä myös käytännön muotoja.;Henkilökohtainen_kokemus
+3-12434387;– Uskon Yhdysvaltain antavan selkeitä viestejä Suomen tueksi.;Henkilökohtainen_kokemus
+3-12434387;Kyseeseen tulee varmasti myös sotilaallinen läsnäolo esimerkiksi harjoituksiin osallistumisen muodossa.;Henkilökohtainen_kokemus
+3-12434387;Disinformaatio on tällä hetkellä suunnattu Venäjän omalle yleisölle;Muu
+3-12434387;Suomessa on saatu esimakua Venäjän disinformaatiokampanjoista.;Muu
+3-12434387;Hautalan mukaan on kuitenkin merkillepantavaa, ettei Venäjä toistaiseksi ole aloittanut Suomeen suunnattua massiivista kampanjaa, jolla pyrittäisiin vaikuttamaan suomalaisten mielipiteisiin esimerkiksi Nato-jäsenyyteen liittyen.;Muu
+3-12434387;– Se voi johtua yksinkertaisesti siitä ajatuksesta, että huomio on liikaa muualla.;Henkilökohtainen_kokemus
+3-12434387;Tai sitten syynä on se, että todennäköisesti laajasta Suomeen vaikuttamisesta ei olisi mitään hyötyä.;Henkilökohtainen_kokemus
+3-12434387;Se todennäköisesti vain motivoisi suomalaisia enemmän, Hautala sanoi Ykkösaamussa.;Henkilökohtainen_kokemus
+3-12434387;Hänen mukaansa Suomessa on syytä huomata, että tällä hetkellä disinformaatio on pääosin suunnattu Venäjän omalle yleisölle.;Muu
+3-12434387;Venäjä voi voitonpäivänä yllättää;Ei_tarkistettavissa_oleva_väite
+3-12434387;Venäjällä juhlitaan voitonpäivää 9. toukokuuta.;Määrä
+3-12434387;Jo pitkään on puhuttu, että Venäjän presidentti Vladimir Putinilta saatetaan nähdä jokin näyttävä ele.;Muu
+3-12434387;– Odotan Venäjän ennen muuta yrittävän perustella sotaa ja sen jatkoa omilla valheellisilla väittämillään ja vetoamalla historiaan.;Henkilökohtainen_kokemus
+3-12434387;Suuria muutoksia ei välttämättä tule, vaikkei niitä voida poiskaan sulkea, Hautala sanoo.;Henkilökohtainen_kokemus
+3-12434387;Yksi olettamus on, että Putin voisi virallisesti julistaa sodan Ukrainalle ja samalla laajan liikekannallepanon Venäjällä.;Ei_tarkistettavissa_oleva_väite
+3-12434387;– Tilanteesta tulisi entistä vaarallisempi, ja samalla epävarmuustekijöiden mittakaava kasvaisi.;Henkilökohtainen_kokemus
+3-12434387;Päätös merkitsisi myös käytännössä sen tunnustamista, että ”erityisoperaatio” on epäonnistunut – vaikka muuta varmasti väitettäisiinkin, arvioi Hautala.;Henkilökohtainen_kokemus
+3-12434387;Hautalan arvio on, että sota Ukrainassa tulee olemaan hyvin pitkäaikainen.;Ennuste
+3-12434387;Kummallakaan osapuolella ei ole nykyasetelmassa kykyä lyödä toista osapuolta siten, että vielä voitaisiin päästä jonkinlaiseen loppuratkaisuun.;Muu
+3-12434387;Tässä vaiheessa ei ole hänen mukaansa näkyvissä, mistä ratkaisu lopulta muodostuu.;Henkilökohtainen_kokemus
+3-12434387;– Näen Venäjän johdon kokevan, ettei heillä ole varaa luopua tästä taistelusta.;Henkilökohtainen_kokemus
+3-12434387;Mitään sellaisia merkkejä ei ole olemassa.;Muu
+3-12434387;Ukraina toki tulee taistelemaan, koska heillehän kyse on kaikesta: omasta vapaudesta, oman maan olemassaolosta ja myöskin siitä, mitä heille yksilöinä tapahtuu – minkälaisen väkivallan kohteiksi he sodan epäonnistuessa joutuisivat.;Muu
+3-12434387;Mikko Hautala ei sulje pois presidenttiehdokkuutta;Muu
+3-12434387;Mikko Hautalan nimi on viime aikoina noussut esiin myös Suomen seuraavien presidentinvaalien yhteydessä.;Muu
+3-12434387;Hautala ei sulje presidenttiehdokkuutta pois, vaikka sanookin, ettei tällä hetkellä sitä aktiivisesti suunnittele.;Muu
+3-12434387;– Aika näyttää, minkälaisen presidentin Suomi katsoo tarvitsevansa ja minkälaisen presidentin se sitten nykyisen presidentin tehtävänsä päättäessä saa, Hautala totesi Ykkösaamun lähetyksessä.;Henkilökohtainen_kokemus
+3-11339373;Tehtaalta levisi tappavaa kaasua Intiassa, useita kuoli, satoja on viety sairaalaan – jalkakäytäville lyyhistyi tajuttomia ihmisiä;Määrä
+3-11339373;Koronarajoitusten vuoksi huomiotta jätetyistä säiliöistä pääsi ilmaan myrkyllistä kaasua.;Korrelaatio/kaussatio
+3-11339373;Intian itärannikolla ainakin kahdeksan ihmistä on kuollut ja useita satoja on joutunut sairaalaan kemikaalitehtaalla tapahtuneen kaasuvuodon vuoksi, kertoo poliisi.;Määrä
+3-11339373;Tiedot uhrien määrstä vaihtelevat.;Määrä
+3-11339373;Poliisi kertoo uutistoimisto Reutersille, että kuolleita olisi ainakin yhdeksän.;Määrä
+3-11339373;Yli 300 ihmistä on viety sairaalaan ja 1 500 evakuoitu.;Määrä
+3-11339373;Onnettomuus sattui yöllä Andra Pradeshin osavaltiossa 14 kilometrin päässä Visakhapatnamin kaupungista.;Määrä
+3-11339373;LG Polymers -yrityksen operoima tehdas sijaitsee satamakaupunki Visakhapatnamin laitamilla Andhra Pradeshin osavaltiossa.;Muu
+3-11339373;Kaupungissa ja sitä ympäröivällä alueella asuu noin viisi miljoonaa ihmistä.;Määrä
+3-11339373;Yhtiö kertoo, että vuoto on saatu hallintaan ja sen syytä tutkitaan.;Muu
+3-11339373;Pelastustoimia koordinoiva B. K. Naik. kertoo, että ihmisiä oli vaipunut tajuttomuuteen, kun he ovat olleet nukkumassa.;Muu
+3-11339373;Viranomaiset ovat tarkastaneet taloja ihmisten saamiseksi sairaalaan.;Muu
+3-11339373;He tarvitsevat happihoitoa ja raikasta ilmaa, hän selvitti.;Muu
+3-11339373;Poliisin mukaan kaasua oli vuotanut kahdesta 5 000 tonnin säiliöstä, jotka oli jätetty vartioimatta koronarajoitusten vuoksi.;Korrelaatio/kaussatio
+3-11339373;– Säiliöiden jättäminen huomiotta johti kemialliseen reaktioon.;Korrelaatio/kaussatio
+3-11339373;Säiliöt kuumenivat ja kaasua pääsi vuotamaan.;Muu
+3-11339373;Lähdimme paikalle heti kun paikalliset asukkaat hälyttivät meidät.;Muu
+3-11339373;Kaasua oli ilmassa niin paljon, ettemme voineet olla paikalla muutamaa minuuttia kauempaa, selvitti poliisin apulaispäällikkö Swaroop Rani.;Muu
+3-11339373;Vuoto poiki paniikin;Muu
+3-11339373;Intian median mukaan kaasuvuoto johti paniikkiin usean kilometrin säteellä tehtaasta.;Muu
+3-11339373;Paikan päältä otetuissa kuvissa näkyy jalkakäytäville lyyhistyneitä ihmisiä, jotka näyttävät tajuttomilta.;Muu
+3-11339373;Monet kärsivät hengenahdistuksesta tai pahoista iho- ja silmäoireista.;Muu
+3-11339373;Intian lähihistorian pahin teollisuusonnettomuus tapahtui joulukuussa 1984 Bhopalissa maan keskiosassa.;Määrä
+3-11339373;Kaasuvuoto Union Carbide -yhtiön kemikaalitehtaalta johti ainakin 3 500 ihmisen välittömään kuolemaan.;Määrä
+3-11339373;Virnaomaisten myöhempien tilastojen mukaan ainakin 100 000 ihmistä sairastui onnettomuuden seurauksena.;Määrä
+3-11339373;Onnettomuus vaikuttaa edelleen ihmisten elämään kaupungissa: muun muassa lasten sairaudet ja vauvojen epämuodostumat ovat yleisiä.;Korrelaatio/kaussatio
+3-12341521;THL: Sairaalahoidossa edelleen paljon koronapotilaita, epidemian tilanne epävarma;Määrä
+3-12341521;Terveyden- ja hyvinvoinnin laitos sanoo, että epidemian kulusta on vielä epäselvyyttä.;Muu
+3-12341521;Myös jätevesissä on yhä paljon virusjäämiä.;Määrä
+3-12341521;Sairaaloissa on hoidossa yhä paljon koronapotilaita, sanoo Terveyden- ja hyvinvoinnin laitos THL.;Määrä
+3-12341521;Potilaiden määrä ei juuri ole laskenut, vaikka virustartunnat muuten ovat kääntyneet laskusuuntaisiksi.;Määrä
+3-12341521;Viime sunnuntaina 27. helmikuuta erikoissairaanhoidon vuodeosastoilla oli yhteensä 316 koronapotilasta, kun heitä viikkoa aikaisemmin oli yhteensä 322.;Määrä
+3-12341521;Erikoissairaanhoidon koronapotilaista arviolta kaksi viidestä oli kuitenkin ensisijaisessa hoidossa jostain muusta syystä kuin koronan vuoksi, THL lisää.;Määrä
+3-12341521;Koronapotilaita hoidetaan erikoissairaanhoidon lisäksi myös tavallisilla vuodeosastoilla.;Lait/toimintasäännot
+3-12341521;Tehohoidossa potilaita oli jopa enemmän kuin edellisviikolla: viime sunnuntaina tehohoidossa oli 44 koronapotilasta, kun viikkoa aiemmin heitä oli 38.;Määrä
+3-12341521;Viikolla 8 teho-osastoille tuli 36 uutta koronapotilasta, kun edellisellä viikolla määrä oli 25.;Määrä
+3-12341521;Epävarmuutta epidemian kulussa;Ei_tarkistettavissa_oleva_väite
+3-12341521;THL sanoo tiedotteessaan, että epidemian kulun arviointiin liittyy edelleen huomattavaa epävarmuutta.;Muu
+3-12341521;Arvioitu tehollinen tartuttavuusluku on pysynyt viime viikon tasolla, noin 0,85–1,05, ja se perustuu erikoissairaanhoidon koronatapauksiin.;Määrä
+3-12341521;Myös jätevesissä koronavirusta löytyy yhä varsin paljon.;Määrä
+3-12341521;Koronavirusjäämien määrä on kääntynyt laskuun vain Espoossa ja Helsingissä.;Määrä
+3-12341521;Muilla seurantapaikkakunnilla määrät ovat pysyneet tasaisina tai kääntyneet nousuun.;Määrä
+3-12341521;Kokonaisuudessaan koronapandemia näyttäisi kuitenkin olevan laskusuunnassa, vaikka eteläistä Suomea lukuun ottamatta Suomessa ei tautihuippu ole vielä kääntynyt, [arvioi THL:n Mika Salminen keskiviikkona.](https://yle.fi/uutiset/3-12340221);Määrä
+3-12341521;THL muistuttaa, että rokotukset suojaavat vakavalta koronataudilta edelleen hyvin.;Muu
+3-12341521;Kolmansien annosten ottaminen on erityisen tärkeää riskiryhmille ja yli 60-vuotiaille.;Lait/toimintasäännot
+3-12341521;Kolmatta rokotusta suositellaan kaikille täysi-ikäisille.;Lait/toimintasäännot
+3-12341521;[Neljänsiä koronarokoteannoksia suositellaan](https://thl.fi/fi/-/thl-suosittelee-vakavasti-immuunipuutteisille-neljatta-koronarokoteannosta) 12 vuotta täyttäneille voimakkaasti immuunipuutteisille.;Lait/toimintasäännot
+3-12341521;Koronarajoitukset ovat keventyneet, mutta ihmisten on edelleen tärkeä pysyä sairaana kotona, käyttää maskia julkisissa sisätiloissa sekä huolehtia hyvästä käsihygieniasta, sanoo THL.;Lait/toimintasäännot
+3-12341521;THL julkaisi viikkokatsauksensa tänään tiedotteena sivuillaan, mutta tutuksi tullutta tiedotustilaisuutta ei pidetty.;Muu
+3-12341521;Koronaepidemian helpottamisen myötä varsinaisia tiedotustilaisuuksia on tarkoitus pitää joka toinen viikko.;Määrä
+3-12341521;Voit keskustella aiheesta 4.3. kello 23:een saakka.;Ei_tarkistettavissa_oleva_väite
+3-12341521;Täydennetty 3.3. klo 13.19: Lisätty tieto, että STM:n ja THL:n koronakatsausta ei järjestetty tiedotustilaisuutena, vaan niiden väliä on kasvatettu kahteen viikkoon.;Määrä
+74-20012124;Villasukkien sijaan droneja ja tähtäimiä: suomalaiset haluavat antaa nyt täsmäapua sotivalle Ukrainalle;Muu
+74-20012124;Kylmä talvi on saanut suomalaiset lahjoittamaan tavara-apuna Ukrainaan lämpimiä vaatteita.;Muu
+74-20012124;Nyt tuen sisältöä halutaan räätälöidä tarkemmin sotaa käyvälle kansalle.;Ei_tarkistettavissa_oleva_väite
+74-20012124;Ukrainan apuun keskittyvä yhdistys Apua Ukrainaan ry. suuntaa apuaan yhä täsmällisemmin myös suoraan sodan rintamalinjoille.;Muu
+74-20012124;Yhdistys on saanut rahalahjoituksia, joilla hankitaan täsmähankintoina muun muassa droneja ja tähtäimia.;Muu
+74-20012124;Kylmä talvi ja Venäjän energiantuotantoon ja jakeluun tekemät julmat iskut saivat suomalaiset alkutalvesta lahjoittamaan runsaasti esimerkiksi talvivaatteita.;Korrelaatio/kaussatio
+74-20012124;Talven taittuessa kevääseen tukea halutaan täsmätä sotaa käyvän maan tarpeisiin.;Muu
+74-20012124;– Tämmöiset rintamalla tarpeelliset tekniset laitteet, kuten dronet ja tähtäimet, ovat sellaisia, joihin tarvitsisimme rahaa, kertoo Apua Ukrainaan ry:n sihteeri Matti Ahonen.;Muu
+74-20012124;Tavaran sijasta yhdistys tarvitsee rahaa, sen avulla voidaan Ahosen mukaan hankkia juuri ukrainalaisten rintamalla tarvitsemia varusteita.;Muu
+74-20012124;– Voitaisiin hankkia juuri oikeanlaisia täsmävarusteita, toteaa Ahonen.;Ei_tarkistettavissa_oleva_väite
+74-20012124;Erityisen paljon Keski-Suomesta on viime kuukausina lähtenyt Ukrainaan sairaalatarvikkeita.;Muu
+74-20012124;– Olemme keskittyneet toimittamaan lähinnä sotilaille ja rintamalle menevää tavaraa ja sotilassairaaloihin sairaalatarvikkeita.;Muu
+74-20012124;Niitä onkin saatu useista eri lähteistä kiitettävästi, kiittelee Ahonen.;Muu
+74-20012124;Teknistä välineistöä tarvitsevat myös Ukrainan siviilit, jotka sota on jättänyt pahimmillaan kokonaan ilman sähköä, lämpöä ja juoksevaa vettä.;Muu
+74-20012124;– Hankkimme aggregaatteja eli varavirtalähteitä yksityishenkilöille.;Muu
+74-20012124;Ne ovat juuri nyt meillä ykkösjuttuja, kertoo yhdistyksen Laukaan keräysvastaava Marjut Arkko.;Muu
+74-20012124;Jyväskylässä Apua Ukrainaan on ottanut vastaan avutustuksia kahdesti viikossa.;Määrä
+74-20012124;Kylmä talvi on saanut monen suomalaisen samaistumaan ukrainalaisten kohtaloon.;Ei_tarkistettavissa_oleva_väite
+74-20012124;– Jos meillä nipistetään lämmityksessä kotitalouksissa, niin sitä vain miettii, miten julmaa se onkaan siellä, missä et voi valita, sanoo lastenvaatteita keräykseen tuonut jyväskyläläinen Aila Kuusela.;Henkilökohtainen_kokemus
+74-20012124;Suomalaisten avustusinnon pelättiin hiipuvan sodan jatkuessa ja viime syksy olikin avustusten osalta hiljaisempaa aikaa.;Muu
+74-20012124;Sen päättivät Venäjän aloittamat iskut siviilikohteisiin.;Muu
+74-20012124;– Syksyllä oli vähän hiljaisempaa, mutta joulua kohden avustusten määrä on lisääntynyt ja tuntuu edelleen lisääntyvän, kertoo Marjut Arkko.;Määrä
+74-20012124;Monelle vanhemman sukupolven suomalaiselle ukrainalaisten hätään on helppo samaistua.;Ei_tarkistettavissa_oleva_väite
+74-20012124;– Sitä vain toivoo, että oma apu ehtisi perille ja ettei se tuho olisi niin silmitöntä kuin mitä se on tähän saakka ollut, Aila Kuusela sanoo.;Henkilökohtainen_kokemus
+74-20012124;Myös Matti Ahosella on hyvin kirkas näkemys siitä, miksi suomalaisten ja myös eurooppalaisten kannattaa juuri nyt tukea ukrainalaisia.;Henkilökohtainen_kokemus
+74-20012124;– Meidän on nyt tärkeää pysäyttää Venäjä Ukrainassa, jotta emme joutuisi tekemään kuten minun isäni aikoinaan eli pysäyttämään venäläisiä oman maan silloisten rajojen sisällä eli Karjalan kannaksella.;Muu
+74-20012124;Ahonen muistuttaa, että Ukraina tuen tarve ei myöskään ole aivan heti väistymässä.;Henkilökohtainen_kokemus
+74-20012124;– Ei tämä tuen tarve heti lopu.;Henkilökohtainen_kokemus
+74-20012124;Se painopiste vähän vaihtelee, mitä siellä kulloinkin tarvitaan.;Muu
+74-20012124;Se avun tarve, se ei häviä minnekään.;Henkilökohtainen_kokemus
+74-20012124;Juttua muokattu 16.1. klo 10.04: Artikkelista poistettu sairaalatarvikkeiden lahjoituspaikka.;Muu
+74-20012124;Voit keskustella aiheesta 16.1. klo 23.00 saakka.;Ei_tarkistettavissa_oleva_väite
+3-11695983;"Hallitus ja oppositio kinastelivat sotesta – Kiuru hermostui kokoomukselle: ""En ymmärrä tätä jankkaamista"", kokoomus piti uudistusta sutena jo syntyessään";Muu
+3-11695983;Hallituksen sote-uudistuksesta käytiin eduskunnassa vilkasta keskustelua.;Muu
+3-11695983;Eduskunta on ruotinut maanantaina hallituksen sote-esitystä.;Muu
+3-11695983;Kyseessä on yksi vaalikauden merkittävimmistä asioista.;Muu
+3-11695983;Mikäli uudistus toteutuu, sosiaali- ja terveyspalvelut siirtyvät kunnilta 21 hyvinvointialueen ja Helsingin vastuulle.;Lait/toimintasäännot
+3-11695983;Keskustelu äityi kiivaaksi erityisesti hallituksen ja oppositiopuolue kokoomuksen välillä.;Muu
+3-11695983;Kokoomus arvosteli sote-esitystä muun muassa siitä, että se puolueen mukaan pikemminkin lisää sote-menoja kuin hillitsee niitä.;Muu
+3-11695983;Kaikki oppositiopuolueet katsoivat, että uudistuksen keskeinen ongelma on rahoitus.;Muu
+3-11695983;Hallitus kummasteli sitä, että oppositiosta moititaan yhtä aikaa sitä, että uudistukseen käytetään liikaa ja toisaalta liian vähän rahaa.;Muu
+3-11695983;Keskusta ja SDP toivoivat oppositiolta rakentavaa henkeä siinä, että vuosikausia yritetty sote-uudistus saataisiin viimein maaliin.;Muu
+3-11695983;Voit lukea alta, miten keskustelu kulki.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Kello 16.40: Kiuru kummasteli kokoomusta ja kristillisdemokraatteja;Henkilökohtainen_kokemus
+3-11695983;Vastuuministerit pääsevät nyt vastaamaan.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Perhe- ja peruspalveluministeri Krista Kiuru (sd.) katsoo, että oppositio ei antanut hallituksen sote-esitykselle konkreettisia ja realistisia vaihtoehtoja.;Muu
+3-11695983;Hän totesi, että nykymenolla ei voida jatkaa vaan uudistus on tehtävä.;Muu
+3-11695983;Hän ihmetteli eritoten kokoomuksen kritiikkiä.;Muu
+3-11695983;– En ymmärrä tätä jankkaamista siitä, että kokoomuksen mukaan ei tule tarpeeksi säästöjä.;Henkilökohtainen_kokemus
+3-11695983;Samaan aikaan te esitätte, että tällä ratkaisulla ei saataisi ihmisiä hoidettua ja siihen tarvittaisiin lisää rahaa.;Muu
+3-11695983;Kiuru kummasteli myös kristillisdemokraatteja.;Henkilökohtainen_kokemus
+3-11695983;– Kristillisdemokraatit sanoivat, että alueita on liikaa, mutta samassa puheenvuorossa annoitte ymmärtää, että yksityiseltä sektorilta voitaisiin antaa ulkoistuksia hoitamaan enemmänkin isäntiä.;Muu
+3-11695983;Kello 16:20: Keskustan Lohi: Toivoisin, että löytyisi yksituumaisuutta;Henkilökohtainen_kokemus
+3-11695983;Kokoomuksen Juhana Vartiainen totesi, että koko keskustelun ajan hän on kuullut kauniita puheita siitä, että nyt kaikki voivat olla rauhallisin mielin ja kaikki saavat lisää rahaa.;Muu
+3-11695983;– Tällä menolla tällä vuosikymmenellä ei tule lisää rahaa vaan vähemmän, hän tiivisti ajatuksensa.;Ennuste
+3-11695983;Keskustan Markus Lohi katsoi, että kun siirrytään noin 200 sote-järjestäjästä reiluun pariinkymmeneen, on se omiaan tehostamaan toimintaa ja vähentämään byrokratiaa.;Ennuste
+3-11695983;Lohi katsoi keskustalaisena, että nykyhallituksen malli on käytännössä hyvin pitkälle riisuttu malli edellisen hallituksen sote-esityksestä.;Muu
+3-11695983;– Siinä mielessä toivoisin, että eduskunnasta voisi löytyä yksituumaisuutta.;Henkilökohtainen_kokemus
+3-11695983;Voitaisiin koota nyt voimia, hän vetosi.;Henkilökohtainen_kokemus
+3-11695983;Keskustelu meni toistuvasti vasemmistoliiton ja kokoomuksen väliseksi kädenväännöksi.;Muu
+3-11695983;– Kokoomus on johdonmukaisesti halunnut avata suomalaisia julkisia sosiaali- ja terveyspalveluita kansainvälisten sote-jättien metsästysmaaksi, kuvasi vasemmistoliiton Hanna Sarkkinen.;Muu
+3-11695983;Kokoomuksen Elina Lepomäen mielestä uudistus vaikuttaa lehmänkaupoilta keskustan ja vasemmiston välillä.;Henkilökohtainen_kokemus
+3-11695983;Lepomäki katsoi,että hallituksen malli siirtelee rahaa hyvin tehottomasti Suomen sisällä.;Muu
+3-11695983;– Kestävyysvaje kasvaa ja hyvinvointivaltion rahoituspohja romuttuu, eli sote-menot kasvavat ja kohdistuvat ennen muuta hallintoon.;Ennuste
+3-11695983;Kokoomuksesta kuvattiin uudistusta sudeksi jo syntyessään.;Henkilökohtainen_kokemus
+3-11695983;Hallituspuolueista puolestaan huomautettiin, että sotea on yritetty saadaan kuntoon 15 vuotta, josta kokoomus on ollut hallitusvastuussa valtaosan.;Määrä
+3-11695983;"Klo 15:50: Debatti jatkuu: ""Sanoitte karsineennen kaiken ylimääräisen – olette karsineet potilaan""";Muu
+3-11695983;Keskustelu alkaa kuumentua.;Henkilökohtainen_kokemus
+3-11695983;Perussuomalaisten Arja Juvonen vaati hallitukselta selitystä siihen, mitä maakuntavero tarkottaisi.;Muu
+3-11695983;– Verot eivät saa nousta.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Me maksamme niitä jo ihan riittävästi.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Keskustan kansanedustaja Markus Lohi puuttui kokoomuksen Häkkäsen aiempaan puheenvuoroon.;Muu
+3-11695983;– Sitä logiikkaa en ymmärrä, että jos me laitamme lisää rahaa hyvinvointipalveluihin, niin heikennämme hyvinvointiyhteiskuntaa?;Henkilökohtainen_kokemus
+3-11695983;Jos oikein ymmärsin kokoomuksen ryhmäpuheenvuoron, siinä kritisoitiin sitä, että uudistukseen laitetaan liikaa rahaa.;Muu
+3-11695983;Mutta kun 24. syyskuuta olin A-talkissa edustaja Risikon [kokoomuksen Paula Risikko] kanssa, niin hän sanoi, että tästä puuttuu kaksi miljardia.;Muu
+3-11695983;Tämä aiheutti salissa naurunpyrskähdyksen.;Henkilökohtainen_kokemus
+3-11695983;Risikko vastasi, mutta osoitti sanansa pikemminkin ministeri Kiurulle.;Henkilökohtainen_kokemus
+3-11695983;– Totta kai tarvitsemme sote-uudistuksen, mutta ei mitä sattuu uudistusta.;Muu
+3-11695983;Tarkoitus ei saa pyhittää keinoja.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Te Kiuru sanoitte, että uudistuksesta on karsittu kaikki ylimääräinen.;Muu
+3-11695983;Te olette karsineet potilaan.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Huomioon ei ole otettu ongelmia.;Muu
+3-11695983;Meillä ei pääse perusterveydenhuoltoon ja palvelut ovat pirstaleiset.;Muu
+3-11695983;Byrokratia lisääntyy, hallintoa tulee lisää, lähipalvelut keskittyvät ja rahaa ei ole riittävästi, Risikko näki uudistuksen.;Ennuste
+3-11695983;SDP:n Aki Lindén totesi, että kokoomus esittää niin paljon väitteitä, ettei niihin ehdi edes kaikkiin vastata.;Muu
+3-11695983;– Erityisesti kotikaupungissani, joka on myös puoluejohtajanne Orpon kotikaupunki, ei pääse millään terveyskeskukseen.;Muu
+3-11695983;Kyllähän tämä asia on pantava kuntoon.;Ei_tarkistettavissa_oleva_väite
+3-11695983;"Klo 15:27: Debatti käynnissä – ""Tässä uudistuksessa ei anneta avaimia yksityisille pörriäisille""";Muu
+3-11695983;Debatti on päässyt alkamaan.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Sen aloittaa kokoomuksen Mia Laiho.;Muu
+3-11695983;Hän moittii sote-uudistusta oikeastaan kaikesta.;Muu
+3-11695983;– Arvoisa hallitus, mihin unohditte ihmisen?;Ei_tarkistettavissa_oleva_väite
+3-11695983;SDP:n Ilmari Nurminen puolustaa sote-esitystä.;Muu
+3-11695983;– Rahoitus tulee kasvamaan nykyisestä kaikilla hyvinvointialueilla, Nurminen sanoi.;Ennuste
+3-11695983;– Harmillista, että oppositio on jo nyt tuominnut esityksen.;Muu
+3-11695983;Nyt pitäisi lähteä rakentamaan tätä yhdessä, hän jatkoi.;Henkilökohtainen_kokemus
+3-11695983;"Keskustan Pekka Aittakumpu kuvasi sote-uudistuksen etenemistä ""oivaksi joululahjaksi suomalaisille"".";Muu
+3-11695983;– Nyt tämä kustannusten kasvua hillitsevä sote-uudistus on etenemässä, hän kiitteli asiaan vaikuttaneita.;Määrä
+3-11695983;Kokoomuksen Antti Häkkänen sanoi, ettei uudistus hillitse kustannusten kasvua.;Määrä
+3-11695983;– Uudistus heikentää omien arvioiden mukaan julkista taloutta seuraavat 15 vuotta.;Määrä
+3-11695983;Miksi te olette tehneet tällaisen uudistuksen, 1 600 sivua, joka heikentää hyvinvointiyhteiskuntaa?;Ei_tarkistettavissa_oleva_väite
+3-11695983;Vasemmistoliiton eduskuntaryhmän puheenjohtaja Paavo Arhinmäki sanoi ymmärtävänsä, miksi kokoomus kritisoi uudistusta niin voimakkaasti.;Muu
+3-11695983;– Tässä uudistuksessa ei ole kolmen miljardin euron automaattileikkuria sosiaali- ja terveyspalveluihin.;Muu
+3-11695983;Ja toisaalta, tässä uudistuksessa ei anneta avaimia yksityisille pörriäisille, yksityisen sote-bisneksen pyörittäjille.;Muu
+3-11695983;Klo 15:19: Nyt-liikkeen Harkimo moukaroi sote-esitystä;Muu
+3-11695983;Yhden miehen eduskuntaryhmän, nyt-liikkeen Hjallis Harkimo otti sote-esityksen hampaisiinsa.;Muu
+3-11695983;Hän yhtyi siihen muun opposition näkemykseen, että uudistuksen ongelma on rahoitus.;Muu
+3-11695983;Hän sanoi, että Helsingille jää uudistuksessa musta pekka käteen.;Muu
+3-11695983;Hänen mielestään hyvinvointialueilla ei ole riittäviä kannustimia.;Muu
+3-11695983;– Käsittämätöntä on sosiaali- ja terveysministeriön ja ministeri Kiurun suhtautuminen yksityisiin toimijoihin.;Henkilökohtainen_kokemus
+3-11695983;Hänen toverinsa ovat tehneet alueilla monivuotisia hyvin toimivia kumppanuussopimuksia, jotka Kiuru haluaa nyt yksipuolisesti irtisanoa.;Muu
+3-11695983;Myöskään keskusta ei säästynyt Harkimon kritiikiltä.;Muu
+3-11695983;– Keskustan mumina monituottajamallista ja veroasteen kurissapitämisestä on lähinnä säälittävää.;Henkilökohtainen_kokemus
+3-11695983;Klo 15.03: RKP: Uudenmaan erillisratkaisu tarpeen, KD: Rahoitus keskeinen ongelma;Muu
+3-11695983;Hallituspuolue RKP:n ryhmäpuheenvuoro on kiinnostava.;Henkilökohtainen_kokemus
+3-11695983;Puolue on nimittäin ollut kriittinen sen suhteen, että siirtääkö sote-ratkaisu liikaa rahaa kasvukeskuksista muualle Suomeen.;Muu
+3-11695983;RKP:n ryhmäpuheenvuorossa Veronica Rehn-Kivi kuvasi sote-uudistusta riittävän hyväksi.;Muu
+3-11695983;Uudenmaan erillisratkaisua Rehn-Kivi pitää välttämättömänä.;Muu
+3-11695983;– Viiden alueen malli on tarpeen asukkaiden vaikuttamismahdollisuuksien turvaamiseksi.;Muu
+3-11695983;Oppositiopuolue kristillisdemokraatit katsoi kokoomuksen ja perussuomalaisten tapaan, että rahoitus on ongelma sote-uudistuksessa.;Muu
+3-11695983;– Valtiontalouden tarkastusvirasto on ilmaissut huolensa siitä, että esitys ei sisällä sellaisia vahvoja kannustimia, jotka ohjaisivat alueita hillitsemään kustannusten kasvua, eduskuntaryhmän puheenjohtaja Päivi Räsänen sanoi ryhmäpuheenvuorossa.;Muu
+3-11695983;Räsänen painotti myös sitä, että julkisen puolen tulee olla järjestämisestä päävastuussa.;Muu
+3-11695983;– Hyvinvointialueilla tulee kuitenkin olla vapaus päättää siitä, miten palvelut tuotetaan: omana tuotantona, ostopalveluina, palveluseteleillä tai henkilökohtaisilla budjeteilla.;Muu
+3-11695983;Ei ole edes teoreettisesti mahdollista, että palvelutuotannosta selviydyttäisiin ilman yrityksiä ja kolmatta sektoria.;Muu
+3-11695983;Kristillidemokraatit ei kannata maakuntaveroa.;Muu
+3-11695983;Klo 14:37: Perussuomalaiset ja kokoomus kriittisinä ryhmäpuheenvuoroissaan;Ei_tarkistettavissa_oleva_väite
+3-11695983;Suurimman oppositiopuolueen perussuomalaisten ryhmäpuheenvuorossa oltiin epäileväisiä, että sote-uudistuksessa olisi saatu parannusta aikaan verrattuna edellisen hallituksen esitykseen, joka kaatui erinäisiin ongelmiin.;Muu
+3-11695983;– Onko vanhustenhoidon ongelmat nyt ratkaistu?;Ei_tarkistettavissa_oleva_väite
+3-11695983;kansanedustaja Arja Juvonen kysyi.;Ei_tarkistettavissa_oleva_väite
+3-11695983;– Hallitus lupasi liikaa sanoessaan, että potilas pääsee lääkärille nopeammin.;Muu
+3-11695983;Hoitajamitoituksen tavoin hoitotakuu halpuutettiin tarkoitettamaan pääsyä jonkun hoitohenkilön vastaanotolle lääkärille pääsyn sijaan, hän jatkoi.;Muu
+3-11695983;Perussuomalaiset korosti sitä, että vanhustenhoidon on säilyttävä lähipalveluna.;Muu
+3-11695983;Juvonen moitti myös sitä, että soten keskeiset päätökset on tehty ilman yhteistä valmistelua opposition kanssa.;Muu
+3-11695983;Toinen suuri oppositiopuolue kokoomus aloitti suoraan kritiikillä.;Muu
+3-11695983;– Tällä hallituksen esittämällä maakuntamallilla ei ratkaista sosiaali- ja terveydenhuollon ongelmia.;Muu
+3-11695983;Sillä lisätään niitä, kokoomuksen Anna-Kaisa Ikonen sanoi.;Muu
+3-11695983;Hän katsoi, että kyseessä on puhdas hallinnon uudistus.;Henkilökohtainen_kokemus
+3-11695983;– Tämä lakipaketti ei tuo yhtään uutta hoitajaa, sosiaalityöntekijää tai lääkäriä.;Lait/toimintasäännot
+3-11695983;Lisäksi kustannukset karkaavat.;Määrä
+3-11695983;Sen sijaan että hallitus esityksellään hillitsisi sote-menojen kasvua, se kiihdyttää niitä.;Määrä
+3-11695983;Odotetusti kokoomukselta tuli myös kritiikkiä siitä, ettei yksityisellä ole uudistuksella puolueen toivomaa roolia ja että suuret kaupungit kärsivät.;Muu
+3-11695983;Klo 14.30: Käynnissä ryhmäpuheenvuorot, SDP aloittaa;Ei_tarkistettavissa_oleva_väite
+3-11695983;Vastuuministereiden puheenvuorojen jälkeen alkavat ryhmäpuheenvuorot.;Lait/toimintasäännot
+3-11695983;Suurimman hallituspuolueen SDP:n ryhmäpuheenvuoron piti kansanedustaja Aki Lindén.;Muu
+3-11695983;Hän harmitteli sitä, että Suomessa moniin palveluihin pääsy ja niiden taso on riippunut siitä, missä kunnassa asuu.;Muu
+3-11695983;– Meillä on järjestelmässä vika.;Ei_tarkistettavissa_oleva_väite
+3-11695983;SDP painottaa nopeaa hoitoonpääsyä.;Muu
+3-11695983;Lindén vetosi ryhmäpuheenvuorossa oppositioon.;Muu
+3-11695983;– Vetoamme oppositioon.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Tulkaa mukaan tähän uudistustyöhön.;Ei_tarkistettavissa_oleva_väite
+3-11695983;Klo 14:17: Kuntaministeri Sirpa Paatero äänessä, kertoo rahoituksesta;Ei_tarkistettavissa_oleva_väite
+3-11695983;Perhe- ja peruspalveluministeri Krista Kiurun esittelypuheenvuoron jälkeen vuorossa oli kuntaministeri Sirpa Paatero (sd.).;Muu
+3-11695983;Hän huomautti, että henkilöstö siirtyy uusille hyvinvointialueille niin sosiaali- ja terveydenhuollossa kuin pelastustoimessakin.;Lait/toimintasäännot
+3-11695983;– Lisäksi siirtyvät koulupuolelta kuraattorit ja psykologit.;Lait/toimintasäännot
+3-11695983;Paatero kertoo myös soten rahoituksesta.;Muu
+3-11695983;Uudistuksen yksi tarkoitus on myös hillitä kustannuksia, mutta on ennakoitu, että alkuvaiheessa kulut voivat jopa kasvaa.;Ennuste
+3-11695983;Paateron mukaan uudistus tasapainottaa julkista taloutta viimeistään vuodesta 2030 lähtien.;Ennuste
+3-11695983;Lähes 80 prosenttia hyvinvointialueiden tarvitsemasta rahoituksesta riippuu siitä, miten sairaita ja vanhoja ihmisiä alueella asuu.;Määrä
+3-11695983;Vain 15 prosenttia riippuu siitä, miten paljon asukkaita alueella on.;Määrä
+3-11695983;Enemmistö [Ylen kyselyyn vastanneista](https://yle.fi/uutiset/3-11684882) kansanedustajista oli sitä mieltä, että hallituksen sote-ratkaisu ei siirrä liikaa rahaa kasvukeskuksista muualle Suomeen.;Määrä
+3-11695983;Asia kuitenkin kaihertaa hallituspuolue RKP:ssä sekä oppositiosta kokoomuksessa ja nyt-liikkeessä.;Henkilökohtainen_kokemus
+3-11695983;Sisäministeri Maria Ohisalo (vihr.) kertoi uudistuksesta pelastustoimen osalta.;Muu
+3-11695983;Pelastustoimi siirtyy niin ikään hyvinvointialueisiin.;Lait/toimintasäännot
+3-11695983;Klo 14.04: Lähetekeskustelu alkaa – Kiuru esittelee sote-paketin;Ei_tarkistettavissa_oleva_väite
+3-11695983;Perhe- ja peruspalveluministeri Krista Kiuru (sd.) aloitti pitämällä uudistuksesta esittelypuheenvuoron.;Muu
+3-11695983;– Uskon, että tämä on monelle odotettu hetki, Kiuru riemuitsi.;Henkilökohtainen_kokemus
+3-11695983;Kiuru kertoo, että uudistuksen tarkoituksena on muun muassa kaventaa hyvinvointi- ja terveyseroja, turvata laadukkaat palvelut ja taata palveluiden saatavuus.;Muu
+3-11695983;Hän kertaa, että sosiaali- ja terveyspalvelut siirtyisivät uudistuksessa kunnilta 21 hyvinvointialueen ja Helsingin vastuulle.;Määrä
+3-11695983;Sanna Marinin (sd.) hallituksen sote-uudistuksessa päävastuu järjestämisestä on julkisella puolella, mutta palveluja voidaan hankkia myös yksityisiltä toimijoilta.;Lait/toimintasäännot
+3-11695983;Kyseessä on niin sanottu monituottajamalli.;Muu
+3-11695983;– Haluan todeta, koska toistakin olen kuullut väitettävän, että järjestäjiä koskevan riittävän oman palvelutuotannon vaatimus ei ole ideologinen vaan perustuslaillilista ja perustuslakivaliokunnan lausunnoista johtuva lähtökohta, Kiuru sanoi.;Muu
+3-11695983;Kiurun mukaan palveluseteliä voitaisiin käyttää jatkossakin.;Henkilökohtainen_kokemus
+3-11695983;Kiuru muistutti, että hyvinvointialueet vastaisivat myös muun muassa ennaltaehkäisevästä sosiaali- ja terveydenhuollosta.;Muu
+3-11695983;Kiuru kehui vielä sitä, että sote-uudistuksessa ollaan aikataulussa koronakriisistä huolimatta.;Muu
+3-11695983;Mitä mieltä olet sote-esityksestä?;Ei_tarkistettavissa_oleva_väite
+3-11695983;Voit keskustella aiheesta tiistaihin 15.12.kello 23 saakka.;Ei_tarkistettavissa_oleva_väite
+74-20050725;Ukrainalaisten ilmaismatkat jatkuvat Lappeenrannan joukkoliikenteessä;Lait/toimintasäännot
+74-20050725;Kaupunginhallitus päätti asiasta eri tavalla kuin lautakunta aiemmin.;Lait/toimintasäännot
+74-20050725;Ukrainan kansalaiset saavat jatkossakin matkustaa maksutta Lappeenrannan joukkoliikenteessä.;Lait/toimintasäännot
+74-20050725;Kaupunginhallitus päätti asiasta maanantaina kaupunginjohtaja Kimmo Jarvan esityksestä.;Lait/toimintasäännot
+74-20050725;Kaupunkikehityslautakunta päätti aiemmin, että ilmaismatkustus [päättyy lokakuun alussa](https://yle.fi/a/74-20048929).;Lait/toimintasäännot
+74-20050725;Perusteluna olivat lipputulomenetykset.;Lait/toimintasäännot
+74-20050725;Kaupunginhallitus otti asian käsiteltäväkseen otto-oikeudella.;Lait/toimintasäännot
+74-20050725;Nyt tehty päätös on voimassa, kunnes vuoden 2024 alussa aloittava Lappeenrannan ja Imatran yhteinen joukkoliikenneviranomainen tekee asiassa uuden päätöksen.;Lait/toimintasäännot
+74-20050725;Onko sinulla uutisvinkki tai kuvasitko uutistilanteen?;Ei_tarkistettavissa_oleva_väite
+74-20050725;Lähetä kuva, video tai vinkki osoitteeseen [lappeenranta@yle.fi](mailto:lappeenranta@yle.fi).;Ei_tarkistettavissa_oleva_väite
+74-20050725;Maksamme julkaistuista kuvista ja videoista palkkion.;Ei_tarkistettavissa_oleva_väite
