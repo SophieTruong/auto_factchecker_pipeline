@@ -19,10 +19,10 @@ echo "Starting to run the python script. The time is $(date)."
 export HF_HOME=/scratch/work/truongl3/DIME/HF_HOME_CACHE
 
 # Configure wandb tracking
-export WANDB_API_KEY="<your-wandb-api-key>"
+export WANDB_API_KEY="8e37b8ec2acfc649956410a8c531ffe0006dab4c"
 wandb login
 
-srun python3 /path/to/your/model/model_training.py
+srun python3 /scratch/work/truongl3/DIME/auto_factchecker_pipeline/model_training_service/model/model_training.py
 
 # Remove conda env
 conda deactivate

@@ -10,8 +10,6 @@ classes0 = ['Ei_tarkistettavissa_oleva_väite', 'Määrä', 'Ennuste', 'Korrelaa
 num_classes = len(classes)
 
 def get_text_label(path):
-
-    print(f"path = {path}")
     files=['Dana_annotation_1000_sentences_Henna.csv', 'DIME_claim_annotation_1000_sentences_Minttu.csv', 'DIME_claim_annotation_500_sentences_Pipsa.csv'] #, '3xNCS.json']
     
     fns = [os.path.join(path, f) for f in files]
@@ -59,8 +57,8 @@ def get_text_label(path):
             else:
                 labels.append(1)
     
-    print(labels)
-    print(texts[0])
+    print(f"labels[0] = {labels[0]}")
+    print(f"texts[0] = {texts[0]}")
     return texts, labels
 
 def get_data_splits(state_x, texts, labels):
@@ -71,7 +69,6 @@ def get_data_splits(state_x, texts, labels):
 
     test_scores=y_test
     
-    print(len(X_train))
     X_tr=[]
     y_train_n=[]
     i =0
@@ -80,7 +77,6 @@ def get_data_splits(state_x, texts, labels):
         X_tr.append(new)
         y_train_n.append(y_train[i])
         i+=1
-
     
     X_te=[]
     y_test_n=[]
@@ -134,6 +130,7 @@ def shape_data(train_df, test_df1, dev_df, multi_label):
         train_ds = train_ds.map(encode_labels)
         test_ds1 = test_ds1.map(encode_labels)
 
+    train_ds
     test_df = test_df1
     test_ds = test_ds1
 
