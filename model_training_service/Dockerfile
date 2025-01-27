@@ -27,3 +27,5 @@ SHELL ["/bin/bash", "--login", "-c"]
 RUN pip --version
     
 CMD ["python", "model/model_training.py"]
+
+# CMD ["mlflow", "models", "serve", "-m", "./mlruns/models/223326325726326848/658fdf3d1618421db6f5fb1290c8e7f3/artifacts/setfit_model"]

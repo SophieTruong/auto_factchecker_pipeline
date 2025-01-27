@@ -23,7 +23,7 @@ DB_CONFIG = {
 
 # Construct database URL
 POSTGRES_URL = "postgresql://{username}:{password}@{host}:{port}/{database}".format(**DB_CONFIG)
-# print(f"POSTGRES_URL: {POSTGRES_URL}")
+print(f"POSTGRES_URL: {POSTGRES_URL}")
 
 # Create SQLAlchemy engine
 engine = create_engine(POSTGRES_URL)

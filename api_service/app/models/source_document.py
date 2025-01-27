@@ -1,29 +1,31 @@
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from .utils import get_utcnow
 
-class ClaimBase(BaseModel):
+class SourceDocumentBase(BaseModel):
     """
-    Pydantic Base model for the claim object.
+    Input model for the claim detection service.
     """
     model_config = ConfigDict(str_strip_whitespace=True)
-    text: str = Field(min_length=0, description="The text of the claim")
-    source_document_id: UUID = Field(description="The ID of the source document")
-    
-class ClaimCreate(ClaimBase):
+    text: str = Field(min_length=1, description="The text of the claim")
+
+class SourceDocumentCreate(SourceDocumentBase):
     """
-    Pydantic model for creating a claim.
+    Input model for creating a source document.
     """
     pass
 
-class Claim(ClaimBase):
+class SourceDocument(SourceDocumentBase):
     """
-    Model representing a stored claim with metadata.
+    Model representing a stored source document with metadata.
     """
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
     created_at: datetime = Field(default_factory=get_utcnow, description="Timestamp of creation")
     updated_at: datetime = Field(default_factory=get_utcnow, description="Timestamp of last update")
+
+

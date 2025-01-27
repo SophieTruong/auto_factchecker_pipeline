@@ -1,0 +1,11 @@
+protobuf==3.20.0
+pymilvus==2.5.3
+pymilvus==2.5.3
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.3
+sentence-transformers==3.0.1
+python-dotenv==1.0.1
+langdetect==1.0.9
+deep-translator==1.11.4
+pandas==2.2.2

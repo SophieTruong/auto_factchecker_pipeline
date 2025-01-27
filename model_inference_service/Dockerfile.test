@@ -1,0 +1,25 @@
+FROM python:3.12.8-slim-bullseye
+
+WORKDIR /app
+
+# Install test dependencies
+COPY requirements.txt ./
+
+RUN apt-get update && apt-get install -y git
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./test /app/test
+COPY ./app /app/app
+COPY ./test/run_tests.sh /app/
+
+# Set PYTHONPATH to include app directory
+ENV PYTHONPATH=/app/app
+
+COPY .env /app
+
+# Command to run the application
+VOLUME ["/app/mlruns"]
+
+CMD ["/app/test/run_tests.sh"]

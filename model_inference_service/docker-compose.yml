@@ -1,0 +1,32 @@
+services:
+  model_inference:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - MODEL_DIR=${MODEL_DIR}
+    volumes:
+      - ${MODEL_DIR}:/app/mlruns
+    ports:
+      - "8090:8090"
+    networks:
+      - backend
+
+  load_test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      - model_inference
+    networks:
+      - backend
+    environment:
+      - MODEL_DIR=${MODEL_DIR}
+    volumes:
+      - ${MODEL_DIR}:/app/mlruns
+
+networks:
+  backend:
+    driver: bridge

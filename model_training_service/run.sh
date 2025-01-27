@@ -20,9 +20,11 @@ DOCKER_BUILDKIT=1 docker build \
 
 # Run the container with volume mounts
 docker run \
-    -v "$MODEL_DIR:/app/mlruns" \
+    -v "$MODEL_DIR:/model_training_service/mlruns" \
     -v "$CONDA_ENVS:/opt/anaconda/envs" \
     -v "$CONDA_PKGS:/opt/anaconda/pkgs" \
     -v "$HF_HOME:/root/.cache/huggingface" \
     --env-file .env \
     myapp 
+
+# docker run -v "$MODEL_DIR:/model_training_service/mlruns" -a stdin -a stdout -t -i python /bin/bash

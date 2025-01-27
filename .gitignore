@@ -31,5 +31,7 @@ api/databases/venv/
 api/databases/test*
 api/databases/sentence-transformer-model/*
 
+models--sentence-transformers--msmarco-distilbert-base-dot-prod-v3/
+
 volumes
 mlruns/
