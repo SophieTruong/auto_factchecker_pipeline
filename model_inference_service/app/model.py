@@ -5,7 +5,7 @@ class InferenceResult(BaseModel):
     """
     Model inference result.
     """
-    label: int = Field(description="The label of the claim")
+    label: bool = Field(description="The label of the claim")
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="The timestamp of the inference")
     
     
