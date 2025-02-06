@@ -35,3 +35,4 @@ models--sentence-transformers--msmarco-distilbert-base-dot-prod-v3/
 
 volumes
 mlruns/
+model_training_service/submit.sh
