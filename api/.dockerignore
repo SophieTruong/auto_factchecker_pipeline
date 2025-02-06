@@ -1,8 +1,0 @@
-file_planning.md
-Dockerfile
-.DS_Store
-
-claim_detection/*
-!claim_detection/predict.py
-
-/database/sentence-transformer-model

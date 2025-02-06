@@ -11,6 +11,7 @@ from models.source_document import SourceDocumentCreate
 from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
 from models.semantic_search_input import SemanticSearchInput
+from models.semantic_search_response import BatchSemanticSearchResponse
 
 # Import database models
 from database.postgres import engine, Base, SessionLocal
@@ -19,11 +20,14 @@ from database.postgres import engine, Base, SessionLocal
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
 from services.semantic_search import SemanticSearchService
+from services.claim_model_monitoring_data import ClaimModelMonitoringService
+
 from sqlalchemy.orm import Session
 
 # Import utils
-# from utils.validator import validate_claim_id, validate_date_range
 from utils.app_logging import logger
+
+from datetime import datetime
 
 import dotenv
 import os
@@ -123,6 +127,30 @@ async def update_claim_detection_predicts(
             detail=f"Failed to update claims: {str(e)}"
         )
 
+@app.get(
+    "/claim_detection/get",
+    response_model=Optional[List[Claim]],
+    responses={
+        200: {"description": "Successfully retrieved claims"},
+        400: {"description": "Bad request"},
+        500: {"description": "Internal server error"}
+    },
+    status_code=status.HTTP_200_OK
+)
+async def get_claim_detection(
+    start_date: str,
+    end_date: str,
+    db: Session = Depends(get_db)
+) -> Optional[List[Claim]]:
+    try:
+        claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
+        return await claim_detection_service.get_claims(start_date, end_date)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get claim detection: {str(e)}"
+        )
+
 @app.post(
     "/claim_annotation/insert",
     response_model=Optional[List[ClaimAnnotation]],
@@ -201,7 +229,7 @@ async def update_claim_annotations(
 )
 async def semantic_search(
     claim_input: SemanticSearchInput,
-) -> Optional[dict]:
+) -> Optional[BatchSemanticSearchResponse]:
     try:
         print(f"claim_input: {claim_input}")
         semantic_search_service = SemanticSearchService(SEMANTIC_SEARCH_URI)
@@ -212,6 +240,30 @@ async def semantic_search(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get semantic search results: {str(e)}"
         )
+
+@app.post(
+    "/claim_model_monitoring/get_data",
+    response_model=Optional[dict],
+    responses={
+        200: {"description": "Successfully retrieved claims"},
+        400: {"description": "Bad request"},
+        500: {"description": "Internal server error"}
+    },
+)
+async def get_claim_model_monitoring_data(
+    start_date: str,
+    end_date: str,
+    db: Session = Depends(get_db)
+) -> Optional[dict]:
+    """
+    Get claims with inference and annotation by date range
+    """
+    try:
+        claim_model_monitoring_service = ClaimModelMonitoringService(db)        
+        results = claim_model_monitoring_service.get_claims_with_inference_and_annotation(start_date, end_date)
+        return {"results": results}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get claim model monitoring data: {str(e)}")
 
 # # READ claim by id or date range
 # @app.get("/claim_detection/", response_model=Optional[List[Claim]])

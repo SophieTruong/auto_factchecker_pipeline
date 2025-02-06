@@ -1,8 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from sqlalchemy import select, update, delete
-from sqlalchemy.dialects import postgresql
+from sqlalchemy import select, update, delete, and_
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.sql import func
 
@@ -249,4 +248,29 @@ def delete_claim_annotation_query(annotation_session_id: UUID, claim_id: UUID):
         ClaimAnnotation.annotation_session_id == annotation_session_id,
         ClaimAnnotation.claim_id == claim_id
     ).returning(ClaimAnnotation)
+
+def get_claims_with_inference_and_annotation_query(start_date: datetime, end_date: datetime):
+    """
+    Create a query to get claims with their model inferences and annotations within a time range
+    
+    Args:
+        start_date (datetime): Start of the time range
+        end_date (datetime): End of the time range
+    """
+    return select(
+        Claim.id.label('claim_id'),
+        Claim.text.label('claim_text'),
+        ClaimModelInference.label.label('inference_label'),
+        ClaimAnnotation.binary_label.label('annotation_label'),
+        ClaimModelInference.claim_detection_model_id.label('model_id')
+    ).join(
+        ClaimModelInference, Claim.id == ClaimModelInference.claim_id
+    ).join(
+        ClaimAnnotation, Claim.id == ClaimAnnotation.claim_id, isouter=True
+    ).where(
+        and_(
+            Claim.created_at >= start_date,
+            Claim.created_at <= end_date
+        )
+    )
     

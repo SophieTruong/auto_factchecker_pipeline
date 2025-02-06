@@ -3,7 +3,7 @@ Database Models Module
 
 This module defines SQLAlchemy ORM models for interacting with a PostgreSQL database.
 """
-from sqlalchemy import Column, Index, Integer, String, ForeignKey, Boolean, UUID, UniqueConstraint
+from sqlalchemy import Column, Index, Boolean, String, ForeignKey, Boolean, UUID, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.types import DateTime
@@ -87,7 +87,7 @@ class ClaimModelInference(Base, StringRepresentation):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     claim_id = Column(UUID(as_uuid=True), ForeignKey('claim.id', ondelete='CASCADE'))
     claim_detection_model_id = Column(UUID(as_uuid=True), ForeignKey('claim_detection_model.id'))
-    label = Column(String, nullable=False)
+    label = Column(Boolean, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=utcnow(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow(), nullable=False)
 
@@ -128,7 +128,7 @@ class ClaimAnnotation(Base, StringRepresentation):
     claim_id = Column(UUID(as_uuid=True), ForeignKey('claim.id', ondelete='CASCADE'))
     annotation_session_id = Column(UUID(as_uuid=True), ForeignKey('annotation_session.id', ondelete='CASCADE'))
     binary_label = Column(Boolean, nullable=False)
-    text_label = Column(String)
+    text_label = Column(String, nullable=True)
     
     __table_args__ = (
         UniqueConstraint('claim_id', 'annotation_session_id', name='uq_claim_annotation_session'),

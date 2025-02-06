@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from uuid import UUID
@@ -9,6 +11,7 @@ from database.crud import (
     update_claim,
     delete_claims,
     get_claim_by_text,
+    get_claims_by_created_at,
     get_claim_detection_model_by_name,
     insert_claim_detection_model,
     insert_claim_model_inference
@@ -22,7 +25,8 @@ from models.claim_detection_response import BatchClaimResponse, ClaimResponse
 
 from utils.sentencizer import get_sentences
 from utils.make_request import make_request
-from utils.app_logging import logger  
+from utils.app_logging import logger
+from utils.validator import validate_date_range
 
 class ClaimDetectionService:
     def __init__(self, db: Session, inference_service_uri: str):
@@ -99,7 +103,16 @@ class ClaimDetectionService:
         except Exception as e:
             self.db.rollback()
             raise Exception(f"{e}")
-                
+    
+    async def get_claims(self, start_date: datetime, end_date: datetime) -> Optional[List[Claim]]:
+        """Get claims by date range."""
+        try:
+            validate_date_range(start_date, end_date)
+            claims = get_claims_by_created_at(db=self.db, start_date=start_date, end_date=end_date)
+            return claims
+        except Exception as e:
+            raise Exception(f"{e}")
+
     def _create_source_document(self, input_data: SourceDocumentCreate) -> Optional[SourceDocument]:
         """Create source document record."""
         logger.info(f"*** input_data: {input_data}")
