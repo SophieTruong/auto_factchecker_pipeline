@@ -2,7 +2,7 @@ from pymilvus import Collection, utility
 from datetime import datetime
 
 # Index parameters
-_METRIC_TYPE = 'L2'
+_METRIC_TYPE = 'L2' # A smaller value indicates a higher similarity.
 _INDEX_TYPE = 'IVF_FLAT'
 _NLIST = 1024
 _NPROBE = 16
@@ -60,19 +60,16 @@ def search(collection, vector_field, search_vectors):
         "anns_field": vector_field,
         "param": {"metric_type": _METRIC_TYPE, "params": {"nprobe": _NPROBE}},
         "limit": _TOPK,
+        "consistency_level": "Strong",
         "output_fields": ["text", "label", "source", "timestamp"]
         }
     results = collection.search(**search_param)
-    print(f"Result = {results}")
-    print(f"Result type = {type(results)}")
     ret = []
     for i, result in enumerate(results):
-        # print("\nSearch result for {}th vector: ".format(i))
         query_result = []
         for j, res in enumerate(result):
             res_dict = res.to_dict()
             query_result.append(res_dict)
-            print(f"Top {i}: {res_dict}")
     
         ret.append(query_result)
     return ret

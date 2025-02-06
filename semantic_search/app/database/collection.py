@@ -66,3 +66,6 @@ def create_collection(
         )
     print("\ncollection created:", name)
     return collection
+
+def get_collection(name: str):
+    return Collection(name)

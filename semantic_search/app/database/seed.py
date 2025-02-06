@@ -7,8 +7,8 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 import pandas as pd
 from datetime import datetime
 from db_client import create_connection, model
-from collection import create_collection
-from queries import (
+from collection import create_collection, get_collection
+from queries import (   
     has_collection, 
     drop_collection, 
     list_collections,
@@ -50,14 +50,7 @@ def get_data(file_name):
     df = pd.merge(test_data_df, test_metadata_df, on='id')
     return df
 
-def main():
-    # Create Milvus connection
-    create_connection()
-    
-    # Drop collection if exists
-    if has_collection(_COLLECTION_NAME):
-        drop_collection(_COLLECTION_NAME)
-    
+def _create_and_insert_collection():
     #create collection
     collection = create_collection(
         _COLLECTION_NAME, # has
@@ -69,6 +62,8 @@ def main():
         _URL,
         _TIMESTAMP,
         )
+    
+    create_index(collection, _VECTOR_FIELD_NAME)
     
     # alter ttl properties of collection level
     set_properties(collection)
@@ -117,15 +112,32 @@ def main():
 
     collection.flush()
     get_entity_num(collection)
-
-    create_index(collection, _VECTOR_FIELD_NAME)
-
+    return collection
+    
+def main():
+    # Create Milvus connection
+    create_connection()
+    
+    # Drop collection if exists
+    if has_collection(_COLLECTION_NAME):
+        collection = get_collection(_COLLECTION_NAME)
+        print(f"collection found: {collection}")
+        if collection.is_empty:
+            drop_collection(_COLLECTION_NAME)
+            _create_and_insert_collection()
+    else:
+        _create_and_insert_collection()
+            
+            
+    ## Test 
+    collection = get_collection(_COLLECTION_NAME)
+    
     load_collection(collection)
     
     query=["Covid-19 originates from a Wuhan lab"]
     query_vectors = model.encode(query)
 
-    # search
+    ### search
     search(collection, _VECTOR_FIELD_NAME, query_vectors)
     
     release_collection(collection)
