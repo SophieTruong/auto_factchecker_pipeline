@@ -6,7 +6,7 @@ import requests
 from url_builder import URLBuilder
 from utils import get_meta_value
 from factchecked_data import FullFact
-
+from typing import List
 load_dotenv()
 
 def get_url(query:str, se_key=None, se_id=None):
@@ -23,7 +23,7 @@ def get_url(query:str, se_key=None, se_id=None):
     
     return url
 
-def get_json_response(url) -> list[FullFact]:
+def get_json_response(url) -> List[FullFact]:
     
     response_data = []
     
@@ -49,18 +49,13 @@ def get_json_response(url) -> list[FullFact]:
     
     return response_data
 
-def main():
-    query = "Ukraine"
+def get_fullfact_search_results(query: str) -> List[FullFact]:
+    
+    print(f"Getting FullFact search results for {query}")
     cse_api_key = os.getenv("CSE_API_KEY")
     cse_id = os.getenv("CSE_ID_FF")
     
     url = get_url(query, cse_api_key, cse_id)
     response = get_json_response(url)
-    
-    for r in response:
-        print(r)
-        print("_" * 100)
-        print("\n")
         
-if __name__ == "__main__":
-    main()
+    return response

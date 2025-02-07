@@ -8,6 +8,8 @@ import spacy
 from url_builder import URLBuilder
 from factchecked_data import FaktaBaari
 
+from typing import List
+
 def get_url():
     builder = URLBuilder()
 
@@ -37,7 +39,7 @@ def keyword_search(query: str, data: list[FaktaBaari], nlp: spacy.lang) -> list[
     query_search_result = []
     
     for res in data:
-        doc = nlp(res["title"])
+        doc = nlp(res.title)
         lemmatized_doc = [token.lemma_ for token in doc]
         
         query_doc = nlp(query)
@@ -47,15 +49,15 @@ def keyword_search(query: str, data: list[FaktaBaari], nlp: spacy.lang) -> list[
             query_search_result.append(res)
         
     # Datetime sort: Show the most relevant search result using timestamp
-    sorted_query_search_result = sorted(query_search_result, key=lambda t: t["date"], reverse=True)
+    sorted_query_search_result = sorted(query_search_result, key=lambda t: t.date, reverse=True)
 
     return sorted_query_search_result
 
-def main():
+def get_faktabaari_search_results(query: str) -> List[FaktaBaari]:
+    print(f"Getting FaktaBaari search results for {query}")
     # Set up spacy and load lemmatizer pipeline
     nlp = spacy.load("fi_core_news_sm", disable=['ner', 'parser'])
-    lemmatizer = nlp.get_pipe("lemmatizer")
-    
+        
     url = get_url()
     
     json_response = get_json_response(url)
@@ -63,14 +65,9 @@ def main():
     # This function is problematic because the delay increase when the amount of response data increase
     start = datetime.datetime.now()
     
-    query = "Kamala Harris will win US election 2024"
     search_res = keyword_search(query, json_response, nlp)
     end = datetime.datetime.now()
-    for res in search_res:
-        print(res)
-        print("-" * 100)
-    
+        
     print(f"Elipsed time of keyword_search = {end-start}")
-    
-if __name__ == "__main__":
-    main()
+
+    return search_res

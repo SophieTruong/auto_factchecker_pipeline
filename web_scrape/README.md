@@ -21,3 +21,6 @@ pip3 install -r requirements.txt
         query = "QUERY-STRING" 
         ``` 
     - Run `python3 factcheckorg.py` and the result will be print to terminal
+
+# For `.env` file: 
+- CSE_API_KEY: is collected from https://developers.google.com/custom-search/v1/introduction to get API keys for Google Custom Search Engine

@@ -6,6 +6,7 @@ import requests
 from utils import get_meta_value
 from url_builder import URLBuilder
 from factchecked_data import FactCheckOrg
+from typing import List
 
 load_dotenv()
 
@@ -23,15 +24,16 @@ def get_url(query:str, se_key=None, se_id=None):
     
     return url
 
-def get_json_response(url) -> list[FactCheckOrg]:
+def get_json_response(url) -> List[FactCheckOrg]:
     
     response_data = []
     
     try:
         response = requests.get(url)
+        print(f"Response from FactCheckOrg: {response.text}")
         response_json = json.loads(response.text)
         response_items = response_json.get("items")
-        if len(response_items) > 0:
+        if response_items is not None and len(response_items) > 0:
             for item in response_items:
                 factcheck_result = FactCheckOrg(
                     title = item["title"],
@@ -49,8 +51,8 @@ def get_json_response(url) -> list[FactCheckOrg]:
     
     return response_data
 
-def main():
-    query = "Ukraine"
+def get_factcheckorg_search_results(query: str) -> List[FactCheckOrg]:
+    print(f"Getting FactCheckOrg search results for {query}")
     cse_api_key = os.getenv("CSE_API_KEY")
     cse_id = os.getenv("CSE_ID_FCO")
     
@@ -58,9 +60,4 @@ def main():
     
     response = get_json_response(url)
     
-    for r in response:
-        print(r)
-        print("_" * 100)
-        
-if __name__ == "__main__":
-    main()
+    return response

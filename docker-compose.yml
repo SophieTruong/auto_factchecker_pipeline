@@ -53,6 +53,11 @@ services:
     extends:
       file: ./semantic_search/docker-compose.yml
       service: standalone
+  
+  web_scrape:
+    extends:
+      file: ./web_scrape/docker-compose.yml
+      service: web_scrape
 
 networks:
   backend:

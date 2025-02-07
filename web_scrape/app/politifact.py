@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from url_builder import URLBuilder
 from factchecked_data import PoliticFactData
+from typing import List
 
 VERDICT_DICT = {
     'meter-true': 'true', 
@@ -34,7 +35,7 @@ def get_html_content(url):
     
     return requests.get(url)
 
-def parse_html_content(req_response: requests.Response) -> list[PoliticFactData]:
+def parse_html_content(req_response: requests.Response) -> List[PoliticFactData]:
     """
     This function parses PoliticalFact content following this path https://www.politifact.com/search/?q=<query>
     This path contains more relevant result w.r.t the search query. 
@@ -51,7 +52,7 @@ def parse_html_content(req_response: requests.Response) -> list[PoliticFactData]
                 
             for divs in section.find_all('div', 'o-listease__item'):
                 
-                factchecked_data = PoliticFactData()
+                factchecked_data = {}
                 
                 # Get statement_originator
                 author = divs.find_all('div', 'c-textgroup__author')
@@ -84,11 +85,12 @@ def parse_html_content(req_response: requests.Response) -> list[PoliticFactData]
                     if v in VERDICT_DICT.keys():
                         factchecked_data["verdict"] = VERDICT_DICT[v]
                         
-                ret.append(factchecked_data)
+                ret.append(PoliticFactData(**factchecked_data))
     return ret
 
-def main():
-    query = "Turkey"
+def get_politifact_search_results(query: str) -> List[PoliticFactData]:
+    
+    print(f"Getting Politifact search results for {query}")
     
     url = get_url(query = query)
     
@@ -98,7 +100,4 @@ def main():
     
     print(factchecked_data)
     
-    print(len(factchecked_data))
-    
-if __name__ == "__main__":
-    main()
+    return factchecked_data
