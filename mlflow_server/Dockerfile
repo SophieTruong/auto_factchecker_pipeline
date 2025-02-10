@@ -7,10 +7,10 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy training script
-COPY app/train.py .
+COPY test_train.py .
 
 # Set environment variables
 ENV MLFLOW_TRACKING_URI=http://mlflow:8080
 
 # Run training script
-CMD ["python", "train.py"]
+CMD ["python", "test_train.py"]
