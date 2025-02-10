@@ -110,12 +110,22 @@ def test_model_inference(run_id):
 if __name__ == "__main__":
     print("Starting MLflow experiment...")
     
-    # Create experiment if it doesn't exist
-    experiment_name = "test_experiment"
-    try:
-        mlflow.create_experiment(experiment_name)
-    except Exception as e:
-        print(f"Error creating experiment: {str(e)}")
+    # Get the correct mlflow uri
+    
+    uris = [MLFLOW_TRACKING_URI, "http://localhost:8080", "http://mlflow:8080", "http://mlflow:5000", "http://mlflow:5000"]
+    for uri in uris:
+        try:
+            mlflow.set_tracking_uri(uri)
+            print(f"MLflow tracking URI: {uri}")
+
+            # Create experiment if it doesn't exist
+            experiment_name = "test_experiment"
+            mlflow.create_experiment(experiment_name)
+            print(f"CORRECT MLflow tracking URI: {uri}")
+            pass
+        except Exception as e:
+            print(f"Error creating experiment: {str(e)}")
+            continue
     
     mlflow.set_experiment(experiment_name)
     
