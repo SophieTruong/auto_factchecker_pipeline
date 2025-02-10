@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 
 from .models import (
+    APIKey,
     AnnotationSession,
     Claim, 
     ClaimModelInference, 
@@ -60,6 +61,17 @@ from .queries import (
     # Claim with Inference and Annotation Queries
     get_claims_with_inference_and_annotation_query,
 )
+
+## API Key CRUD Operations
+def get_all_api_keys(db: Session) -> Optional[APIKey]:
+    """
+    Retrieve an API key from the database by its hashed API key.
+    """
+    try:
+        return db.query(APIKey).all()
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"{str(e)}")
 
 ## Source Document CRUD Operations
 def get_source_document_by_id(db: Session, source_document_id: UUID) -> Optional[SourceDocument]:

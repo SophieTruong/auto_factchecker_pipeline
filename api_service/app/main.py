@@ -1,7 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Annotated
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+
+from fastapi.security import APIKeyHeader
 
 from sqlalchemy.orm import Session
 
@@ -17,6 +19,7 @@ from models.claim_model_monitoring import ClaimModelMonitoring
 
 # Import database models
 from database.postgres import engine, Base, SessionLocal, get_db
+from database.crud import get_all_api_keys
 
 # Import services
 from services.claim_detection import ClaimDetectionService
@@ -26,6 +29,7 @@ from services.claim_model_monitoring_data import ClaimModelMonitoringService
 
 # Import utils
 from utils.app_logging import logger
+from utils.password_hashing import verify_password
 
 from datetime import datetime
 
@@ -59,6 +63,25 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 get_db()
 
+# Set up oauth2 scheme
+header_scheme = APIKeyHeader(name="api_key")
+
+def api_key_auth(api_key: str, db: Session = Depends(get_db)):
+    with db.begin():
+        hashed_api_keys = get_all_api_keys(db)
+        print(f"hashed_api_key: {hashed_api_keys}")
+
+        if not hashed_api_keys:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Forbidden"
+            )
+        elif not any(verify_password(api_key, hashed_api_key.hashed_api_key) for hashed_api_key in hashed_api_keys):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Forbidden"
+            )
+        
 # CREATE claim
 @app.post(
     "/claim_detection/insert", 
@@ -66,13 +89,15 @@ get_db()
     responses={
         200: {"description": "Successfully created claims"},
         400: {"description": "Bad request - No claims provided"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
 )
 async def create_claim_detection_predicts(
     input: SourceDocumentCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[BatchClaimResponse]:
     """
     Create a claim.
@@ -85,6 +110,7 @@ async def create_claim_detection_predicts(
         Optional[List[Claim]]: A list of claims if found, None otherwise
     """
     try:
+        api_key_auth(key, db)
         claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
         return await claim_detection_service.get_predictions(input)
     except Exception as e:
@@ -99,20 +125,23 @@ async def create_claim_detection_predicts(
     responses={
         200: {"description": "Successfully updated claims"},
         400: {"description": "Bad request - No claims provided"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
 )
 async def update_claim_detection_predicts(
     claims: List[Claim],
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[BatchClaimResponse]:
-    if not claims:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No claims provided for update"
-        )
     try:
+        api_key_auth(key, db)
+        if not claims:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No claims provided for update"
+            )
         claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
         return await claim_detection_service.update_claims(claims)
     except Exception as e:
@@ -127,6 +156,7 @@ async def update_claim_detection_predicts(
     responses={
         200: {"description": "Successfully retrieved claims"},
         400: {"description": "Bad request"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
@@ -134,9 +164,11 @@ async def update_claim_detection_predicts(
 async def get_claim_detection(
     start_date: str,
     end_date: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[List[Claim]]:
     try:
+        api_key_auth(key, db)
         claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
         return await claim_detection_service.get_claims(start_date, end_date)
     except Exception as e:
@@ -151,13 +183,15 @@ async def get_claim_detection(
     responses={
         200: {"description": "Successfully created annotations"},
         400: {"description": "Bad request - No annotations provided"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
 )
 async def create_claim_annotations(
     claim_annotation_inputs: BatchClaimAnnotationInput,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[List[ClaimAnnotation]]:
     """
     Create a claim annotation.
@@ -169,12 +203,13 @@ async def create_claim_annotations(
     Returns:
         Optional[List[ClaimAnnotation]]: A list of claim annotations
     """
-    if len(claim_annotation_inputs.claims) <= 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No claim annotation inputs provided"
-        )
     try:
+        api_key_auth(key, db)
+        if len(claim_annotation_inputs.claims) <= 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No claim annotation inputs provided"
+            )
         claim_annotation_service = ClaimAnnotationService(db)
         return await claim_annotation_service.create_claim_annotation(claim_annotation_inputs)
     except Exception as e:
@@ -189,20 +224,23 @@ async def create_claim_annotations(
     responses={
         200: {"description": "Successfully updated annotations"},
         400: {"description": "Bad request - No annotations provided"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
 )
 async def update_claim_annotations(
     claim_annotations: List[ClaimAnnotation],
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[List[ClaimAnnotation]]:
-    if not claim_annotations:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No claim annotations provided for update"
-        )
     try:
+        api_key_auth(key, db)
+        if not claim_annotations:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No claim annotations provided for update"
+            )
         claim_annotation_service = ClaimAnnotationService(db)
         return await claim_annotation_service.update_claim_annotation(claim_annotations)
     except Exception as e:
@@ -217,14 +255,18 @@ async def update_claim_annotations(
     responses={
         200: {"description": "Successfully"},
         400: {"description": "Bad request"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
     status_code=status.HTTP_200_OK
 )
 async def semantic_search(
     claim_input: SemanticSearchInput,
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[BatchSemanticSearchResponse]:
     try:
+        api_key_auth(key, db)
         print(f"claim_input: {claim_input}")
         semantic_search_service = SemanticSearchService(SEMANTIC_SEARCH_URI)
         return await semantic_search_service.get_search_result(claim_input)
@@ -241,18 +283,22 @@ async def semantic_search(
     responses={
         200: {"description": "Successfully retrieved claims"},
         400: {"description": "Bad request"},
+        401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
+    status_code=status.HTTP_200_OK
 )
 async def get_claim_model_monitoring_data(
     start_date: str,
     end_date: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
 ) -> Optional[List[ClaimModelMonitoring]]:
     """
     Get claims with inference and annotation by date range
     """
     try:
+        api_key_auth(key, db)
         claim_model_monitoring_service = ClaimModelMonitoringService(db)        
         results = claim_model_monitoring_service.get_claims_with_inference_and_annotation(start_date, end_date)
         logger.info(f"results from get_claim_model_monitoring_data: {results}")

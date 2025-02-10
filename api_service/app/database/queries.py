@@ -9,6 +9,7 @@ from sqlalchemy.sql import func
 from uuid import UUID
 
 from .models import (
+    APIKey,
     AnnotationSession, 
     Claim, 
     ClaimAnnotation, 
@@ -280,4 +281,3 @@ def get_claims_with_inference_and_annotation_query(start_date: datetime, end_dat
             Claim.created_at <= end_date
         )
     )
-    

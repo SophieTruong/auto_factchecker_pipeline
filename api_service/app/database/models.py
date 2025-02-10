@@ -3,7 +3,7 @@ Database Models Module
 
 This module defines SQLAlchemy ORM models for interacting with a PostgreSQL database.
 """
-from sqlalchemy import Column, Index, Boolean, String, ForeignKey, Boolean, UUID, UniqueConstraint
+from sqlalchemy import Column, Index, Boolean, String, ForeignKey, Boolean, UUID, UniqueConstraint, LargeBinary
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.types import DateTime
@@ -13,6 +13,14 @@ import uuid
 from .postgres import Base
 from .utils import utcnow, cast_language_literal
 
+class APIKey(Base):
+    """
+    Represents an API key in the database.
+    """
+    __tablename__ = 'api_key'
+    
+    hashed_api_key = Column(LargeBinary, nullable=False, primary_key=True)
+    
 class StringRepresentation:
     """
     Base class for string representation of models
