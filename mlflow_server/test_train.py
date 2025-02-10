@@ -112,7 +112,7 @@ if __name__ == "__main__":
     
     # Get the correct mlflow uri
     
-    uris = [MLFLOW_TRACKING_URI, "http://localhost:8080", "http://mlflow:8080", "http://mlflow:5000", "http://mlflow:5000"]
+    uris = ["http://localhost:8080", "http://mlflow:8080", "http://mlflow:5000", "http://mlflow:5000"]
     for uri in uris:
         try:
             mlflow.set_tracking_uri(uri)
@@ -122,19 +122,17 @@ if __name__ == "__main__":
             experiment_name = "test_experiment"
             mlflow.create_experiment(experiment_name)
             print(f"CORRECT MLflow tracking URI: {uri}")
+            
+            mlflow.set_experiment(experiment_name)
+            
+            # Train and log model
+            run_id = train_and_log_model()
+            
+            # Test inference
+            test_model_inference(run_id)
             pass
         except Exception as e:
             print(f"Error creating experiment: {str(e)}")
             continue
     
-    mlflow.set_experiment(experiment_name)
     
-    try:
-        # Train and log model
-        run_id = train_and_log_model()
-        
-        # Test inference
-        test_model_inference(run_id)
-        
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")
