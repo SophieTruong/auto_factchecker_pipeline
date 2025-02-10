@@ -112,7 +112,7 @@ if __name__ == "__main__":
     
     # Get the correct mlflow uri
     
-    uris = ["http://localhost:8080", "http://mlflow:8080", "http://mlflow:5000", "http://mlflow:5000"]
+    uris = ["http://localhost:5000", "http://mlflow:5000"]
     for uri in uris:
         try:
             mlflow.set_tracking_uri(uri)
