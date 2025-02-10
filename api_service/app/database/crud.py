@@ -10,11 +10,12 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 
 from .models import (
-    Claim, SourceDocument, 
+    AnnotationSession,
+    Claim, 
     ClaimModelInference, 
     ClaimDetectionModel, 
-    AnnotationSession,
     ClaimAnnotation,
+    SourceDocument, 
 )
 
 from .queries import (
@@ -466,15 +467,13 @@ def delete_claim_annotation(db: Session, annotation_session_id: UUID, claim_id: 
         raise Exception(f"{str(e)}")
 
 ## Claim with Inference and Annotation Queries
-def get_claims_with_inference_and_annotation(db: Session, start_date: datetime, end_date: datetime) -> Optional[List[Claim]]:
+def get_claims_with_inference_and_annotation(db: Session, start_date: datetime, end_date: datetime):
     """
     Retrieve claims with their model inferences and annotations within a time range.
     """
     try:
         query = get_claims_with_inference_and_annotation_query(start_date, end_date)    
-        logger.info(f"query: {query}")
         results = db.execute(query).all()
-        logger.info(f"results: {results}")
         return results
     except Exception as e:
         traceback.print_exc()

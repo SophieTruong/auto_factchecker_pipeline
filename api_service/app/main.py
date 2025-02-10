@@ -1,28 +1,28 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+
+from sqlalchemy.orm import Session
 
 # Import pydantic models
-from models.claim import ClaimCreate, Claim
+from models.claim import Claim
 from models.claim_detection_response import BatchClaimResponse
 from models.source_document import SourceDocumentCreate
 from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
 from models.semantic_search_input import SemanticSearchInput
 from models.semantic_search_response import BatchSemanticSearchResponse
+from models.claim_model_monitoring import ClaimModelMonitoring
 
 # Import database models
-from database.postgres import engine, Base, SessionLocal
+from database.postgres import engine, Base, SessionLocal, get_db
 
 # Import services
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
 from services.semantic_search import SemanticSearchService
 from services.claim_model_monitoring_data import ClaimModelMonitoringService
-
-from sqlalchemy.orm import Session
 
 # Import utils
 from utils.app_logging import logger
@@ -57,13 +57,7 @@ app.add_middleware(
 
 # Set up postgresql db dependancies
 Base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+get_db()
 
 # CREATE claim
 @app.post(
@@ -241,9 +235,9 @@ async def semantic_search(
             detail=f"Failed to get semantic search results: {str(e)}"
         )
 
-@app.post(
+@app.get(
     "/claim_model_monitoring/get_data",
-    response_model=Optional[dict],
+    response_model=Optional[List[ClaimModelMonitoring]],
     responses={
         200: {"description": "Successfully retrieved claims"},
         400: {"description": "Bad request"},
@@ -254,14 +248,16 @@ async def get_claim_model_monitoring_data(
     start_date: str,
     end_date: str,
     db: Session = Depends(get_db)
-) -> Optional[dict]:
+) -> Optional[List[ClaimModelMonitoring]]:
     """
     Get claims with inference and annotation by date range
     """
     try:
         claim_model_monitoring_service = ClaimModelMonitoringService(db)        
         results = claim_model_monitoring_service.get_claims_with_inference_and_annotation(start_date, end_date)
-        return {"results": results}
+        logger.info(f"results from get_claim_model_monitoring_data: {results}")
+        logger.info(f"type of results: {type(results)}")
+        return results
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get claim model monitoring data: {str(e)}")
 

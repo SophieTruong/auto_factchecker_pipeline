@@ -8,7 +8,14 @@ from sqlalchemy.sql import func
 
 from uuid import UUID
 
-from .models import Claim, SourceDocument, ClaimModelInference, ClaimDetectionModel, ClaimAnnotation, AnnotationSession
+from .models import (
+    AnnotationSession, 
+    Claim, 
+    ClaimAnnotation, 
+    ClaimDetectionModel, 
+    ClaimModelInference, 
+    SourceDocument
+    )
 from .utils import cast_language_literal, sanitize_string
 
 ## Source Document Queries
@@ -266,7 +273,7 @@ def get_claims_with_inference_and_annotation_query(start_date: datetime, end_dat
     ).join(
         ClaimModelInference, Claim.id == ClaimModelInference.claim_id
     ).join(
-        ClaimAnnotation, Claim.id == ClaimAnnotation.claim_id, isouter=True
+        ClaimAnnotation, Claim.id == ClaimAnnotation.claim_id
     ).where(
         and_(
             Claim.created_at >= start_date,

@@ -59,13 +59,20 @@ services:
       file: ./web_scrape/docker-compose.yml
       service: web_scrape
 
+  model_monitoring_service:
+    extends:
+      file: ./model_monitoring_service/docker-compose.yml
+      service: model_monitoring_service
+
 networks:
   backend:
     # Specify driver options
     driver: bridge    
 volumes:
   database:
-    driver: local  # Explicitly specify volume driver 
+    driver: local  # Explicitly specify volume driver
+  model_monitoring_data:
+    name: model_monitoring_data
   # sentence-transformer-model:
   # xml-roberta-model:
   # logging:
