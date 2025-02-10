@@ -90,14 +90,18 @@ def parse_html_content(req_response: requests.Response) -> List[PoliticFactData]
 
 def get_politifact_search_results(query: str) -> List[PoliticFactData]:
     
-    print(f"Getting Politifact search results for {query}")
+    try:
+        print(f"Getting Politifact search results for {query}")
+        
+        url = get_url(query = query)
+        
+        response = get_html_content(url)
     
-    url = get_url(query = query)
+        factchecked_data = parse_html_content(response)
     
-    response = get_html_content(url)
-    
-    factchecked_data = parse_html_content(response)
-    
-    print(factchecked_data)
-    
-    return factchecked_data
+        print(factchecked_data)
+        
+        return factchecked_data
+    except Exception as e:
+        print(f"Error getting Politifact search results for {query}: {e}")
+        return []

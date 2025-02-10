@@ -10,11 +10,13 @@ class SingleClaimSearchResult(BaseModel):
     timestamp: str
     text: str
     label: Optional[str] = None
+    url: Optional[str] = None
 
 class ClaimSearchResult(BaseModel):
     claim: str
-    results: Optional[List[SingleClaimSearchResult]]
-
+    vector_db_results: Optional[List[SingleClaimSearchResult]]
+    web_search_results: Optional[dict]
+    
 class SearchResponse(BaseModel):
     claims: List[ClaimSearchResult]
     

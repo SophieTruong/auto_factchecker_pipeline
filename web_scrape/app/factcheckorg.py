@@ -52,12 +52,16 @@ def get_json_response(url) -> List[FactCheckOrg]:
     return response_data
 
 def get_factcheckorg_search_results(query: str) -> List[FactCheckOrg]:
-    print(f"Getting FactCheckOrg search results for {query}")
-    cse_api_key = os.getenv("CSE_API_KEY")
-    cse_id = os.getenv("CSE_ID_FCO")
+    try:
+        print(f"Getting FactCheckOrg search results for {query}")
+        cse_api_key = os.getenv("CSE_API_KEY")
+        cse_id = os.getenv("CSE_ID_FCO")
+        
+        url = get_url(query, cse_api_key, cse_id)
     
-    url = get_url(query, cse_api_key, cse_id)
-    
-    response = get_json_response(url)
-    
-    return response
+        response = get_json_response(url)
+        
+        return response
+    except Exception as e:
+        print(f"Error getting FactCheckOrg search results for {query}: {e}")
+        return []

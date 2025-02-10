@@ -1,8 +1,6 @@
 from typing import Optional
 from fastapi import FastAPI, status, HTTPException
 
-from translator import translate_claim
-
 import sys
 print(f"sys.path: {sys.path}") 
 
@@ -31,9 +29,6 @@ def read_root():
 async def semantic_search(
     search_input: SearchInput,
     ) -> Optional[SearchResponse]:
-    query = search_input.model_dump()
-    query["translated_claims"] = [translate_claim(c) for c in search_input.claims]
-    
     semantic_search_service = SemanticSearchService()
-    search_response = semantic_search_service.semantic_search(query)
+    search_response = await semantic_search_service.semantic_search(search_input)
     return search_response

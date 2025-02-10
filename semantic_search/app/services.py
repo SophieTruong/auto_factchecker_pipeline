@@ -1,5 +1,5 @@
 from typing import Optional, List   
-from model import SearchResponse, SingleClaimSearchResult, ClaimSearchResult
+from model import SearchInput, SearchResponse, SingleClaimSearchResult, ClaimSearchResult
 
 from database.queries import (
     search, 
@@ -8,7 +8,17 @@ from database.queries import (
     set_properties
 )
 from database.db_client import model
-from database.collection import get_collection, Collection
+from database.collection import get_collection
+
+from translator import translate_claim
+
+from make_request import make_request
+
+import dotenv
+import os
+
+dotenv.load_dotenv(dotenv.find_dotenv())
+WEB_SEARCH_URL = os.getenv("WEB_SEARCH_URL")
 
 # Const names
 _COLLECTION_NAME = 'text_embeddings'
@@ -18,8 +28,33 @@ class SemanticSearchService:
     def __init__(self, distance_threshold: float = 50.00):
         self.distance_threshold = distance_threshold
 
-    def semantic_search(self, search_input: dict) -> SearchResponse:
-        query_vectors = model.encode(search_input["translated_claims"])
+    async def semantic_search(self, search_input: SearchInput) -> SearchResponse:
+        # vector db search  
+        search_results = self._vector_db_search(search_input)
+        
+        # web search
+        web_search_results = await self._web_search(search_input)
+        
+        # parse results
+        parsed_results = []
+        for i, result in enumerate(search_results):
+            parsed_results.append(
+                ClaimSearchResult(
+                    claim=search_input.claims[i],
+                    vector_db_results=result,
+                    web_search_results=web_search_results["results"][i]
+                )
+            )
+        return SearchResponse(claims=parsed_results)
+    
+    async def _web_search(self, search_input: SearchInput) -> dict:
+        
+        web_search_results = await make_request(WEB_SEARCH_URL, search_input.model_dump())
+        return web_search_results
+    
+    def _vector_db_search(self, search_input: SearchInput) -> List[Optional[SingleClaimSearchResult]]:
+        translated_claims = [translate_claim(c) for c in search_input.claims]
+        query_vectors = model.encode(translated_claims)
     
         #create collection
         collection = get_collection(_COLLECTION_NAME)
@@ -38,10 +73,7 @@ class SemanticSearchService:
         parsed_results = []
         for i, result in enumerate(search_results):
             if len(result) == 0:
-                parsed_results.append(ClaimSearchResult(
-                    claim=search_input["claims"][i],
-                    results=[]
-                ))
+                parsed_results.append([])
             else:
                 single_claim_search_results = []
                 for item in result:
@@ -53,14 +85,12 @@ class SemanticSearchService:
                             source=item["entity"]["source"],
                             timestamp=item["entity"]["timestamp"],
                             text=item["entity"]["text"],
-                                label=item["entity"]["label"]
+                            label=item["entity"]["label"],
+                            url=None
                             )
                         single_claim_search_results.append(single_claim_search_result)
-                claim_search_result = ClaimSearchResult(
-                    claim=search_input["claims"][i],
-                    results=single_claim_search_results
-                )
-                parsed_results.append(claim_search_result)
+                parsed_results.append(single_claim_search_results)
             
         release_collection(collection)
-        return SearchResponse(claims=parsed_results)
+        return parsed_results
+    

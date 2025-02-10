@@ -50,12 +50,15 @@ def get_json_response(url) -> List[FullFact]:
     return response_data
 
 def get_fullfact_search_results(query: str) -> List[FullFact]:
-    
-    print(f"Getting FullFact search results for {query}")
-    cse_api_key = os.getenv("CSE_API_KEY")
-    cse_id = os.getenv("CSE_ID_FF")
-    
-    url = get_url(query, cse_api_key, cse_id)
-    response = get_json_response(url)
+    try:
+        print(f"Getting FullFact search results for {query}")
+        cse_api_key = os.getenv("CSE_API_KEY")
+        cse_id = os.getenv("CSE_ID_FF")
         
-    return response
+        url = get_url(query, cse_api_key, cse_id)
+        response = get_json_response(url)
+            
+        return response
+    except Exception as e:
+        print(f"Error getting FullFact search results for {query}: {e}")
+        return []

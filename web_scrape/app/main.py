@@ -17,7 +17,7 @@ def search(search_input: SearchInput):
     responses = []
     for claim in search_input.claims:
         result_dict = {
-            "faktabaari": get_faktabaari_search_results(translate_claim(claim, "fi")), # FaktaBaari: query in Finnish
+            # "faktabaari": get_faktabaari_search_results(translate_claim(claim, "fi")), # FaktaBaari: query in Finnish
             "politifact": get_politifact_search_results(translate_claim(claim, "en")), # PoliticFactData: query in English
             "factcheck.org": get_factcheckorg_search_results(translate_claim(claim, "en")), # FactCheckOrg: query in English
             "fullfact": get_fullfact_search_results(translate_claim(claim, "en")) # FullFact
