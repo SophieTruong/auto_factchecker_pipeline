@@ -11,7 +11,9 @@ services:
       - mlflow
       - minio
   mlflow:
-    image: ghcr.io/mlflow/mlflow:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
     container_name: mlflow_server
     ports:
       - "8080:5000"  # Changed to forward to 8080
