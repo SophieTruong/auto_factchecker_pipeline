@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import os
-from datetime import datetime
 
 # MLflow setup
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
@@ -115,8 +114,8 @@ if __name__ == "__main__":
     experiment_name = "test_experiment"
     try:
         mlflow.create_experiment(experiment_name)
-    except:
-        pass
+    except Exception as e:
+        print(f"Error creating experiment: {str(e)}")
     
     mlflow.set_experiment(experiment_name)
     
