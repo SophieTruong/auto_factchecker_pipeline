@@ -7,11 +7,21 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 import os
 
 # MLflow setup
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
 MODEL_NAME = "test_model"
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 print(f"MLflow tracking URI: {MLFLOW_TRACKING_URI}")
+
+# Minio S3 setup
+MLFLOW_S3_ENDPOINT_URL = os.getenv("MLFLOW_S3_ENDPOINT_URL")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "minio")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "minio123")
+
+# Configure S3/MinIO client
+os.environ['MLFLOW_S3_ENDPOINT_URL'] = MLFLOW_S3_ENDPOINT_URL
+os.environ['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
+os.environ['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
 
 def generate_sample_data(n_samples=1000):
     """Generate synthetic data for binary classification"""
@@ -28,6 +38,9 @@ def generate_sample_data(n_samples=1000):
 def train_and_log_model():
     """Train a simple model and log it to MLflow"""
     print("Starting training process...")
+    
+    print(f"MLflow tracking URI: {MLFLOW_TRACKING_URI}")
+    print(f"MinIO endpoint URL: {MLFLOW_S3_ENDPOINT_URL}")
     
     # Generate data
     X, y = generate_sample_data()
@@ -111,28 +124,24 @@ if __name__ == "__main__":
     print("Starting MLflow experiment...")
     
     # Get the correct mlflow uri
-    
-    uris = ["http://localhost:5000", "http://mlflow:5000"]
-    for uri in uris:
-        try:
-            mlflow.set_tracking_uri(uri)
-            print(f"MLflow tracking URI: {uri}")
+    try:
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        print(f"MLflow tracking URI: {MLFLOW_TRACKING_URI}")
 
-            # Create experiment if it doesn't exist
-            experiment_name = "test_experiment"
+        # Create experiment if it doesn't exist
+        experiment_name = "test_experiment"
+        if mlflow.get_experiment_by_name(experiment_name) is None:
             mlflow.create_experiment(experiment_name)
-            print(f"CORRECT MLflow tracking URI: {uri}")
-            
-            mlflow.set_experiment(experiment_name)
-            
-            # Train and log model
-            run_id = train_and_log_model()
-            
-            # Test inference
-            test_model_inference(run_id)
-            pass
-        except Exception as e:
-            print(f"Error creating experiment: {str(e)}")
-            continue
+        
+        mlflow.set_experiment(experiment_name)
+                    
+        # Train and log model
+        run_id = train_and_log_model()
+        
+        # Test inference
+        test_model_inference(run_id)
+
+    except Exception as e:
+        print(f"Error creating experiment: {str(e)}")
     
     
