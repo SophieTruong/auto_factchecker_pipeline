@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim-bullseye
 
 # Set working directory in the container
 WORKDIR /app
@@ -21,6 +21,8 @@ COPY ./app /app
 
 # Copy env file
 COPY .env .
+
+COPY test_script.py .
 
 # Set Python path
 ENV PYTHONPATH=/app
