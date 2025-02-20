@@ -43,7 +43,7 @@ def keyword_search(query: str, data: list[FaktaBaari], nlp: spacy.lang) -> list[
         lemmatized_doc = [token.lemma_ for token in doc]
         
         query_doc = nlp(query)
-        lemmatized_query_doc = [token.lemma_ for token in query_doc]
+        lemmatized_query_doc = [token.lemma_ for token in query_doc] # TODO: try different tokenization methods
         
         if any(x in lemmatized_doc for x in lemmatized_query_doc):
             query_search_result.append(res)
