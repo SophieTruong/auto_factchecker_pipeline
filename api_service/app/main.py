@@ -44,7 +44,7 @@ logger.info('API is starting up')
 INFERENCE_MODEL_URI = "http://model_inference:8090/predict" if not os.getenv('INFERENCE_MODEL_URI') else os.getenv('INFERENCE_MODEL_URI')
 logger.info(f"*** INFERENCE_MODEL_URI: {INFERENCE_MODEL_URI}")
 
-SEMANTIC_SEARCH_URI = "http://semantic_search:8091/semantic_search"
+SEMANTIC_SEARCH_URI = "http://evidence_retrieval:8091/semantic_search"
 logger.info(f"*** SEMANTIC_SEARCH_URI: {SEMANTIC_SEARCH_URI}")
 
 # Set up FastAPI

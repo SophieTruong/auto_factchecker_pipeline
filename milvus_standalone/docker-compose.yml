@@ -66,26 +66,17 @@ services:
       - "etcd"
       - "minio"
   
-  # Semantic Search Service
-  semantic_search:
+  db_seed:
     build: .
-    ports:
-      - 8091:8091
     networks:
       - backend
-    environment:
-      - TEST_DATA_DIR=/app/test_data
-      - TEST_METADATA_DIR=/app/test_metadata
     volumes:
-      - ${HF_HOME}:/app/sentence-transformer-model
-      - ${DOCKER_VOLUME_DIRECTORY:-.}:/app/sentence-transformer-model
       - ${TEST_DATA_DIR}:/app/test_data
       - ${TEST_METADATA_DIR}:/app/test_metadata
     depends_on:
-      standalone:
-        condition: service_healthy
-      etcd:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-        
+      - "etcd"
+      - "minio"
+      # - "standalone"
+networks:
+  backend:
+    driver: bridge

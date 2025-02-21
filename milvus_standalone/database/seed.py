@@ -32,10 +32,10 @@ _SOURCE_NAME = 'source'
 _URL = 'url'
 _TIMESTAMP = 'timestamp'
 
-TEST_DATA_DIR = os.getenv("TEST_DATA_DIR")
-TEST_METADATA_DIR = os.getenv("TEST_METADATA_DIR")
-print(f"TEST_DATA_DIR: {TEST_DATA_DIR}")
-print(f"TEST_METADATA_DIR: {TEST_METADATA_DIR}")
+DATA_DIR = os.getenv("DATA_DIR")
+METADATA_DIR = os.getenv("METADATA_DIR")
+print(f"DATA_DIR: {DATA_DIR}")
+print(f"METADATA_DIR: {METADATA_DIR}")
 
 
 parser = argparse.ArgumentParser()
@@ -43,11 +43,11 @@ parser.add_argument("--test", type=str)
 args = parser.parse_args()
 
 def get_data(file_name):
-    test_data_fn = os.path.join(TEST_DATA_DIR, file_name)
-    test_metadata_fn = os.path.join(TEST_METADATA_DIR, file_name)
-    test_data_df = pd.read_csv(test_data_fn) # id, author, text
-    test_metadata_df = pd.read_csv(test_metadata_fn) # id, author, text
-    df = pd.merge(test_data_df, test_metadata_df, on='id')
+    data_fn = os.path.join(DATA_DIR, file_name)
+    metadata_fn = os.path.join(METADATA_DIR, file_name)
+    data_df = pd.read_csv(data_fn) # id, author, text
+    metadata_df = pd.read_csv(metadata_fn) # id, author, text
+    df = pd.merge(data_df, metadata_df, on='id')
     return df
 
 def _create_and_insert_collection():
@@ -72,7 +72,7 @@ def _create_and_insert_collection():
     list_collections()
 
     # Get data  
-    file_names = os.listdir(TEST_DATA_DIR)
+    file_names = os.listdir(DATA_DIR)
     filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
     if args.test == "1":
         fn = filtered_file_names[0]

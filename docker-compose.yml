@@ -28,31 +28,7 @@ services:
       service: model_inference
     environment:
       - MODEL_DIR=${MODEL_DIR}
-      - MODEL_URI=${MODEL_URI}
-
-  semantic_search:
-    extends:
-      file: ./semantic_search/docker-compose.yml
-      service: semantic_search
-    environment:
-      - TEST_DATA_DIR=/app/test_data
-      - TEST_METADATA_DIR=/app/test_metadata
-
-  # https://github.com/milvus-io/milvus/blob/master/deployments/docker/standalone/docker-compose.yml
-  etcd:
-    extends:
-      file: ./semantic_search/docker-compose.yml
-      service: etcd
-
-  minio:
-    extends:
-      file: ./semantic_search/docker-compose.yml
-      service: minio
-
-  standalone:
-    extends:
-      file: ./semantic_search/docker-compose.yml
-      service: standalone
+      - MODEL_URI=${MODEL_URI}  
   
   web_scrape:
     extends:
@@ -63,6 +39,31 @@ services:
     extends:
       file: ./model_monitoring_service/docker-compose.yml
       service: model_monitoring_service
+  
+  evidence_retrieval:
+    extends:
+      file: ./evidence_retrieval/docker-compose.yml
+      service: evidence_retrieval
+  
+  milvus_standalone:
+    extends:
+      file: ./milvus_standalone/docker-compose.yml
+      service: standalone
+  
+  etcd:
+    extends:
+      file: ./milvus_standalone/docker-compose.yml
+      service: etcd
+      
+  minio:
+    extends:
+      file: ./milvus_standalone/docker-compose.yml
+      service: minio
+  
+  db_seed:
+    extends:
+      file: ./milvus_standalone/docker-compose.yml
+      service: db_seed
 
 networks:
   backend:
