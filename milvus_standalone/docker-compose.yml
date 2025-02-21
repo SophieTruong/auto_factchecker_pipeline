@@ -71,6 +71,7 @@ services:
     networks:
       - backend
     volumes:
+      - ${HF_HOME}:/app/sentence-transformer-model
       - ${TEST_DATA_DIR}:/app/test_data
       - ${TEST_METADATA_DIR}:/app/test_metadata
     depends_on:

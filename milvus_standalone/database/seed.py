@@ -116,6 +116,7 @@ def _create_and_insert_collection():
     
 def main():
     # Create Milvus connection
+    print(f"Creating connection...")
     create_connection()
     
     # Drop collection if exists
@@ -128,7 +129,8 @@ def main():
     else:
         _create_and_insert_collection()
             
-            
+    print(f"Collection created and inserted...")
+
     ## Test 
     collection = get_collection(_COLLECTION_NAME)
     
