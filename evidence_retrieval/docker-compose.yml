@@ -2,10 +2,14 @@ services:
   # Semantic Search Service
   evidence_retrieval:
     build: .
-    networks:
-      - backend
+    ports:
+      - "8091:8091"
+    env_file:
+      - .env
     volumes:
       - ${HF_HOME}:/app/sentence-transformer-model
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge
