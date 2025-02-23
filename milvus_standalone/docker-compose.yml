@@ -67,7 +67,9 @@ services:
       - "minio"
   
   db_seed:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     networks:
       - backend
     volumes:
@@ -75,9 +77,16 @@ services:
       - ${TEST_DATA_DIR}:/app/test_data
       - ${TEST_METADATA_DIR}:/app/test_metadata
     depends_on:
-      - "etcd"
-      - "minio"
-      # - "standalone"
+      - milvus_standalone
+      - etcd
+      - minio
+    restart: "no"
+    deploy:
+      restart_policy:
+        condition: none
+    container_name: db_seeder
+    labels:
+      - "cleanup=true"
 networks:
   backend:
     driver: bridge

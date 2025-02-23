@@ -1,31 +1,41 @@
-FROM python:3.12-slim-bullseye
+# Stage 1: Build
+FROM python:3.12-slim-bullseye AS build
 
 # Set working directory in the container
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git
+# Install build dependencies in a single layer
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    git \
+    python3-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN apt-get update --allow-insecure-repositories -y && apt-get install apt-file -y && apt-file update && apt-get install -y python3-dev build-essential
-
-# Install dependencies:
+# Install Python dependencies
 COPY requirements.txt .
-RUN pip install -U pip setuptools wheel
-RUN pip install --trusted-host pypi.python.org --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir -U pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
     
-# Copy the rest of the application
-COPY ./app /app
+# Stage 2: Runtime
+FROM python:3.12-slim-bullseye
 
-# Copy env file
-COPY .env .
+WORKDIR /app
 
-COPY test_script.py .
-
-# Set Python path
+# Copy virtual environment from build stage
+COPY --from=build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 ENV PYTHONPATH=/app
+
+# Copy only necessary files
+COPY ./app /app
+COPY .env .
+COPY test_script.py .
 
 # Expose the port the app runs on
 EXPOSE 8080

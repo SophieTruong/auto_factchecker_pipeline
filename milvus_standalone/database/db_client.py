@@ -1,8 +1,7 @@
 import os   
 import dotenv
 import time
-from pymilvus import connections
-from sentence_transformers import SentenceTransformer
+from pymilvus import connections, model
 from pymilvus.exceptions import MilvusException
 
 dotenv.load_dotenv()
@@ -14,7 +13,11 @@ print(f"PORT: {_PORT}")
 
 MODEL = 'msmarco-distilbert-base-dot-prod-v3'
 
-model = SentenceTransformer(MODEL, cache_folder='./sentence-transformer-model')
+sentence_transformer_ef = model.dense.SentenceTransformerEmbeddingFunction(
+    model_name=MODEL, # Specify the model name
+    device='cpu' # Specify the device to use, e.g., 'cpu' or 'cuda:0'
+)
+
 
 # Create a Milvus connection
 def create_connection(max_retries=5, retry_delay=5):

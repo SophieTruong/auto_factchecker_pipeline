@@ -6,7 +6,7 @@ _METRIC_TYPE = 'L2' # A smaller value indicates a higher similarity.
 _INDEX_TYPE = 'IVF_FLAT'
 _NLIST = 1024
 _NPROBE = 16
-_TOPK = 3
+_TOPK = 5
 
 # Check if a collection exists in Milvus
 def has_collection(name):
@@ -58,10 +58,18 @@ def search(collection, vector_field, search_vectors):
     search_param = {
         "data": search_vectors,
         "anns_field": vector_field,
-        "param": {"metric_type": _METRIC_TYPE, "params": {"nprobe": _NPROBE}},
+        "param": {
+            "metric_type": _METRIC_TYPE,
+            "params": 
+                {
+                    "nprobe": _NPROBE,
+                    "radius": 0.6,
+                    "range_filter": 0.1
+                }
+            },
         "limit": _TOPK,
         "consistency_level": "Strong",
-        "output_fields": ["text", "label", "source", "timestamp"]
+        "output_fields": ["text", "label", "source", "timestamp"],
         }
     results = collection.search(**search_param)
     ret = []

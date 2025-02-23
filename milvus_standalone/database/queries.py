@@ -72,6 +72,7 @@ def search(collection, vector_field, search_vectors):
             query_result.append(res_dict)
     
         ret.append(query_result)
+    print(ret)
     return ret
 
 # Set properties for a collection

@@ -7,7 +7,7 @@ from database.queries import (
     list_collections,
     set_properties
 )
-from database.db_client import model
+from database.db_client import sentence_transformer_ef
 from database.collection import get_collection
 
 from translator import translate_claim
@@ -54,7 +54,7 @@ class SemanticSearchService:
     
     def _vector_db_search(self, search_input: SearchInput) -> List[Optional[SingleClaimSearchResult]]:
         translated_claims = [translate_claim(c) for c in search_input.claims]
-        query_vectors = model.encode(translated_claims)
+        query_vectors = sentence_transformer_ef.encode_queries(translated_claims)
     
         #create collection
         collection = get_collection(_COLLECTION_NAME)
@@ -77,18 +77,16 @@ class SemanticSearchService:
             else:
                 single_claim_search_results = []
                 for item in result:
-                    print(item)
-                    if item["distance"] <= self.distance_threshold:
-                        single_claim_search_result = SingleClaimSearchResult(
-                            id=item["id"],
-                            distance=item["distance"],
-                            source=item["entity"]["source"],
-                            timestamp=item["entity"]["timestamp"],
-                            text=item["entity"]["text"],
-                            label=item["entity"]["label"],
-                            url=None
-                            )
-                        single_claim_search_results.append(single_claim_search_result)
+                    single_claim_search_result = SingleClaimSearchResult(
+                        id=item["id"],
+                        distance=item["distance"],
+                        source=item["entity"]["source"],
+                        timestamp=item["entity"]["timestamp"],
+                        text=item["entity"]["text"],
+                        label=item["entity"]["label"],
+                        url=None
+                        )
+                    single_claim_search_results.append(single_claim_search_result)
                 parsed_results.append(single_claim_search_results)
             
         release_collection(collection)

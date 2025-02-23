@@ -6,7 +6,7 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 
 import pandas as pd
 from datetime import datetime
-from db_client import create_connection, model
+from db_client import create_connection, sentence_transformer_ef
 from collection import create_collection, get_collection
 from queries import (   
     has_collection, 
@@ -21,6 +21,11 @@ from queries import (
     search,
     set_properties
 )
+
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+print(f"Logger: {logger}")
 
 # Const names
 _COLLECTION_NAME = 'text_embeddings'
@@ -75,10 +80,10 @@ def _create_and_insert_collection():
     file_names = os.listdir(DATA_DIR)
     filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
     if args.test == "1":
-        fn = filtered_file_names[0]
+        fn = filtered_file_names[2]
         df = get_data(fn)
-        print(df.head())
-        print(df.columns)
+        print(f"df: {df.head()}")
+        print(f"df columns: {df.columns}")
         
     else:
         dfs = []
@@ -93,7 +98,9 @@ def _create_and_insert_collection():
     sources = df.source.values
     urls = df.url.values
     timestamps = [datetime.now().strftime("%Y-%m-%d %H:%M:%S") for _ in range(len(docs))]
-    docs_embeddings = model.encode(docs)
+    docs_embeddings = sentence_transformer_ef.encode_documents(docs)
+    
+    print("Dim:", sentence_transformer_ef.dim, docs_embeddings[0].shape)
     
     data = [
         {
@@ -116,31 +123,27 @@ def _create_and_insert_collection():
     
 def main():
     # Create Milvus connection
-    print(f"Creating connection...")
+    logger.info("Creating connection...")
     create_connection()
     
     # Drop collection if exists
     if has_collection(_COLLECTION_NAME):
-        collection = get_collection(_COLLECTION_NAME)
-        print(f"collection found: {collection}")
-        if collection.is_empty:
-            drop_collection(_COLLECTION_NAME)
-            _create_and_insert_collection()
-    else:
-        _create_and_insert_collection()
+        drop_collection(_COLLECTION_NAME)
+    _create_and_insert_collection()
             
-    print(f"Collection created and inserted...")
+    logger.info("Collection created and inserted...")
 
     ## Test 
     collection = get_collection(_COLLECTION_NAME)
     
     load_collection(collection)
     
-    query=["Covid-19 originates from a Wuhan lab"]
-    query_vectors = model.encode(query)
+    queries=["Covid-19 originates from a Wuhan lab"]
+    query_embeddings = sentence_transformer_ef.encode_queries(queries)
+
 
     ### search
-    search(collection, _VECTOR_FIELD_NAME, query_vectors)
+    search(collection, _VECTOR_FIELD_NAME, query_embeddings)
     
     release_collection(collection)
 
