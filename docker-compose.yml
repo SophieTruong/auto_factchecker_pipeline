@@ -26,6 +26,8 @@ services:
     extends:
       file: ./model_inference_service/docker-compose.yml
       service: model_inference
+    env_file:
+      - .env
     environment:
       - MODEL_DIR=${MODEL_DIR}
       - MODEL_URI=${MODEL_URI}  
@@ -34,6 +36,8 @@ services:
     extends:
       file: ./web_scrape/docker-compose.yml
       service: web_scrape
+    deploy:
+      replicas: 3
 
   model_monitoring_service:
     extends:
@@ -64,6 +68,17 @@ services:
     extends:
       file: ./milvus_standalone/docker-compose.yml
       service: db_seed
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - evidence_retrieval
+    networks:
+      - backend
 
 networks:
   backend:
