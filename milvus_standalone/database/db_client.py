@@ -14,10 +14,11 @@ print(f"PORT: {_PORT}")
 MODEL = 'msmarco-distilbert-base-dot-prod-v3'
 
 sentence_transformer_ef = model.dense.SentenceTransformerEmbeddingFunction(
-    model_name=MODEL, # Specify the model name
+    model_name=MODEL, # Specify the model name'
+    query_instruction = "",
+    doc_instruction = "",
     device='cpu' # Specify the device to use, e.g., 'cpu' or 'cuda:0'
 )
-
 
 # Create a Milvus connection
 def create_connection(max_retries=5, retry_delay=5):
