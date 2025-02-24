@@ -19,10 +19,16 @@ class ClaimTestClient:
 
         return await self._make_request(url, payload)
 
-    async def test_claim_annotation(self, claims: list) -> Tuple[Optional[int], Any]:
+    async def test_claim_annotation(self, claims: list, labels: list) -> Tuple[Optional[int], Any]:
         """Test claim annotation endpoint"""
         url = f"{self.base_url}/claim_annotation/insert"
-        payload = {"claims": claims}
+        payload = {"claims": [{
+            "source_document_id": claim["claim"]["source_document_id"], 
+            "claim_id": claim["claim"]["id"], 
+            "claim_text": claim["claim"]["text"], 
+            "binary_label": label,
+            "text_label": ""
+        } for claim, label in zip(claims, labels)]}
 
         return await self._make_request(url, payload)
 
@@ -53,30 +59,6 @@ async def main():
     # Test data
     test_text = """Yhdysvaltain presidentti Donald Trump kävi keskiviikkona puhelinkeskustelut Venäjän presidentti Vladimir Putinin sekä Ukrainan presidentti Volodymyr Zelenskyin kanssa. Trumpin mukaan presidentit keskustelivat neuvottelujen aloittamisesta sodan lopettamiseksi Ukrainassa. Trump sanoi neuvottelujen alkavan välittömästi."""
     
-    test_claims = [
-        {
-            "source_document_id": "d7ab92ba-28ae-4392-9dcc-564a78ca3e9a",
-            "claim_id": "e9d96424-401e-49e8-baa4-acd9bf519de8",
-            "claim_text": "Yhdysvaltain presidentti Donald Trump kävi keskiviikkona puhelinkeskustelut Venäjän presidentti Vladimir Putinin sekä Ukrainan presidentti Volodymyr Zelenskyin kanssa.",
-            "binary_label": True,
-            "text_label": ""
-        },
-        {
-            "source_document_id": "d7ab92ba-28ae-4392-9dcc-564a78ca3e9a",
-            "claim_id": "b2e54b98-3428-4be1-8847-b31a7ee34ce4",
-            "claim_text": "Trumpin mukaan presidentit keskustelivat neuvottelujen aloittamisesta sodan lopettamiseksi Ukrainassa.",
-            "binary_label": False,
-            "text_label": ""
-        },
-        {
-            "source_document_id": "d7ab92ba-28ae-4392-9dcc-564a78ca3e9a",
-            "claim_id": "b0e43bd9-dd29-4548-89fc-9b615f5a99e6",
-            "claim_text": "Trump sanoi neuvottelujen alkavan välittömästi.",
-            "binary_label": False,
-            "text_label": ""
-        }
-    ]
-
     test_semantic_claims = [
         "Ydysvaltain presidentti Donald Trump kävi keskiviikkona puhelinkeskustelut Venäjän presidentti Vladimir Putinin sekä Ukrainan presidentti Volodymyr Zelenskyin kanshsa.",
         "Covid is a hoax"
@@ -87,11 +69,11 @@ async def main():
 
     # Test claim detection
     print("\nTesting claim detection:")
-    await client.test_claim_detection(test_text)
+    response = await client.test_claim_detection(test_text)
 
     # Test claim annotation
     print("\nTesting claim annotation:")
-    await client.test_claim_annotation(test_claims)
+    await client.test_claim_annotation(response[1]["claims"], labels=[True, False, False])
 
     # Test semantic search
     print("\nTesting semantic search:")
