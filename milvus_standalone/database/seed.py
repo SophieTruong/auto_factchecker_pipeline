@@ -78,13 +78,14 @@ def _create_and_insert_collection():
 
     # Get data  
     file_names = os.listdir(DATA_DIR)
+    print("file_names: ", file_names)
     filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
     if args.test == "1":
         fn = filtered_file_names[2]
         df = get_data(fn)
         print(f"df: {df.head()}")
         print(f"df columns: {df.columns}")
-        
+        print("df text: ", df.text[0])
     else:
         dfs = []
         for fn in filtered_file_names:
@@ -98,6 +99,7 @@ def _create_and_insert_collection():
     sources = df.source.values
     urls = df.url.values
     timestamps = [datetime.now().strftime("%Y-%m-%d %H:%M:%S") for _ in range(len(docs))]
+    print("docs: ", docs[0])
     docs_embeddings = sentence_transformer_ef.encode_documents(docs)
     
     print("Dim:", sentence_transformer_ef.dim, docs_embeddings[0].shape)
