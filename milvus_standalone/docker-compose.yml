@@ -74,9 +74,9 @@ services:
       - backend
     env_file: ".env"
     volumes:
-      - ${HF_HOME:-/.cache/huggingface}:/app/sentence-transformer-model
-      - ${TEST_DATA_DIR:-~/Downloads/article_text}:/app/test_data
-      - ${TEST_METADATA_DIR:-~/Downloads/article_listing}:/app/test_metadata
+      - ${HF_HOME}:/app/sentence-transformer-model
+      - ${TEST_DATA_DIR}:/app/test_data
+      - ${TEST_METADATA_DIR}:/app/test_metadata
     depends_on:
       - milvus_standalone
       - etcd
