@@ -93,13 +93,12 @@ def _create_and_insert_collection():
             dfs.append(df)
         df = pd.concat(dfs)
         print(df.head())
-    
+    df.text.fillna("", inplace=True)
     docs = df.text.values
     labels = ["Nan" for _ in range(len(docs))]
     sources = df.source.values
     urls = df.url.values
     timestamps = [datetime.now().strftime("%Y-%m-%d %H:%M:%S") for _ in range(len(docs))]
-    print("docs: ", docs[0])
     docs_embeddings = sentence_transformer_ef.encode_documents(docs)
     
     print("Dim:", sentence_transformer_ef.dim, docs_embeddings[0].shape)
