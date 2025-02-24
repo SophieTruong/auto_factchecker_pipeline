@@ -72,14 +72,16 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
         print(f"hashed_api_key: {hashed_api_keys}")
 
         if not hashed_api_keys:
+            logger.info("No API keys found")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Forbidden"
+                detail="No matching API keys found"
             )
         elif not any(verify_password(api_key, hashed_api_key.hashed_api_key) for hashed_api_key in hashed_api_keys):
+            logger.info("Invalid API key")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Forbidden"
+                detail="Invalid API key"
             )
         
 # CREATE claim
