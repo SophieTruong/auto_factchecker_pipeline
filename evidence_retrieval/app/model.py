@@ -1,7 +1,12 @@
 from pydantic import BaseModel
 from typing import Optional, List
+
+class Claim(BaseModel):
+    claim: str
+    timestamp: Optional[str] = None
+    
 class SearchInput(BaseModel):
-    claims: List[str]
+    claims: List[Claim]
 
 class SingleClaimSearchResult(BaseModel):
     id: int

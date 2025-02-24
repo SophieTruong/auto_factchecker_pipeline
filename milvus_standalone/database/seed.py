@@ -101,7 +101,9 @@ def _create_and_insert_collection():
     labels = ["Nan" for _ in range(len(docs))]
     sources = df.source.values
     urls = df.url.values
-    timestamps = [datetime.now().strftime("%Y-%m-%d %H:%M:%S") for _ in range(len(docs))]
+    
+    # TODO: Replace this with actual timestamps if found from data
+    timestamps = [datetime.now() for _ in range(len(docs))]
     
     docs_embeddings = sentence_transformer_ef.encode_documents(docs)
     

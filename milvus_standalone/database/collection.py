@@ -47,7 +47,7 @@ def create_collection(
                          is_primary=False)
     field6 = FieldSchema(name=url_field, dtype=DataType.VARCHAR, description="factcheck_analysis_link", max_length=500,
                          is_primary=False)
-    field7 = FieldSchema(name=timestamp_field, dtype=DataType.VARCHAR, description="timestamp", max_length=20,
+    field7 = FieldSchema(name=timestamp_field, dtype=DataType.INT64, description="timestamp", max_length=20,
                          is_primary=False)
     
     schema = CollectionSchema(
