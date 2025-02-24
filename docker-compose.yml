@@ -26,12 +26,7 @@ services:
     extends:
       file: ./model_inference_service/docker-compose.yml
       service: model_inference
-    env_file:
-      - .env
-    environment:
-      - MODEL_DIR=${MODEL_DIR}
-      - MODEL_URI=${MODEL_URI}  
-  
+        
   web_scrape:
     extends:
       file: ./web_scrape/docker-compose.yml
