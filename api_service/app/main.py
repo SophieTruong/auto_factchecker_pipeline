@@ -83,7 +83,11 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid API key"
             )
-        
+# GET /
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
 # CREATE claim
 @app.post(
     "/claim_detection/insert", 
