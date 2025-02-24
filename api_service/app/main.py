@@ -64,7 +64,7 @@ Base.metadata.create_all(bind=engine)
 get_db()
 
 # Set up oauth2 scheme
-header_scheme = APIKeyHeader(name="api_key")
+header_scheme = APIKeyHeader(name="x-api-key")
 
 def api_key_auth(api_key: str, db: Session = Depends(get_db)):
     with db.begin():
