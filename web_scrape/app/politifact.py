@@ -1,13 +1,13 @@
-from collections import defaultdict
 from dateutil import parser
 import re
-
 import requests
 from bs4 import BeautifulSoup
 
 from url_builder import URLBuilder
 from factchecked_data import PoliticFactData
-from typing import List
+from typing import List, Optional
+
+from utils import is_valid_datetime, is_article_after_timestamp, get_timestamp
 
 VERDICT_DICT = {
     'meter-true': 'true', 
@@ -88,10 +88,11 @@ def parse_html_content(req_response: requests.Response) -> List[PoliticFactData]
                 ret.append(PoliticFactData(**factchecked_data))
     return ret
 
-def get_politifact_search_results(query: str) -> List[PoliticFactData]:
+def get_politifact_search_results(query: str, timestamp: Optional[str] = None) -> List[PoliticFactData]:
     
     try:
-        print(f"Getting Politifact search results for {query}")
+        timestamp = get_timestamp(timestamp)
+        print(f"Getting Politifact search results for {query} at {timestamp}")
         
         url = get_url(query = query)
         
@@ -101,7 +102,15 @@ def get_politifact_search_results(query: str) -> List[PoliticFactData]:
     
         print(factchecked_data)
         
-        return factchecked_data
+        filtered_data = [
+            item for item in factchecked_data 
+            if (
+                is_valid_datetime(item.statement_date) and 
+                not is_article_after_timestamp(item.statement_date, timestamp)
+            )
+        ]
+        
+        return filtered_data
     except Exception as e:
         print(f"Error getting Politifact search results for {query}: {e}")
         return []
