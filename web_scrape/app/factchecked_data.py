@@ -42,3 +42,6 @@ class FactCheckOrg(GoogleCustomSearchEngine):
 class FullFact(GoogleCustomSearchEngine):
     pass
 
+class Snopes(GoogleCustomSearchEngine):
+    pass
+
