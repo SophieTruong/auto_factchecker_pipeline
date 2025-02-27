@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from models.semantic_search_input import SemanticSearchInput
+from models.semantic_search_input import SemanticSearchInputs
 from models.semantic_search_response import BatchSemanticSearchResponse
 
 from utils.make_request import make_request
@@ -10,10 +10,10 @@ class SemanticSearchService:
     def __init__(self, semantic_search_service_uri: str):
         self.semantic_search_service_uri = semantic_search_service_uri
 
-    def get_search_result(self, claims: SemanticSearchInput):
+    def get_search_result(self, claims: SemanticSearchInputs):
         return self._process_predictions(claims)
     
-    async def _process_predictions(self, claims: SemanticSearchInput) -> List[BatchSemanticSearchResponse]:
+    async def _process_predictions(self, claims: SemanticSearchInputs) -> List[BatchSemanticSearchResponse]:
         """Get and store model predictions for claims."""
         # Get model predictions
         search_results = await make_request(self.semantic_search_service_uri, claims.model_dump())        

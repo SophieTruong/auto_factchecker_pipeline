@@ -13,7 +13,7 @@ from models.claim_detection_response import BatchClaimResponse
 from models.source_document import SourceDocumentCreate
 from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
-from models.semantic_search_input import SemanticSearchInput
+from models.semantic_search_input import SemanticSearchInputs
 from models.semantic_search_response import BatchSemanticSearchResponse
 from models.claim_model_monitoring import ClaimModelMonitoring
 
@@ -267,7 +267,7 @@ async def update_claim_annotations(
     status_code=status.HTTP_200_OK
 )
 async def semantic_search(
-    claim_input: SemanticSearchInput,
+    claim_input: SemanticSearchInputs,
     db: Session = Depends(get_db),
     key: str = Depends(header_scheme)
 ) -> Optional[BatchSemanticSearchResponse]:

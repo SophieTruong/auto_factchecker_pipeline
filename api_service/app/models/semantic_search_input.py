@@ -8,4 +8,12 @@ class SemanticSearchInput(BaseModel):
     Input model for the claim detection service.
     """
     model_config = ConfigDict(str_strip_whitespace=True)
-    claims: List[str]
+    claim: str
+    timestamp: Optional[str] = None
+
+class SemanticSearchInputs(BaseModel):
+    """
+    Input model for the claim detection service.
+    """
+    model_config = ConfigDict(str_strip_whitespace=True)
+    claims: List[SemanticSearchInput]
