@@ -6,6 +6,8 @@ def translate_claim(claim: str, target_language: str = "fi"):
         language = detect(claim)
         if language != target_language:
             return GoogleTranslator(source=language, target=target_language).translate(claim)
+        else:
+            return claim
     except Exception as e:
         print(f"Error translating claim: {e}")
         return claim
