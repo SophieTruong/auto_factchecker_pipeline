@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import List
-from milvus import utility
+from pymilvus import utility
 
 def validate_and_fix_date(date_str: str, claim_index: int) -> int:
     """
