@@ -14,6 +14,9 @@ from translator import translate_claim
 
 from make_request import make_request
 
+from utils import process_factcheck_dates
+
+from datetime import datetime
 import dotenv
 import os
 
@@ -29,6 +32,8 @@ class SemanticSearchService:
         self.distance_threshold = distance_threshold
 
     async def semantic_search(self, search_input: SearchInput) -> SearchResponse:
+        factcheck_dates =  process_factcheck_dates([input.timestamp for input in search_input.claims])
+        
         # vector db search  
         search_results = self._vector_db_search(search_input)
         
@@ -40,7 +45,7 @@ class SemanticSearchService:
         for i, result in enumerate(search_results):
             parsed_results.append(
                 ClaimSearchResult(
-                    claim=search_input.claims[i],
+                    claim=search_input.claims[i].claim,
                     vector_db_results=result,
                     web_search_results=web_search_results["results"][i]
                 )
@@ -49,13 +54,20 @@ class SemanticSearchService:
     
     async def _web_search(self, search_input: SearchInput) -> dict:
         
+
         web_search_results = await make_request(WEB_SEARCH_URL, search_input.model_dump())
+        
         return web_search_results
     
     def _vector_db_search(self, search_input: SearchInput) -> List[Optional[SingleClaimSearchResult]]:
-        translated_claims = [translate_claim(c) for c in search_input.claims]
+        translated_claims = [translate_claim(c.claim) for c in search_input.claims]
+        
         query_vectors = sentence_transformer_ef.encode_queries(translated_claims)
-    
+
+        factcheck_dates =  process_factcheck_dates([input.timestamp for input in search_input.claims])
+        
+        print(f"Factcheck dates: {factcheck_dates}")
+        
         #create collection
         collection = get_collection(_COLLECTION_NAME)
         collection.load()
@@ -67,7 +79,7 @@ class SemanticSearchService:
         list_collections()
 
         # search
-        search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors)
+        search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors, factcheck_dates)
         
         # parse results
         parsed_results = []

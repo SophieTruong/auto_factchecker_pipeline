@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import List
+from milvus import utility
 
-def validate_and_fix_date(date_str: str, claim_index: int) -> datetime:
+def validate_and_fix_date(date_str: str, claim_index: int) -> int:
     """
     Validates a date string and returns current date if invalid.
     Args:
@@ -10,7 +11,7 @@ def validate_and_fix_date(date_str: str, claim_index: int) -> datetime:
     Returns:
         Valid date string in YYYY-MM-DD format
     """
-    current_date = datetime.now()
+    current_date = utility.mkts_from_datetime(datetime.now())
     
     # Check for empty date
     if not date_str:
@@ -23,13 +24,13 @@ def validate_and_fix_date(date_str: str, claim_index: int) -> datetime:
         if check_date > datetime.now():
             print(f"Date {date_str} is in the future for claim {claim_index}")
             return current_date
-        return check_date
+        return utility.mkts_from_datetime(check_date)
         
     except ValueError:
         print(f"Invalid date format for claim {claim_index}")
         return current_date
 
-def process_factcheck_dates(factcheck_dates: List[str]) -> List[str]:
+def process_factcheck_dates(factcheck_dates: List[str]) -> List[int]:
     """
     Process and validate a list of factcheck dates.
     Returns list with invalid dates replaced by current date.
