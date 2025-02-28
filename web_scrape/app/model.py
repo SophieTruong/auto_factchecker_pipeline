@@ -1,9 +1,9 @@
 from typing import Dict, List, Union
 from pydantic import BaseModel
-from factchecked_data import PoliticFactData, FaktaBaari, FactCheckOrg, FullFact, Snopes
+from factchecked_data import PoliticFactData, FaktaBaari, GoogleCustomSearchEngine
 
 # Define a union type for all possible fact-check types
-FactCheckResult = Union[PoliticFactData, FaktaBaari, FactCheckOrg, FullFact, Snopes]
+FactCheckResult = Union[PoliticFactData, FaktaBaari, GoogleCustomSearchEngine]
 
 # Define the response type
 SourceSearchResults = Dict[str, List[FactCheckResult]]

@@ -35,13 +35,3 @@ class GoogleCustomSearchEngine(BaseModel):
     link: Optional[str] = ""
     article_published_time: Optional[datetime] = None
     article_modified_time: Optional[datetime] = None
-
-class FactCheckOrg(GoogleCustomSearchEngine):
-    pass
-
-class FullFact(GoogleCustomSearchEngine):
-    pass
-
-class Snopes(GoogleCustomSearchEngine):
-    pass
-

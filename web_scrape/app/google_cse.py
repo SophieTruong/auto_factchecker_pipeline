@@ -7,7 +7,7 @@ from datetime import datetime
 
 from url_builder import URLBuilder
 from utils import get_timestamp, get_meta_value, is_article_after_timestamp, is_valid_datetime
-from factchecked_data import GoogleCustomSearchEngine, FactCheckOrg, FullFact, Snopes
+from factchecked_data import GoogleCustomSearchEngine
 from typing import List, Optional
 
 load_dotenv()
@@ -92,7 +92,7 @@ def get_cse_search_results(
     query: str, 
     source: str,
     timestamp: Optional[str] = None
-    ) -> List[FactCheckOrg | FullFact | Snopes]:
+    ) -> List[GoogleCustomSearchEngine]:
     try:
         if source not in CSE_ID.keys():
             raise ValueError(f"Invalid source: {source}, Source must be one of the following: {CSE_ID.keys()}")
@@ -108,12 +108,7 @@ def get_cse_search_results(
         
         response = get_json_response(url, timestamp, source)
         
-        if source == "factcheckorg":
-            return [FactCheckOrg(**item) for item in response]
-        elif source == "fullfact":
-            return [FullFact(**item) for item in response]
-        else:
-            return [Snopes(**item) for item in response]
+        return response
             
     except Exception as e:
         print(f"Error getting {source} search results for {query}: {e}")
