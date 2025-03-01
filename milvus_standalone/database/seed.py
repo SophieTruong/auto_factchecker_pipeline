@@ -1,6 +1,7 @@
 import argparse
 import os
 import dotenv
+from pymilvus import utility
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
@@ -103,7 +104,7 @@ def _create_and_insert_collection():
     urls = df.url.values
     
     # TODO: Replace this with actual timestamps if found from data
-    timestamps = [datetime.now() for _ in range(len(docs))]
+    timestamps = [utility.mkts_from_datetime(datetime.now() ) for _ in range(len(docs))]
     
     docs_embeddings = sentence_transformer_ef.encode_documents(docs)
     

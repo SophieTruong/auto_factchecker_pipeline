@@ -33,6 +33,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY ./app /app
 COPY .env .
 
-EXPOSE 8091
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8091"]
+CMD ["python", "queue_consumer.py"]

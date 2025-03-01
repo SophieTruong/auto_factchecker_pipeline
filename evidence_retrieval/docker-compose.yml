@@ -2,14 +2,15 @@ services:
   # Semantic Search Service
   evidence_retrieval:
     build: .
-    ports:
-      - "8091:8091"
     env_file:
       - .env
     volumes:
       - ${HF_HOME}:/app/sentence-transformer-model
     networks:
       - backend
+    depends_on:
+      - rabbitmq
+      - milvus_standalone
 networks:
   backend:
     driver: bridge

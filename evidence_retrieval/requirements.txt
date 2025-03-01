@@ -4,8 +4,6 @@ torch==2.5.1
 torchvision==0.20.1
 torchaudio==2.5.1
 pymilvus[model]==2.5.3
-fastapi==0.115.6
-uvicorn[standard]==0.34.0
 pydantic==2.10.3
 sentence-transformers==3.0.1
 python-dotenv==1.0.1
@@ -14,3 +12,4 @@ deep-translator==1.11.4
 pandas==2.2.2
 asyncio==3.4.3
 aiohttp==3.11.11
+aio-pika==9.5.5

@@ -1,11 +1,22 @@
+"""
+Reference source for streaming response:
+https://medium.com/@ab.hassanein/streaming-responses-in-fastapi-d6a3397a4b7b
+"""
 from typing import List, Optional, Annotated
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
+# Streaming response
+from fastapi.responses import StreamingResponse
+from sse_starlette import EventSourceResponse
+
 from fastapi.security import APIKeyHeader
 
 from sqlalchemy.orm import Session
+
+import json
+import asyncio
 
 # Import pydantic models
 from models.claim import Claim
@@ -25,6 +36,7 @@ from database.crud import get_all_api_keys
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
 from services.semantic_search import SemanticSearchService
+from services.semantic_search_queue import SemanticSearchQueueService
 from services.claim_model_monitoring_data import ClaimModelMonitoringService
 
 # Import utils
@@ -83,6 +95,14 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid API key"
             )
+            
+async def test_semantic_search_queue(claim_input: SemanticSearchInputs):
+    semantic_search_queue_service = await SemanticSearchQueueService().connect()
+    logger.info(f"semantic_search_queue_service: {semantic_search_queue_service}")
+    result = await semantic_search_queue_service.get_search_result(claim_input)
+    logger.info(f"result: {result}")
+    yield result
+    
 # GET /
 @app.get("/")
 async def root():
@@ -282,6 +302,33 @@ async def semantic_search(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get semantic search results: {str(e)}"
         )
+ 
+@app.post(
+    "/semantic_search_queue",
+    # response_model=Optional[dict],
+    # responses={
+    #     200: {"description": "Successfully"},
+    #     400: {"description": "Bad request"},
+    #     401: {"description": "Unauthorized - Invalid API key"},
+    #     500: {"description": "Internal server error"}
+    # },
+    # status_code=status.HTTP_200_OK
+)
+       
+async def semantic_search_queue(
+    claim_input: SemanticSearchInputs,
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
+) -> dict:
+    try:
+        api_key_auth(key, db)        
+        return StreamingResponse(test_semantic_search_queue(claim_input), media_type="text/event-stream")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get semantic search results: {str(e)}"
+        )
+
 
 @app.get(
     "/claim_model_monitoring/get_data",

@@ -13,3 +13,6 @@ asyncio==3.4.3
 aiohttp==3.11.11
 bcrypt==4.2.1
 PyJWT==2.10.1
+aio-pika==9.5.5
+asyncio==3.4.3
+sse-starlette==2.2.1
