@@ -25,7 +25,7 @@ from models.source_document import SourceDocumentCreate
 from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
 from models.semantic_search_input import SemanticSearchInputs
-from models.semantic_search_response import BatchSemanticSearchResponse
+from models.semantic_search_response import SemanticSearchResponse, BatchSemanticSearchResponse
 from models.claim_model_monitoring import ClaimModelMonitoring
 
 # Import database models
@@ -96,12 +96,16 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
                 detail="Invalid API key"
             )
             
-async def test_semantic_search_queue(claim_input: SemanticSearchInputs):
+async def semantic_search_callback(claim_input: SemanticSearchInputs):
+    
     semantic_search_queue_service = await SemanticSearchQueueService().connect()
+    
     logger.info(f"semantic_search_queue_service: {semantic_search_queue_service}")
-    result = await semantic_search_queue_service.get_search_result(claim_input)
-    logger.info(f"result: {result}")
-    yield result
+    
+    for claim in claim_input.claims:
+        
+        result = await semantic_search_queue_service.get_search_result(claim)
+        yield result
     
 # GET /
 @app.get("/")
@@ -284,7 +288,7 @@ async def update_claim_annotations(
         401: {"description": "Unauthorized - Invalid API key"},
         500: {"description": "Internal server error"}
     },
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
 )
 async def semantic_search(
     claim_input: SemanticSearchInputs,
@@ -305,14 +309,15 @@ async def semantic_search(
  
 @app.post(
     "/semantic_search_queue",
-    # response_model=Optional[dict],
-    # responses={
-    #     200: {"description": "Successfully"},
-    #     400: {"description": "Bad request"},
-    #     401: {"description": "Unauthorized - Invalid API key"},
-    #     500: {"description": "Internal server error"}
-    # },
-    # status_code=status.HTTP_200_OK
+    response_class=StreamingResponse,
+    response_model=Optional[SemanticSearchResponse],
+    responses={
+        200: {"description": "Successfully"},
+        400: {"description": "Bad request"},
+        401: {"description": "Unauthorized - Invalid API key"},
+        500: {"description": "Internal server error"}
+    },
+    status_code=status.HTTP_200_OK
 )
        
 async def semantic_search_queue(
@@ -322,7 +327,7 @@ async def semantic_search_queue(
 ) -> dict:
     try:
         api_key_auth(key, db)        
-        return StreamingResponse(test_semantic_search_queue(claim_input), media_type="text/event-stream")
+        return StreamingResponse(semantic_search_callback(claim_input), media_type="text/event-stream")
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

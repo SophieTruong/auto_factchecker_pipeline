@@ -7,7 +7,7 @@ from aio_pika.abc import (
 )
 import json
 import uuid
-from models.semantic_search_input import SemanticSearchInputs
+from models.semantic_search_input import SemanticSearchInput
 import asyncio
 from typing import MutableMapping
 
@@ -75,7 +75,7 @@ class SemanticSearchQueueService:
 
             return
         
-    async def get_search_result(self, claims: SemanticSearchInputs):
+    async def get_search_result(self, claim: SemanticSearchInput):
                 
         correlation_id = str(uuid.uuid4())
         
@@ -90,7 +90,7 @@ class SemanticSearchQueueService:
         # Publish message
         message = Message(
                 body=json.dumps({
-                    'claims': claims.model_dump(),
+                    'claim': claim.model_dump(),
                     'correlation_id': correlation_id
                 }).encode(),
                 content_type='application/json', # describe the mime-type of the encoding

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
+# TODO: Review this
 class SemanticSearchResult(BaseModel):
     id: int
     distance: float
