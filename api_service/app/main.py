@@ -109,7 +109,11 @@ async def semantic_search_callback(claim_input: SemanticSearchInputs):
     
 # GET /
 @app.get("/")
-async def root():
+async def root(
+    db: Session = Depends(get_db),
+    key: str = Depends(header_scheme)
+):
+    api_key_auth(key, db)
     return {"message": "Hello World"}
 
 # CREATE claim
