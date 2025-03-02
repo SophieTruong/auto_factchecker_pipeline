@@ -1,5 +1,5 @@
 from typing import Optional, List   
-from model import SearchInput, SearchResponse, SingleClaimSearchResult, ClaimSearchResult
+from model import Claim, SearchResponse, SingleClaimSearchResult, ClaimSearchResult
 
 from database.queries import (
     search, 
@@ -14,7 +14,7 @@ from translator import translate_claim
 
 from make_request import make_request
 
-from utils import process_factcheck_dates
+from utils import validate_and_fix_date
 
 from datetime import datetime
 import dotenv
@@ -31,9 +31,7 @@ class SemanticSearchService:
     def __init__(self, distance_threshold: float = 50.00):
         self.distance_threshold = distance_threshold
 
-    async def semantic_search(self, search_input: SearchInput) -> SearchResponse:
-        factcheck_dates =  process_factcheck_dates([input.timestamp for input in search_input.claims])
-        
+    async def semantic_search(self, search_input: Claim) -> SearchResponse:        
         # vector db search  
         search_results = self._vector_db_search(search_input)
         
@@ -45,28 +43,27 @@ class SemanticSearchService:
         for i, result in enumerate(search_results):
             parsed_results.append(
                 ClaimSearchResult(
-                    claim=search_input.claims[i].claim,
+                    claim=search_input.claim,
                     vector_db_results=result,
-                    web_search_results=web_search_results["results"][i]
+                    web_search_results=web_search_results
                 )
             )
         return SearchResponse(claims=parsed_results)
     
-    async def _web_search(self, search_input: SearchInput) -> dict:
-        
+    async def _web_search(self, search_input: Claim) -> dict:
 
         web_search_results = await make_request(WEB_SEARCH_URL, search_input.model_dump())
         
         return web_search_results
     
-    def _vector_db_search(self, search_input: SearchInput) -> List[Optional[SingleClaimSearchResult]]:
-        translated_claims = [translate_claim(c.claim) for c in search_input.claims]
+    def _vector_db_search(self, search_input: Claim) -> List[Optional[SingleClaimSearchResult]]:
+        translated_claim = translate_claim(search_input.claim)
         
-        query_vectors = sentence_transformer_ef.encode_queries(translated_claims)
-
-        factcheck_dates =  process_factcheck_dates([input.timestamp for input in search_input.claims])
+        query_vectors = sentence_transformer_ef.encode_queries([translated_claim])
         
-        print(f"Factcheck dates: {factcheck_dates}")
+        factcheck_date =  validate_and_fix_date(search_input.timestamp)
+        
+        print(f"Factcheck date:  {factcheck_date}")
         
         #create collection
         collection = get_collection(_COLLECTION_NAME)
@@ -79,11 +76,11 @@ class SemanticSearchService:
         list_collections()
 
         # search
-        search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors, factcheck_dates)
-        
+        search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors, factcheck_date)
+        print(f"search_results: {search_results}")
         # parse results
         parsed_results = []
-        for i, result in enumerate(search_results):
+        for result in search_results:
             if len(result) == 0:
                 parsed_results.append([])
             else:

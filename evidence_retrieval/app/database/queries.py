@@ -54,10 +54,7 @@ def release_collection(collection):
     collection.release()
 
 # Search for similar vectors in a collection
-def search(collection, vector_field, search_vectors, factcheck_dates):
-    
-    # Current solution for getting date range for a list of claims:
-    max_date = max(factcheck_dates)
+def search(collection, vector_field, search_vectors, factcheck_date):
     
     search_param = {
         "data": search_vectors,
@@ -72,21 +69,15 @@ def search(collection, vector_field, search_vectors, factcheck_dates):
                 }
             },
         "limit": _TOPK,
-        "expr": f"timestamp < {max_date}",
+        "expr": f"timestamp < {factcheck_date}",
         "consistency_level": "Strong",
         "output_fields": ["text", "label", "source", "timestamp"],
         }
 
     results = collection.search(**search_param)
-    ret = []
-    for i, result in enumerate(results):
-        query_result = []
-        for j, res in enumerate(result):
-            res_dict = res.to_dict()
-            query_result.append(res_dict)
-    
-        ret.append(query_result)
-    return ret
+    print(f"collection.search results: {results}")
+
+    return results
 
 # Set properties for a collection
 def set_properties(collection):

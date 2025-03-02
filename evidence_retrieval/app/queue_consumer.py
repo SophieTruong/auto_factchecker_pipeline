@@ -10,7 +10,7 @@ import asyncio
 
 from database.db_client import create_connection
 from services import SemanticSearchService
-from model import SearchInput
+from model import Claim
 from app_logging import logger
 
 import os
@@ -72,11 +72,13 @@ async def main():
                     
                     logger.info(f"body: {body}")
                     
-                    claims = body.get('claims', {})
+                    logger.info(f"body.keys(): {body.keys()}")
                     
-                    logger.info(f"claims: {claims}")
+                    claim = body["claim"]
                     
-                    search_input = SearchInput(**claims)
+                    logger.info(f"claim: {claim}")
+                    
+                    search_input = Claim(**claim)
                     
                     logger.info(f"search_input: {search_input}")
                 
