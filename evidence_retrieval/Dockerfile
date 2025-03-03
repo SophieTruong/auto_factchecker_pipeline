@@ -33,4 +33,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY ./app /app
 COPY .env .
 
-CMD ["python", "queue_consumer.py"]
+CMD ["python", "evidence_retrieval_rpc_server.py"]
