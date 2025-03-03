@@ -12,12 +12,6 @@ class Claim(BaseModel):
     claim: str
     timestamp: str
 
-class SearchInput(BaseModel):
-    claims: List[Claim]
-
-class SingleSearchResult(BaseModel):
+class WebScrapResult(BaseModel):
     claim: str
     response: SourceSearchResults
-
-class SearchResponse(BaseModel):
-    results: List[SingleSearchResult]

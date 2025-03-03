@@ -6,7 +6,15 @@ import requests
 from datetime import datetime
 
 from url_builder import URLBuilder
-from utils import get_timestamp, get_meta_value, is_article_after_timestamp, is_valid_datetime
+from utils import (
+    is_valid_datetime, 
+    is_article_after_timestamp, 
+    get_timestamp, 
+    get_meta_value,
+    logger, 
+    aiohttp_get,
+    aiohttp_json
+)
 from factchecked_data import GoogleCustomSearchEngine
 from typing import List, Optional
 
@@ -24,7 +32,7 @@ def get_url(query:str, se_key=None, se_id=None):
 
     # .add_param("sort", "") = sort by Relevance
     url = builder.set_scheme("https") \
-                .set_authority("www.googleapis.com/") \
+                .set_authority("www.googleapis.com") \
                 .set_path("customsearch/v1") \
                 .add_param("key",se_key) \
                 .add_param("cx",se_id) \
@@ -51,7 +59,9 @@ def get_json_response(url, timestamp: datetime, source: str) -> List[GoogleCusto
             return filter_google_cse_results(response_items, timestamp, source)
             
     except Exception as err:
-        print(f"Error when parsing response json: {err}")
+        
+        logger.error(f"Error when parsing response json: {err}")
+        
         return []
 
 def filter_google_cse_results(
@@ -62,8 +72,11 @@ def filter_google_cse_results(
     
     # Process items
     response_data = []
+    
     for item in response_items:
+        
         article_published_time = get_meta_value(item, "article:published_time")
+        
         article_modified_time = get_meta_value(item, "article:modified_time")
         
         # Skip if article is too new
@@ -83,33 +96,54 @@ def filter_google_cse_results(
             article_published_time = article_published_time,
             article_modified_time = article_modified_time
         )
+        
         response_data.append(cse_result)
     
     return response_data
 
 
-def get_cse_search_results(
+async def get_cse_search_results(
     query: str, 
     source: str,
     timestamp: Optional[str] = None
     ) -> List[GoogleCustomSearchEngine]:
     try:
+        
         if source not in CSE_ID.keys():
             raise ValueError(f"Invalid source: {source}, Source must be one of the following: {CSE_ID.keys()}")
         
         timestamp = get_timestamp(timestamp)
-        print(f"Getting {source} search results for {query} at {timestamp}")
+        
+        logger.info(f"Getting {source} search results for {query} at {timestamp}")
 
         cse_api_key = os.getenv("CSE_API_KEY")
         
         cse_id = CSE_ID[source]
         
-        url = get_url(query, cse_api_key, cse_id)        
+        url = get_url(query, cse_api_key, cse_id)     
+        logger.info(f"URL: {url}")   
         
-        response = get_json_response(url, timestamp, source)
+        # response = get_json_response(url, timestamp, source)
+        response = await aiohttp_get(url)
         
-        return response
+        if type(response) == dict and response.get("error"):
+            return []
+        
+        response_json = await aiohttp_json(response)
+        
+        logger.info(f"Raw response from {source}: {response_json}")
+        
+        response_items = response_json.get("items", [])
+        
+        if not response_items:
+            return []  
+        
+        filtered_results =  filter_google_cse_results(response_items, timestamp, source)
+        
+        return filtered_results
             
     except Exception as e:
-        print(f"Error getting {source} search results for {query}: {e}")
+        
+        logger.info(f"Error getting {source} search results for {query}: {e}")
+        
         return []

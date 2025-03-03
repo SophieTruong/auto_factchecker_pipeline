@@ -7,7 +7,15 @@ from url_builder import URLBuilder
 from factchecked_data import PoliticFactData
 from typing import List, Optional
 
-from utils import is_valid_datetime, is_article_after_timestamp, get_timestamp
+from utils import (
+    is_valid_datetime, 
+    is_article_after_timestamp, 
+    get_timestamp, 
+    logger, 
+    aiohttp_get
+)
+
+import json
 
 VERDICT_DICT = {
     'meter-true': 'true', 
@@ -24,7 +32,7 @@ def get_url(query:str):
     builder = URLBuilder()
 
     url = builder.set_scheme("https") \
-                .set_authority("www.politifact.com/") \
+                .set_authority("www.politifact.com") \
                 .set_path("search/") \
                 .add_param("q",query) \
                 .build()
@@ -35,13 +43,13 @@ def get_html_content(url):
     
     return requests.get(url)
 
-def parse_html_content(req_response: requests.Response) -> List[PoliticFactData]:
+def parse_html_content(req_response: str) -> List[PoliticFactData]:
     """
     This function parses PoliticalFact content following this path https://www.politifact.com/search/?q=<query>
     This path contains more relevant result w.r.t the search query. 
     More fact-check article can be found from https://www.politifact.com/search/factcheck/?page=<page_number>&q=<query>
     """
-    soup = BeautifulSoup(req_response.content, 'html.parser')
+    soup = BeautifulSoup(req_response, 'html.parser')
     # print(soup.prettify())
     
     ret = []
@@ -88,19 +96,24 @@ def parse_html_content(req_response: requests.Response) -> List[PoliticFactData]
                 ret.append(PoliticFactData(**factchecked_data))
     return ret
 
-def get_politifact_search_results(query: str, timestamp: Optional[str] = None) -> List[PoliticFactData]:
+async def get_politifact_search_results(query: str, timestamp: Optional[str] = None) -> List[PoliticFactData]:
     
     try:
         timestamp = get_timestamp(timestamp)
-        print(f"Getting Politifact search results for {query} at {timestamp}")
+        
+        logger.info(f"Getting Politifact search results for {query} at {timestamp}")
         
         url = get_url(query = query)
         
-        response = get_html_content(url)
-    
+        # response = get_html_content(url)
+        response = await aiohttp_get(url)
+        
+        if type(response) == dict and response.get("error"):
+            return []
+
         factchecked_data = parse_html_content(response)
     
-        print(factchecked_data)
+        logger.info(factchecked_data)
         
         filtered_data = [
             item for item in factchecked_data 
@@ -111,6 +124,9 @@ def get_politifact_search_results(query: str, timestamp: Optional[str] = None) -
         ]
         
         return filtered_data
+    
     except Exception as e:
-        print(f"Error getting Politifact search results for {query}: {e}")
+    
+        logger.error(f"Error getting Politifact search results for {query}: {e}")
+    
         return []

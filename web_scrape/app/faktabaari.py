@@ -5,12 +5,18 @@ import datetime
 
 import spacy
 
+from utils import (
+    logger,
+    aiohttp_get
+)
+
 from url_builder import URLBuilder
 from factchecked_data import FaktaBaari
 
 from typing import List
 
 def get_url():
+    
     builder = URLBuilder()
 
     url = builder.set_scheme("https") \
@@ -53,21 +59,25 @@ def keyword_search(query: str, data: list[FaktaBaari], nlp: spacy.lang) -> list[
 
     return sorted_query_search_result
 
-def get_faktabaari_search_results(query: str) -> List[FaktaBaari]:
-    print(f"Getting FaktaBaari search results for {query}")
+async def get_faktabaari_search_results(query: str) -> List[FaktaBaari]:
+    
+    logger.info(f"Getting FaktaBaari search results for {query}")
+    
     # Set up spacy and load lemmatizer pipeline
     nlp = spacy.load("fi_core_news_sm", disable=['ner', 'parser'])
         
     url = get_url()
     
-    json_response = get_json_response(url)
+    # json_response = get_json_response(url)
+    json_response = await aiohttp_get(url)
     
     # This function is problematic because the delay increase when the amount of response data increase
     start = datetime.datetime.now()
     
     search_res = keyword_search(query, json_response, nlp)
+    
     end = datetime.datetime.now()
         
-    print(f"Elipsed time of keyword_search = {end-start}")
+    logger.info(f"Elipsed time of keyword_search = {end-start}")
 
     return search_res
