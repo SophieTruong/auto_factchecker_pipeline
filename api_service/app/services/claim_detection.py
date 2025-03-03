@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import json
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from uuid import UUID
@@ -27,6 +27,8 @@ from utils.sentencizer import get_sentences
 from utils.make_request import make_request
 from utils.app_logging import logger
 from utils.validator import validate_date_range
+
+from services.claim_prediction_rcp_client import ClaimPredictionRcpClient
 
 class ClaimDetectionService:
     def __init__(self, db: Session, inference_service_uri: str):
@@ -141,16 +143,15 @@ class ClaimDetectionService:
                 source_document_id=source_document_id
             ) 
             for txt in get_sentences(text) 
-            if txt.strip()
+            if txt.strip() and len(txt.strip()) > 5
         ]
         claims_data = [claim.model_dump() for claim in claims]
+
         inserted_claims = insert_claims(self.db, claims_data)
-        logger.info(f"*** inserted_claims: {inserted_claims}")
-        
+
         # Create a mapping of text to claim for efficient lookup
         claim_map = {claim.text: claim for claim in inserted_claims}
-        logger.info(f"*** claim_map: {claim_map}")
-        
+
         # Return claims in original order, using either inserted or existing claims
         return [
             claim_map.get(claim.text) or get_claim_by_text(self.db, claim.text)
@@ -160,7 +161,18 @@ class ClaimDetectionService:
     async def _process_predictions(self, claims: List[Claim]) -> List[ClaimModelInference]:
         """Get and store model predictions for claims."""
         # Get model predictions
-        inference_res = await self._get_model_predictions(claims)
+        
+        # inference_res = await self._get_model_predictions(claims) # DEPRECATED
+        
+        inference_res = await self._get_model_predictions_from_rabbitmq(claims)
+                
+        inference_res = json.loads(inference_res)
+        
+        for res in inference_res["inference_results"]:
+            
+            res["created_at"] = datetime.strptime(res["created_at"], "%Y-%m-%d %H:%M:%S")
+            
+        logger.info(f"*** inference_res from rabbitmq: {inference_res}")
         
         # Get or create model record
         model_id = self._get_or_create_model(inference_res["model_metadata"])
@@ -172,6 +184,19 @@ class ClaimDetectionService:
         """Get predictions from inference service."""
         return await make_request(
             self.inference_service_uri,
+            [claim.text for claim in claims]
+        )
+
+    async def _get_model_predictions_from_rabbitmq(self, claims: List[Claim]) -> dict:
+        """Get predictions from inference service."""
+        
+        claim_prediction_rcp_client = ClaimPredictionRcpClient()
+        
+        await claim_prediction_rcp_client.connect()
+        
+        logger.info("*** claim_prediction_rcp_client connected")
+        
+        return await claim_prediction_rcp_client.get_model_predictions(
             [claim.text for claim in claims]
         )
 
