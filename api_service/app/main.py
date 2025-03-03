@@ -36,7 +36,7 @@ from database.crud import get_all_api_keys
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
 from services.semantic_search import SemanticSearchService
-from services.semantic_search_queue import SemanticSearchQueueService
+from services.evidence_retrieval_rpc_client import EvidenceRetrievalRpcClient
 from services.claim_model_monitoring_data import ClaimModelMonitoringService
 
 # Import utils
@@ -98,7 +98,7 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
             
 async def semantic_search_callback(claim_input: SemanticSearchInputs):
     
-    semantic_search_queue_service = await SemanticSearchQueueService().connect()
+    semantic_search_queue_service = await EvidenceRetrievalRpcClient().connect()
     
     logger.info(f"semantic_search_queue_service: {semantic_search_queue_service}")
     

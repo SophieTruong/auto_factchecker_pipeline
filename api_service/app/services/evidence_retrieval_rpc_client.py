@@ -21,7 +21,7 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 RABBITMQ_URL = os.getenv("RABBITMQ_URL")
 
 
-class SemanticSearchQueueService:
+class EvidenceRetrievalRpcClient:
     connection: AbstractConnection
     channel: AbstractChannel
     callback_queue: AbstractQueue
