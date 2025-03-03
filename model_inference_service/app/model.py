@@ -6,7 +6,10 @@ class InferenceResult(BaseModel):
     Model inference result.
     """
     label: bool = Field(description="The label of the claim")
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="The timestamp of the inference")
+    created_at: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"), 
+        description="The timestamp of the inference"
+        )
     
     
 class ModelMetadata(BaseModel):
@@ -16,4 +19,4 @@ class ModelMetadata(BaseModel):
     model_name: str = Field(description="The name of the model")
     model_version: str = Field(description="The version of the model")
     model_path: str = Field(description="The path to the model")
-    created_at: datetime = Field(description="The timestamp of the model creation")
+    created_at: str = Field(description="The timestamp of the model creation")

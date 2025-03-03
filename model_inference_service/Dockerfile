@@ -30,6 +30,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY ./app /app
 COPY .env .
 
-EXPOSE 8090
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8090"]
+CMD ["python", "claim_prediction_rcp_server.py"]

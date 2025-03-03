@@ -9,8 +9,8 @@ services:
       - MODEL_DIR=${MODEL_DIR}
     volumes:
       - ${MODEL_DIR}:/app/mlruns
-    ports:
-      - "8090:8090"
+    depends_on:
+      - rabbitmq
     networks:
       - backend
 

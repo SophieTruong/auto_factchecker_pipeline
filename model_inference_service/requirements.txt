@@ -1,11 +1,7 @@
 python-dotenv==1.0.1
-httpx==0.28.1
-aiohttp==3.11.11
-asyncio==3.4.3
 PyYAML==6.0.2
 pydantic==2.10.3
 pytest==8.3.4
-fastapi==0.115.6
 uvicorn[standard]==0.34.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.5.1
@@ -15,3 +11,5 @@ transformers==4.47.1
 huggingface_hub==0.26.5
 mlflow==2.19.0
 git+https://github.com/Wauplin/setfit@dont-use-deprecated-dataset-filter
+aio-pika==9.5.5
+asyncio==3.4.3
