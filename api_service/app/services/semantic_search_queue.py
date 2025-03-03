@@ -19,8 +19,6 @@ import dotenv
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 RABBITMQ_URL = os.getenv("RABBITMQ_URL")
-RABBITMQ_EXCHANGE = os.getenv("RABBITMQ_EXCHANGE")
-RABBITMQ_QUEUE = os.getenv("RABBITMQ_QUEUE")
 
 
 class SemanticSearchQueueService:
