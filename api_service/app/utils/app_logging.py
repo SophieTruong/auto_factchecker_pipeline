@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # StreamHandler for the console
 stream_handler = logging.StreamHandler(sys.stdout)
