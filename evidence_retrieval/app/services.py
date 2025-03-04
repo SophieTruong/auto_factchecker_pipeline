@@ -14,7 +14,7 @@ from translator import translate_claim
 
 from make_request import make_request
 
-from utils import validate_and_fix_date
+from utils import validate_and_fix_date, logger
 
 from datetime import datetime
 import dotenv
@@ -31,24 +31,25 @@ class SemanticSearchService:
     def __init__(self, distance_threshold: float = 50.00):
         self.distance_threshold = distance_threshold
 
-    async def semantic_search(self, search_input: Claim) -> SearchResponse:        
+    async def semantic_search(self, search_input: Claim) -> ClaimSearchResult:        
         # vector db search  
         search_results = self._vector_db_search(search_input)
+        
+        logger.info(f"DEBUG search_results: {search_results}")
         
         # web search
         web_search_results = await self._web_search(search_input)
         
+        logger.info(f"web_search_results: {web_search_results}")
+        
         # parse results
-        parsed_results = []
-        for i, result in enumerate(search_results):
-            parsed_results.append(
-                ClaimSearchResult(
-                    claim=search_input.claim,
-                    vector_db_results=result,
-                    web_search_results=web_search_results
-                )
+        claim_search_result = ClaimSearchResult(
+                claim=search_input.claim,
+                vector_db_results=search_results[0], # TODO: properly 
+                web_search_results=web_search_results
             )
-        return SearchResponse(claims=parsed_results)
+        
+        return claim_search_result
     
     async def _web_search(self, search_input: Claim) -> dict:
 
@@ -63,10 +64,11 @@ class SemanticSearchService:
         
         factcheck_date =  validate_and_fix_date(search_input.timestamp)
         
-        print(f"Factcheck date:  {factcheck_date}")
+        logger.info(f"Factcheck date:  {factcheck_date}")
         
         #create collection
         collection = get_collection(_COLLECTION_NAME)
+        
         collection.load()
         
         # alter ttl properties of collection level
@@ -77,27 +79,44 @@ class SemanticSearchService:
 
         # search
         search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors, factcheck_date)
-        print(f"search_results: {search_results}")
+        
+        logger.info(f"search_results for evidence retrieval module: {search_results}")
+       
         # parse results
         parsed_results = []
-        for result in search_results:
+       
+        for i, result in enumerate(search_results):
+            
             if len(result) == 0:
+                
                 parsed_results.append([])
+            
             else:
+                
                 single_claim_search_results = []
+                
                 for item in result:
-                    single_claim_search_result = SingleClaimSearchResult(
-                        id=item["id"],
-                        distance=item["distance"],
-                        source=item["entity"]["source"],
-                        timestamp=item["entity"]["timestamp"],
-                        text=item["entity"]["text"],
-                        label=item["entity"]["label"],
-                        url=None
-                        )
-                    single_claim_search_results.append(single_claim_search_result)
+                    
+                    print(f"DEBUG: item: {item}")
+                    
+                    # single_claim_search_result = []
+                    # SingleClaimSearchResult(
+                    #     id=item["id"],
+                    #     distance=item["distance"],
+                    #     source=item["entity"]["source"],
+                    #     timestamp=item["entity"]["timestamp"],
+                    #     text=item["entity"]["text"],
+                    #     label=item["entity"]["label"],
+                    #     url=None
+                    #     )
+                    
+                    # single_claim_search_results.append(single_claim_search_result)
+                
                 parsed_results.append(single_claim_search_results)
             
+            logger.info(f"DEBUG: i = {i}")
+            
         release_collection(collection)
+       
         return parsed_results
     

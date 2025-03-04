@@ -40,7 +40,7 @@ async def main():
     
     channel = await connection.channel()
     
-    channel.set_qos(prefetch_count=10)
+    await channel.set_qos(prefetch_count=10)
     
     logger.info(f"Channel created")
     
@@ -68,8 +68,6 @@ async def main():
 
                     body = json.loads(message.body.decode())
                     
-                    logger.info(f"body: {body}")
-                    
                     logger.info(f"body.keys(): {body.keys()}")
                     
                     claim = body["claim"]
@@ -83,8 +81,6 @@ async def main():
                     # Process search request
                     result = await semantic_search_service.semantic_search(search_input)
                     
-                    logger.info(f"result: {result}")
-
                     response = result.model_dump()
                     
                     logger.info(f"response: {response}")

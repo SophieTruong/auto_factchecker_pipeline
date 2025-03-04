@@ -8,7 +8,6 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 # Streaming response
-from fastapi.responses import StreamingResponse
 from sse_starlette import EventSourceResponse
 
 from fastapi.security import APIKeyHeader
@@ -35,7 +34,7 @@ from database.crud import get_all_api_keys
 # Import services
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
-from services.semantic_search import SemanticSearchService
+# from services.semantic_search import SemanticSearchService
 from services.evidence_retrieval_rpc_client import EvidenceRetrievalRpcClient
 from services.claim_model_monitoring_data import ClaimModelMonitoringService
 
@@ -99,11 +98,9 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
 async def semantic_search_callback(claim_input: SemanticSearchInputs):
     
     semantic_search_queue_service = await EvidenceRetrievalRpcClient().connect()
-    
     logger.info(f"semantic_search_queue_service: {semantic_search_queue_service}")
     
     for claim in claim_input.claims:
-        
         result = await semantic_search_queue_service.get_search_result(claim)
         yield result
     
@@ -285,36 +282,7 @@ async def update_claim_annotations(
 
 @app.post(
     "/semantic_search/create",
-    response_model=Optional[dict],
-    responses={
-        200: {"description": "Successfully"},
-        400: {"description": "Bad request"},
-        401: {"description": "Unauthorized - Invalid API key"},
-        500: {"description": "Internal server error"}
-    },
-    status_code=status.HTTP_200_OK,
-)
-async def semantic_search(
-    claim_input: SemanticSearchInputs,
-    db: Session = Depends(get_db),
-    key: str = Depends(header_scheme)
-) -> Optional[BatchSemanticSearchResponse]:
-    try:
-        api_key_auth(key, db)
-        print(f"claim_input: {claim_input}")
-        semantic_search_service = SemanticSearchService(SEMANTIC_SEARCH_URI)
-        return await semantic_search_service.get_search_result(claim_input)
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get semantic search results: {str(e)}"
-        )
- 
-@app.post(
-    "/semantic_search_queue",
-    response_class=StreamingResponse,
-    response_model=Optional[SemanticSearchResponse],
+    response_class=EventSourceResponse,
     responses={
         200: {"description": "Successfully"},
         400: {"description": "Bad request"},
@@ -328,16 +296,17 @@ async def semantic_search_queue(
     claim_input: SemanticSearchInputs,
     db: Session = Depends(get_db),
     key: str = Depends(header_scheme)
-) -> dict:
+):
     try:
-        api_key_auth(key, db)        
-        return StreamingResponse(semantic_search_callback(claim_input), media_type="text/event-stream")
+        api_key_auth(key, db)
+        # text/event-stream        
+        return EventSourceResponse(semantic_search_callback(claim_input), media_type="text/event-stream")
+    
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get semantic search results: {str(e)}"
         )
-
 
 @app.get(
     "/claim_model_monitoring/get_data",
@@ -368,6 +337,36 @@ async def get_claim_model_monitoring_data(
         return results
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get claim model monitoring data: {str(e)}")
+
+# @app.post(
+#     "/semantic_search/create",
+#     response_model=Optional[dict],
+#     responses={
+#         200: {"description": "Successfully"},
+#         400: {"description": "Bad request"},
+#         401: {"description": "Unauthorized - Invalid API key"},
+#         500: {"description": "Internal server error"}
+#     },
+#     status_code=status.HTTP_200_OK,
+# )
+# async def semantic_search(
+#     claim_input: SemanticSearchInputs,
+#     db: Session = Depends(get_db),
+#     key: str = Depends(header_scheme)
+# ) -> Optional[BatchSemanticSearchResponse]:
+#     try:
+#         api_key_auth(key, db)
+#         print(f"claim_input: {claim_input}")
+#         semantic_search_service = SemanticSearchService(SEMANTIC_SEARCH_URI)
+#         return await semantic_search_service.get_search_result(claim_input)
+
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail=f"Failed to get semantic search results: {str(e)}"
+#         )
+ 
+
 
 # # READ claim by id or date range
 # @app.get("/claim_detection/", response_model=Optional[List[Claim]])
