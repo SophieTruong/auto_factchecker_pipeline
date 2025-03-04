@@ -85,7 +85,7 @@ class ClaimPredictionRcpClient:
                 
         correlation_id = str(uuid.uuid4())
         
-        logger.info(f"A correlation_id is generated for get_search_result: {correlation_id}")  
+        logger.info(f"A correlation_id is generated for get_model_predictions: {correlation_id}")  
         
         loop = asyncio.get_running_loop()
 
