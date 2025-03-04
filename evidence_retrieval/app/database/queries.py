@@ -1,6 +1,8 @@
 from pymilvus import Collection, utility
 from datetime import datetime
 
+from utils import logger
+
 # Index parameters
 _METRIC_TYPE = 'L2' # A smaller value indicates a higher similarity.
 _INDEX_TYPE = 'IVF_FLAT'
@@ -16,12 +18,12 @@ def has_collection(name):
 def drop_collection(name):
     collection = Collection(name)
     collection.drop()
-    print("\nDrop collection: {}".format(name))
+    logger.info(f"\nDrop collection: {name}")
 
 # List all collections in Milvus
 def list_collections():
-    print("\nlist collections:")
-    print(utility.list_collections())
+    logger.info(f"\nlist collections:")
+    logger.info(utility.list_collections())
 
 # Insert data into a collection
 def insert(collection, data):
@@ -30,8 +32,8 @@ def insert(collection, data):
 
 # Get the number of entities in a collection
 def get_entity_num(collection):
-    print("\nThe number of entity:")
-    print(collection.num_entities)
+    logger.info(f"\nThe number of entity:")
+    logger.info(collection.num_entities)
 
 def create_index(collection, filed_name):
     index_param = {
@@ -39,11 +41,11 @@ def create_index(collection, filed_name):
         "params": {"nlist": _NLIST},
         "metric_type": _METRIC_TYPE}
     collection.create_index(filed_name, index_param)
-    print("\nCreated index:\n{}".format(collection.index().params))
+    logger.info(f"\nCreated index:\n{collection.index().params}")
 
 def drop_index(collection):
     collection.drop_index()
-    print("\nDrop index sucessfully")
+    logger.info(f"\nDrop index sucessfully")
 
 
 def load_collection(collection):
@@ -75,7 +77,7 @@ def search(collection, vector_field, search_vectors, factcheck_date):
         }
 
     results = collection.search(**search_param)
-    print(f"collection.search results: {results}")
+    logger.info(f"collection.search results: {results}")
 
     return results
 
