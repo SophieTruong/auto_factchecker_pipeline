@@ -38,7 +38,7 @@ class ClaimDetectionService:
     async def get_predictions(
         self, 
         input_data: SourceDocumentCreate
-    ) -> BatchClaimResponse:
+    ) -> Optional[BatchClaimResponse]:
         """
         Process a source document to extract and classify claims.
         
