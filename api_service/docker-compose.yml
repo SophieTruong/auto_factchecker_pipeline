@@ -26,7 +26,8 @@ services:
     - 8080:8080
     restart: always
     depends_on:
-      - "db"
+      - db
+      - rabbitmq
     networks:
       - backend
 
