@@ -34,79 +34,89 @@ async def main():
     logger.info("Initialized Semantic search service")
     
     # 3. Create connection to rabbitmq
-    connection = await connect(RABBITMQ_URL)
-    
-    logger.info(f"Connected to RabbitMQ at {RABBITMQ_URL}")
-    
-    channel = await connection.channel()
-    
-    await channel.set_qos(prefetch_count=10)
-    
-    logger.info(f"Channel created")
-    
-    exchange = channel.default_exchange
-    
-    logger.info(f"Exchange created")
+    try:
+        
+        connection = await connect(RABBITMQ_URL)
+        
+        logger.info(f"Connected to RabbitMQ at {RABBITMQ_URL}")
+        
+        channel = await connection.channel()
+        
+        await channel.set_qos(prefetch_count=10)
+        
+        logger.info(f"Channel created")
+        
+        exchange = channel.default_exchange
+        
+        logger.info(f"Exchange created")
 
-    queue = await channel.declare_queue("rpc_queue")
+        queue = await channel.declare_queue(
+            "rpc_evidence_retrieval_queue",
+            durable=True,  # Must match the durable=true in definitions.json
+            auto_delete=False  # Must match auto_delete=false in definitions.json
+        )
+        logger.info(f"Queue created: {queue.name}")
+        
+        logger.info(" [x] Awaiting RPC requests")
 
-    logger.info(f"Queue created")
-    
-    logger.info(" [x] Awaiting RPC requests")
+        async with queue.iterator() as qiterator:
 
-    async with queue.iterator() as qiterator:
+            message: AbstractIncomingMessage
 
-        message: AbstractIncomingMessage
+            async for message in qiterator:
 
-        async for message in qiterator:
+                try:
 
-            try:
+                    async with message.process(requeue=False):
 
-                async with message.process(requeue=False):
+                        assert message.reply_to is not None
 
-                    assert message.reply_to is not None
-
-                    body = json.loads(message.body.decode())
+                        body = json.loads(message.body.decode())
+                        
+                        logger.info(f"body.keys(): {body.keys()}")
+                        
+                        claim = body["claim"]
+                        
+                        logger.info(f"claim: {claim}")
+                        
+                        search_input = Claim(**claim)
+                        
+                        logger.info(f"search_input: {search_input}")
                     
-                    logger.info(f"body.keys(): {body.keys()}")
-                    
-                    claim = body["claim"]
-                    
-                    logger.info(f"claim: {claim}")
-                    
-                    search_input = Claim(**claim)
-                    
-                    logger.info(f"search_input: {search_input}")
+                        # Process search request
+                        result = await semantic_search_service.semantic_search(search_input)
+                        
+                        response = result.model_dump()
+                        
+                        logger.info(f"response: {response}")
+
+                        await exchange.publish(
+
+                            Message(
+
+                                body=json.dumps(response).encode(), 
+
+                                correlation_id=message.correlation_id,
                 
-                    # Process search request
-                    result = await semantic_search_service.semantic_search(search_input)
-                    
-                    response = result.model_dump()
-                    
-                    logger.info(f"response: {response}")
+                                content_type='application/json'
 
-                    await exchange.publish(
+                            ),
 
-                        Message(
+                            routing_key=message.reply_to,
 
-                            body=json.dumps(response).encode(), 
+                        )
 
-                            correlation_id=message.correlation_id,
-            
-                            content_type='application/json'
+                        logger.info("Request complete")
 
-                        ),
+                except Exception:
 
-                        routing_key=message.reply_to,
+                    logger.exception("Processing error for message %r", message)
 
-                    )
-
-                    logger.info("Request complete")
-
-            except Exception:
-
-                logger.exception("Processing error for message %r", message)
-
+    except Exception as e:
+        
+        logger.error(f"Error connecting to RabbitMQ: {e}")
+        
+        raise e
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -78,34 +78,10 @@ services:
       - backend
 
   rabbitmq:
-    image: rabbitmq:4-management
-    ports:
-      - "5672:5672"   # AMQP protocol port
-      - "15672:15672" # Management UI port
-    networks:
-      - backend
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    command: >
-      bash -c "
-        # Start RabbitMQ in the background
-        rabbitmq-server &
-        
-        # Wait for RabbitMQ to fully start
-        sleep 15
-        
-        # Create vhost remote_host if it doesn't exist
-        rabbitmqctl add_vhost remote_host || echo 'Vhost remote_host already exists'
-        
-        # Set full permissions for guest user on vhost remote_host
-        rabbitmqctl set_permissions -p remote_host guest '.*' '.*' '.*'
-        
-        # Keep container running
-        wait
-      "
+    extends:
+      file: ./rabbitmq_server/docker-compose.yml
+      service: rabbitmq-server
+
 networks:
   backend:
     # Specify driver options

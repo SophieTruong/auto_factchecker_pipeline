@@ -37,23 +37,30 @@ class ClaimPredictionRcpClient:
         self.futures: MutableMapping[str, asyncio.Future] = {}
 
     async def connect(self):
-        self.connection = await connect(RABBITMQ_URL)
+        try:
+            self.connection = await connect(RABBITMQ_URL)
+            
+            logger.info(f"Connected to RabbitMQ at {RABBITMQ_URL}")
         
-        logger.info(f"Connected to RabbitMQ at {RABBITMQ_URL}")
-    
-        self.channel = await self.connection.channel()
-        
-        await self.channel.set_qos(prefetch_count=10)
-        
-        logger.info(f"Channel created")
+            self.channel = await self.connection.channel()
+            
+            await self.channel.set_qos(prefetch_count=10)
+            
+            logger.info(f"Channel created")
 
-        self.callback_queue = await self.channel.declare_queue(exclusive=True)
+            self.callback_queue = await self.channel.declare_queue(exclusive=True)
 
-        await self.callback_queue.consume(self.on_response, no_ack=True)
+            await self.callback_queue.consume(self.on_response, no_ack=True)
+            
+            logger.info(f"Callback queue created")
+
+            return self
         
-        logger.info(f"Callback queue created")
-
-        return self
+        except Exception as e:
+        
+            logger.error(f"Error connecting to RabbitMQ: {e}")
+        
+            raise e
     
     async def on_response(self, message: AbstractIncomingMessage):
         

@@ -74,33 +74,47 @@ class EvidenceRetrievalRpcClient:
             return
         
     async def get_search_result(self, claim: SemanticSearchInput):
-                
-        correlation_id = str(uuid.uuid4())
-        
-        logger.info(f"A correlation_id is generated for get_search_result: {correlation_id}")  
-        
-        loop = asyncio.get_running_loop()
-
-        future = loop.create_future()
-
-        self.futures[correlation_id] = future
-        
-        # Publish message
-        message = Message(
+        try:
+            correlation_id = str(uuid.uuid4())
+            
+            logger.info(f"A correlation_id is generated for get_search_result: {correlation_id}")  
+            
+            loop = asyncio.get_running_loop()
+            future = loop.create_future()
+            self.futures[correlation_id] = future
+            
+            # Publish message
+            message = Message(
                 body=json.dumps({
                     'claim': claim.model_dump(),
                     'correlation_id': correlation_id
                 }).encode(),
-                content_type='application/json', # describe the mime-type of the encoding
-                correlation_id=correlation_id, # correlate RPC responses with requests
-                reply_to=self.callback_queue.name, # automatically generated queue name for response from RPC server
+                content_type='application/json',
+                correlation_id=correlation_id,
+                reply_to=self.callback_queue.name,
             )
-        
-        await self.channel.default_exchange.publish(
-            message,
-            routing_key="rpc_queue"
-        )
-        
-        logger.info(f"Published message")
-        
-        return await future
+            
+            # Log more details about the message
+            logger.info(f"Publishing message to queue: rpc_evidence_retrieval_queue")
+            logger.info(f"Message reply_to: {self.callback_queue.name}")
+            
+            # Publish with confirmation
+            await self.channel.default_exchange.publish(
+                message,
+                routing_key="rpc_evidence_retrieval_queue"
+            )
+            
+            logger.info(f"Published message successfully")
+            
+            # Set a timeout for the future
+            try:
+                result = await asyncio.wait_for(future, timeout=30.0)
+                return result
+            except asyncio.TimeoutError:
+                logger.error(f"Timeout waiting for response with correlation_id: {correlation_id}")
+                self.futures.pop(correlation_id, None)
+                raise TimeoutError("No response received from evidence retrieval service")
+            
+        except Exception as e:
+            logger.error(f"Error in get_search_result: {e}")
+            raise

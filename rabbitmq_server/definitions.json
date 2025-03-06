@@ -1,0 +1,59 @@
+{
+    "rabbit_version": "4.0.7",
+    "users": [
+      {
+        "name": "app_user",
+        "password_hash": "exIE87Z8oN8PG4jffKH0/bTlSkJZGcIY0TEdC30F6GgD2p94",
+        "hashing_algorithm": "rabbit_password_hashing_sha256",
+        "tags": "administrator"
+      }
+    ],
+    "vhosts": [
+      {"name": "remote_host"}
+    ],
+    "permissions": [
+      {
+        "user": "app_user",
+        "vhost": "remote_host",
+        "configure": ".*",
+        "write": ".*",
+        "read": ".*"
+      }
+    ],
+    "queues": [
+      {
+        "name": "rpc_claim_detection_queue",
+        "vhost": "remote_host",
+        "durable": true,
+        "auto_delete": false
+      },
+      {
+        "name": "rpc_evidence_retrieval_queue",
+        "vhost": "remote_host",
+        "durable": true,
+        "auto_delete": false
+      }
+    ],
+    "exchanges": [
+    ],
+    "bindings": [
+      {
+        "source": "amq.direct",
+        "vhost": "remote_host",
+        "destination": "rpc_claim_detection_queue",
+        "destination_type": "queue",
+        "routing_key": "rpc_claim_detection_queue",
+        "arguments": {
+        }
+      },
+      {
+        "source": "amq.direct",
+        "vhost": "remote_host",
+        "destination": "rpc_evidence_retrieval_queue",
+        "destination_type": "queue",
+        "routing_key": "rpc_evidence_retrieval_queue",
+        "arguments": {
+        }
+      }
+    ]
+  }

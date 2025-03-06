@@ -1,0 +1,15 @@
+services:
+  rabbitmq-server:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: rabbitmq-server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
+networks: 
+  backend:
+    driver: bridge
