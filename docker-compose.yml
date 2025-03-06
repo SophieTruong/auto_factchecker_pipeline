@@ -89,7 +89,23 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
+    command: >
+      bash -c "
+        # Start RabbitMQ in the background
+        rabbitmq-server &
+        
+        # Wait for RabbitMQ to fully start
+        sleep 15
+        
+        # Create vhost remote_host if it doesn't exist
+        rabbitmqctl add_vhost remote_host || echo 'Vhost remote_host already exists'
+        
+        # Set full permissions for guest user on vhost remote_host
+        rabbitmqctl set_permissions -p remote_host guest '.*' '.*' '.*'
+        
+        # Keep container running
+        wait
+      "
 networks:
   backend:
     # Specify driver options
