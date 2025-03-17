@@ -35,16 +35,13 @@ def process_facepager_data(data_path):
     src_df.loc[:, "created_time"] = pd.to_datetime(src_df["created_time"], utc=True)
     
     # Add source and url column
-    src_df.loc[:, "source"] = [
-        "Facebook posts from Finnish news media" if "path" not in src_df.columns else "Facebook posts from  International news media"
-        for _ in range(src_df.shape[0])
-    ]
+    has_path = "path" in src_df.columns
+    
+    source = "Facebook posts from Finnish news media" if not has_path else "Facebook posts from International news media"
+    src_df.loc[:, "source"] = [source for _ in range(src_df.shape[0])]
     
     # Add url column
-    src_df.loc[:, "url"] = [
-        "" if "path" not in src_df.columns else src_df["path"]
-        for _ in range(src_df.shape[0])
-    ]
+    src_df.loc[:, "url"] = src_df["path"] if has_path else ["" for _ in range(src_df.shape[0])]
     
     df = src_df[['id', 'message', 'created_time', 'source', 'url']].copy()
     
@@ -83,7 +80,7 @@ def process_news_data(file_name):
     src_df = src_df[~src_df.duplicated(subset=['text'])]
     
     # Create label column
-    src_df.loc[:, "label"] = ["Nan" for _ in range(src_df.shape[0])]
+    src_df.loc[:, "label"] = ["None" for _ in range(src_df.shape[0])]
     
     # Create created_at column
     src_df.loc[:, "created_at"] = pd.to_datetime(src_df["createdAt"], utc=True)
@@ -91,6 +88,7 @@ def process_news_data(file_name):
     df = src_df[['id', 'text', 'label', 'source', 'url', 'created_at']]
 
     print(f"FINAL df.head(): {df.head(5)}")
+    
     print(f"df.created_at.dtype: {df.created_at.dtype}")
     
     return df
@@ -99,10 +97,10 @@ def merge_all_data(test=False):
     dfs = []
     
     finnish_df = process_facepager_data(FINNISH_DATA)
-    dfs.append(finnish_df)
+    dfs.append(finnish_df.head(5))
     
     international_df = process_facepager_data(INTERNATIONAL_DATA)
-    dfs.append(international_df)
+    dfs.append(international_df.head(5))
     
     file_names = os.listdir(DATA_DIR)
     print("file_names: ", file_names)
