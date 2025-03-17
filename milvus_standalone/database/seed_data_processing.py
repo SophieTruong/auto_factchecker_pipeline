@@ -54,8 +54,8 @@ def process_facepager_data(data_path):
     
     df = df[['id', 'text', 'label', 'source', 'url', 'created_at']]
     
-    print(f"FINAL df.head(): {df.head(5)}")
-    print(f"df.created_at.dtype: {df.created_at.dtype}")
+    print(f"process_facepager_data df.head(): {df.head(5)}")
+    print(f"process_facepager_data df.created_at.dtype: {df.created_at.dtype}")
     
     return df
 
@@ -87,9 +87,9 @@ def process_news_data(file_name):
     
     df = src_df[['id', 'text', 'label', 'source', 'url', 'created_at']]
 
-    print(f"FINAL df.head(): {df.head(5)}")
+    print(f"process_news_data df.head(): {df.head(5)}")
     
-    print(f"df.created_at.dtype: {df.created_at.dtype}")
+    print(f"process_news_data df.created_at.dtype: {df.created_at.dtype}")
     
     return df
 
@@ -108,7 +108,7 @@ def merge_all_data(test=False):
     filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
     
     if test:
-        filtered_file_names = filtered_file_names[:5]
+        filtered_file_names = filtered_file_names[:1]
     
     for file_name in filtered_file_names:
         
@@ -118,8 +118,8 @@ def merge_all_data(test=False):
     
     df = pd.concat(dfs)
     
-    print(f"FINAL df.head(): {df.head()}")
-    print(f"FINAL df.shape: {df.shape}")
+    print(f"merge_all_data df.head(): {df.head()}")
+    print(f"merge_all_data df.shape: {df.shape}")
     
     return df
 
