@@ -104,7 +104,7 @@ class SemanticSearchService:
                     #     id=item["id"],
                     #     distance=item["distance"],
                     #     source=item["entity"]["source"],
-                    #     timestamp=item["entity"]["timestamp"],
+                    #     created_at=item["entity"]["created_at"],
                     #     text=item["entity"]["text"],
                     #     label=item["entity"]["label"],
                     #     url=None
