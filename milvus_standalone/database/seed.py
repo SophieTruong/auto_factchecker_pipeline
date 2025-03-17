@@ -70,7 +70,7 @@ def _create_and_insert_collection():
     # Get text docs
     docs = df.text.values
     
-    truncate_docs = [doc[:65535] for doc in docs]
+    truncate_docs = [doc[:60000] for doc in docs] # max length of varchar in milvus for text field
     
     # Embed docs
     print("Embedding docs...") 
