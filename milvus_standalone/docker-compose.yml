@@ -75,10 +75,10 @@ services:
     env_file: ".env"
     volumes:
       - ${HF_HOME}:/app/sentence-transformer-model
-      - ${TEST_DATA_DIR}:/app/test_data
-      - ${TEST_METADATA_DIR}:/app/test_metadata
+      - ${SRC_FINNISH_NEWS_DIR}:/app/finnish_news_archieve
+      - ${SRC_FACEPAGER_DATA}:/app/facepager_data
     depends_on:
-      - milvus_standalone
+      - standalone
       - etcd
       - minio
     restart: "no"

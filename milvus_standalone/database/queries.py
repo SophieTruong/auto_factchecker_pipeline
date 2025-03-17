@@ -61,7 +61,7 @@ def search(collection, vector_field, search_vectors):
         "param": {"metric_type": _METRIC_TYPE, "params": {"nprobe": _NPROBE}},
         "limit": _TOPK,
         "consistency_level": "Strong",
-        "output_fields": ["text", "label", "source", "timestamp"]
+        "output_fields": ["text", "label", "source", "created_at"]
         }
     results = collection.search(**search_param)
     ret = []

@@ -1,12 +1,10 @@
 import argparse
-import os
-import dotenv
-from pymilvus import utility
-
-dotenv.load_dotenv(dotenv.find_dotenv())
+from datetime import datetime
 
 import pandas as pd
-from datetime import datetime
+
+from pymilvus import utility
+
 from db_client import create_connection, sentence_transformer_ef
 from collection import create_collection, get_collection
 from queries import (   
@@ -23,6 +21,8 @@ from queries import (
     set_properties
 )
 
+from seed_data_processing import merge_all_data
+
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,25 +36,11 @@ _TEXT_FIELD_NAME = 'text'
 _LABEL_FIELD_NAME = 'label'
 _SOURCE_NAME = 'source'
 _URL = 'url'
-_TIMESTAMP = 'timestamp'
-
-DATA_DIR = os.getenv("DATA_DIR")
-METADATA_DIR = os.getenv("METADATA_DIR")
-print(f"DATA_DIR: {DATA_DIR}")
-print(f"METADATA_DIR: {METADATA_DIR}")
-
+_CREATED_AT = 'created_at'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--test", type=str)
 args = parser.parse_args()
-
-def get_data(file_name):
-    data_fn = os.path.join(DATA_DIR, file_name)
-    metadata_fn = os.path.join(METADATA_DIR, file_name)
-    data_df = pd.read_csv(data_fn) # id, author, text
-    metadata_df = pd.read_csv(metadata_fn) # id, author, text
-    df = pd.merge(data_df, metadata_df, on='id')
-    return df
 
 def _create_and_insert_collection():
     #create collection
@@ -66,7 +52,7 @@ def _create_and_insert_collection():
         _LABEL_FIELD_NAME, 
         _SOURCE_NAME, # can computer
         _URL,
-        _TIMESTAMP,
+        _CREATED_AT,
         )
     
     create_index(collection, _VECTOR_FIELD_NAME)
@@ -77,36 +63,24 @@ def _create_and_insert_collection():
     # show collections
     list_collections()
 
-    # Get data  
-    file_names = os.listdir(DATA_DIR)
-    print("file_names: ", file_names)
-    filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
-    if args.test == "1":
-        fn = filtered_file_names[2]
-        df = get_data(fn)
-        print(f"df: {df.head()}")
-        print(f"df columns: {df.columns}")
-        print("df text: ", df.text[0])
-    else:
-        dfs = []
-        for fn in filtered_file_names:
-            df = get_data(fn)
-            dfs.append(df)
-        df = pd.concat(dfs)
-        print(df.head())
+    # Merge all data  
+    df = merge_all_data(test=args.test == "1")
+    print("Finished merging data")
     
-    # Simple data cleaning
-    df['text'] = df['text'].fillna('')
+    # Get text docs
     docs = df.text.values
-    # TODO: Handle this correctly
-    labels = ["Nan" for _ in range(len(docs))]
+    
+    # Embed docs
+    print("Embedding docs...") 
+    docs_embeddings = sentence_transformer_ef.encode_documents(docs)
+        
+    labels = df.label.values
+    
     sources = df.source.values
+    
     urls = df.url.values
     
-    # TODO: Replace this with actual timestamps if found from data
-    timestamps = [utility.mkts_from_datetime(datetime.now() ) for _ in range(len(docs))]
-    
-    docs_embeddings = sentence_transformer_ef.encode_documents(docs)
+    created_ats = [utility.mkts_from_datetime(created_at) for created_at in df.created_at.values]
     
     print("Dim:", sentence_transformer_ef.dim, docs_embeddings[0].shape)
     
@@ -118,7 +92,7 @@ def _create_and_insert_collection():
             "label": labels[i],
             "source": sources[i],
             "url": urls[i],
-            "timestamp": timestamps[i],
+            "created_at": created_ats[i],
             }
         for i in range(len(docs))
     ]
