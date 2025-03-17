@@ -78,7 +78,7 @@ services:
       - ${SRC_FINNISH_NEWS_DIR}:/app/finnish_news_archieve
       - ${SRC_FACEPAGER_DATA}:/app/facepager_data
     depends_on:
-      - standalone
+      - milvus_standalone
       - etcd
       - minio
     restart: "no"
