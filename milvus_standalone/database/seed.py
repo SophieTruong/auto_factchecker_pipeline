@@ -70,6 +70,8 @@ def _create_and_insert_collection():
     # Get text docs
     docs = df.text.values
     
+    truncate_docs = [doc[:65535] for doc in docs]
+    
     # Embed docs
     print("Embedding docs...") 
     docs_embeddings = sentence_transformer_ef.encode_documents(docs)
@@ -88,13 +90,13 @@ def _create_and_insert_collection():
         {
             "id": i, 
             "embedding": docs_embeddings[i], 
-            "text": docs[i], 
+            "text": truncate_docs[i], 
             "label": labels[i],
             "source": sources[i],
             "url": urls[i],
             "created_at": created_ats[i],
             }
-        for i in range(len(docs))
+        for i in range(len(truncate_docs))
     ]
     
     vectors = insert(collection, data)

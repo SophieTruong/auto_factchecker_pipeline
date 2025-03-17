@@ -39,7 +39,7 @@ def create_collection(
     field1 = FieldSchema(name=id_field, dtype=DataType.INT64, description="UUID", is_primary=True)
     field2 = FieldSchema(name=vector_field, dtype=DataType.FLOAT_VECTOR, description="float vector", dim=_DIM,
                          is_primary=False)
-    field3 = FieldSchema(name=text_field, dtype=DataType.VARCHAR, description="text", max_length=50000,
+    field3 = FieldSchema(name=text_field, dtype=DataType.VARCHAR, description="text", max_length=65535,
                          is_primary=False, truncate_length=10000)
     field4 = FieldSchema(name=label_field, dtype=DataType.VARCHAR, description="label", max_length=50,
                          is_primary=False)
