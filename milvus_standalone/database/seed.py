@@ -68,6 +68,9 @@ def _create_and_insert_collection():
     
     print(f"Finished merging ORIGINAL data: {df.shape}")
     
+    # Shuffle data
+    df = df.sample(frac=1).reset_index(drop=True)
+    
     if args.test == "1":
         df = df.head(5000)
     
