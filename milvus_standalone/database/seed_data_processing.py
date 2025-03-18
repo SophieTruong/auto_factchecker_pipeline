@@ -18,13 +18,9 @@ print(f"DATA_DIR: {DATA_DIR}")
 
 def process_facepager_data(data_path):
     src_df = pd.read_csv(data_path, delimiter=";")
-    print(src_df.head())
-    print(f"ORIGINAL src_df.shape: {src_df.shape}")
     
     # Drop rows where 'text' is empty
     src_df = src_df[src_df['message'].notna()]
-    print(f"AFTER DROP NA src_df.shape: {src_df.shape}")
-    print(f"AFTER DROP NA src_df.message.value_counts(): {src_df['message'].value_counts()}")
     
     # Drop rows where 'text' is duplicated
     src_df = src_df[~src_df.duplicated(subset=['message'])]
@@ -54,8 +50,7 @@ def process_facepager_data(data_path):
     
     df = df[['id', 'text', 'label', 'source', 'url', 'created_at']]
     
-    print(f"process_facepager_data df.head(): {df.head(5)}")
-    print(f"process_facepager_data df.created_at.dtype: {df.created_at.dtype}")
+    print(f"process_facepager_data df.shape: {df.shape}")
     
     return df
 
@@ -65,12 +60,10 @@ def get_news_data(file_name):
     return data_df
 
 def process_news_data(file_name):
-    print(f"Processing {file_name}...")
+
     src_df = get_news_data(file_name)
     
-    print(f"src_df.head(): {src_df.head()}")
     #src_df.columns: Index(['id', 'author', 'text', 'source', 'url', 'apiURL', 'headline'], dtype='object')
-    print(f"src_df.columns: {src_df.columns}")
     print(f"src_df.shape: {src_df.shape}")
     
     # Remove rows where 'text' is empty
@@ -86,10 +79,6 @@ def process_news_data(file_name):
     src_df.loc[:, "created_at"] = pd.to_datetime(src_df["createdAt"], utc=True)
     
     df = src_df[['id', 'text', 'label', 'source', 'url', 'created_at']]
-
-    print(f"process_news_data df.head(): {df.head(5)}")
-    
-    print(f"process_news_data df.created_at.dtype: {df.created_at.dtype}")
     
     return df
 

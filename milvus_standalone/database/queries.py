@@ -2,7 +2,9 @@ from pymilvus import Collection, utility
 from datetime import datetime
 
 # Index parameters
-_METRIC_TYPE = 'L2' # A smaller value indicates a higher similarity.
+# L2: A smaller value indicates a higher similarity. 
+# COSINE: The larger the cosine, the smaller the angle between the two vectors, indicating that these two vectors are more similar to each other.
+_METRIC_TYPE = 'COSINE' 
 _INDEX_TYPE = 'IVF_FLAT'
 _NLIST = 1024
 _NPROBE = 16
@@ -58,7 +60,12 @@ def search(collection, vector_field, search_vectors):
     search_param = {
         "data": search_vectors,
         "anns_field": vector_field,
-        "param": {"metric_type": _METRIC_TYPE, "params": {"nprobe": _NPROBE}},
+        "param": {"metric_type": _METRIC_TYPE, 
+                  "params": {
+                      "nprobe": _NPROBE,
+                      "radius": 0.5,
+                      "range_filter": 0.9
+                      }},
         "limit": _TOPK,
         "consistency_level": "Strong",
         "output_fields": ["text", "label", "source", "created_at"]

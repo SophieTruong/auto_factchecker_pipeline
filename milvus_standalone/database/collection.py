@@ -9,7 +9,8 @@ from uuid import UUID
 from datetime import datetime
 
 # Vector parameters
-_DIM = 768
+# _DIM = 768 # Suitable for dot-product models such as msmarco-distilbert-base-dot-prod-v3 
+_DIM = 384 # Suitable for normalize_embedding models such as msmarco-MiniLM-L6-cos-v5: https://huggingface.co/sentence-transformers/msmarco-MiniLM-L6-cos-v5
 
 # Create a collection
 def create_collection(

@@ -66,7 +66,7 @@ def _create_and_insert_collection():
     # Merge all data  
     df = merge_all_data()
     
-    print("Finished merging data")
+    print(f"Finished merging ORIGINAL data: {df.shape}")
     
     if args.test == "1":
         df = df.head(5000)
@@ -129,7 +129,7 @@ def main():
     
     load_collection(collection)
     
-    queries=["Covid-19 originates from a Wuhan lab"]
+    queries=["Russia has signed an agreement to supply the U.N. children’s fund UNICEF with enough doses of its Sputnik V"]
     
     query_embeddings = sentence_transformer_ef.encode_queries(queries)
 

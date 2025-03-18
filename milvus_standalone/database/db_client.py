@@ -11,10 +11,13 @@ _PORT = os.getenv('PORT')
 print(f"HOST: {_HOST}")
 print(f"PORT: {_PORT}")
 
-MODEL = 'msmarco-distilbert-base-dot-prod-v3'
+# https://www.sbert.net/docs/pretrained-models/msmarco-v5.html
+# MODEL = 'msmarco-distilbert-base-dot-prod-v3'
+MODEL = 'msmarco-MiniLM-L6-cos-v5' # normalize_embedding
 
 sentence_transformer_ef = model.dense.SentenceTransformerEmbeddingFunction(
     model_name=MODEL, # Specify the model name'
+    normalize_embeddings=True,
     query_instruction = "",
     doc_instruction = "",
     device='cpu' # Specify the device to use, e.g., 'cpu' or 'cuda:0'
