@@ -69,7 +69,7 @@ def _create_and_insert_collection():
     print("Finished merging data")
     
     if args.test == "1":
-        df = df.head(500)
+        df = df.head(5000)
     
     print(f"IN SEEDING df.shape: {df.shape}")
     
