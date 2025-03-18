@@ -9,7 +9,7 @@ class SingleClaimSearchResult(BaseModel):
     id: int
     distance: float
     source: str
-    timestamp: str | int
+    created_at: str | int
     text: str
     label: Optional[str] = None
     url: Optional[str] = None

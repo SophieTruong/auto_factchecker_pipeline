@@ -99,18 +99,17 @@ class SemanticSearchService:
                     
                     print(f"DEBUG: item: {item}")
                     
-                    # single_claim_search_result = []
-                    # SingleClaimSearchResult(
-                    #     id=item["id"],
-                    #     distance=item["distance"],
-                    #     source=item["entity"]["source"],
-                    #     created_at=item["entity"]["created_at"],
-                    #     text=item["entity"]["text"],
-                    #     label=item["entity"]["label"],
-                    #     url=None
-                    #     )
+                    single_claim_search_result = SingleClaimSearchResult(
+                        id=item["id"],
+                        distance=item["distance"],
+                        source=item["entity"]["source"],
+                        created_at=item["entity"]["created_at"],
+                        text=item["entity"]["text"],
+                        label=item["entity"]["label"],
+                        url=item["entity"]["url"]
+                        )
                     
-                    # single_claim_search_results.append(single_claim_search_result)
+                    single_claim_search_results.append(single_claim_search_result)
                 
                 parsed_results.append(single_claim_search_results)
             
