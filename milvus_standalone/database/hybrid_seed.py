@@ -54,7 +54,7 @@ def main():
     logger.info(f"Start time: {start_time}")
     
     standard_retriever = HybridRetriever(
-        uri="http://standalone:19530",
+        uri="http://milvus_standalone:19530",
         collection_name="milvus_hybrid",
         dense_embedding_function=dense_ef,
         # dense_embedding_function=sentence_transformer_ef,
