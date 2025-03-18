@@ -64,8 +64,14 @@ def _create_and_insert_collection():
     list_collections()
 
     # Merge all data  
-    df = merge_all_data(test=args.test == "1")
+    df = merge_all_data()
+    
     print("Finished merging data")
+    
+    if args.test == "1":
+        df = df.head(500)
+    
+    print(f"IN SEEDING df.shape: {df.shape}")
     
     # Get text docs
     docs = df.text.values
@@ -113,6 +119,7 @@ def main():
     # Drop collection if exists
     if has_collection(_COLLECTION_NAME):
         drop_collection(_COLLECTION_NAME)
+    
     _create_and_insert_collection()
             
     logger.info("Collection created and inserted...")
@@ -123,6 +130,7 @@ def main():
     load_collection(collection)
     
     queries=["Covid-19 originates from a Wuhan lab"]
+    
     query_embeddings = sentence_transformer_ef.encode_queries(queries)
 
 

@@ -93,23 +93,20 @@ def process_news_data(file_name):
     
     return df
 
-def merge_all_data(test=False):
+def merge_all_data():
     dfs = []
     
     finnish_df = process_facepager_data(FINNISH_DATA)
-    dfs.append(finnish_df.head(5))
+    dfs.append(finnish_df)
     
     international_df = process_facepager_data(INTERNATIONAL_DATA)
-    dfs.append(international_df.head(5))
+    dfs.append(international_df)
     
     file_names = os.listdir(DATA_DIR)
     print("file_names: ", file_names)
     
     filtered_file_names = [fn for fn in file_names if (fn.endswith(".csv") and fn != "test.csv")]
-    
-    if test:
-        filtered_file_names = filtered_file_names[:1]
-    
+        
     for file_name in filtered_file_names:
         
         df = process_news_data(file_name)
