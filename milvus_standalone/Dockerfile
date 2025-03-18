@@ -7,6 +7,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
+    libz-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Create virtual environment
@@ -32,4 +33,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY ./database /app
 COPY .env .
 
-CMD ["python", "seed.py", "--test", "1"]
+CMD ["python", "hybrid_seed.py", "--test", "1"]

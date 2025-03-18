@@ -25,7 +25,6 @@ def process_facepager_data(data_path):
     # Drop rows where 'text' is duplicated
     src_df = src_df[~src_df.duplicated(subset=['message'])]
     print(f"AFTER DROP DUPLICATES src_df.shape: {src_df.shape}")
-    print(f"AFTER DROP DUPLICATES src_df.id.value_counts(): {src_df['id'].value_counts()}")
     
     # Covert created_time to created_at
     src_df.loc[:, "created_time"] = pd.to_datetime(src_df["created_time"], utc=True)
@@ -64,7 +63,7 @@ def process_news_data(file_name):
     src_df = get_news_data(file_name)
     
     #src_df.columns: Index(['id', 'author', 'text', 'source', 'url', 'apiURL', 'headline'], dtype='object')
-    print(f"src_df.shape: {src_df.shape}")
+    # print(f"src_df.shape: {src_df.shape}")
     
     # Remove rows where 'text' is empty
     src_df = src_df[src_df['text'].notna()]
