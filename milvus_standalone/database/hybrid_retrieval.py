@@ -152,9 +152,11 @@ class HybridRetriever:
         print(f"dense_vec length: {len(dense_vec)}")
         print(f"collection_name: {self.collection_name}")
         
-        self.client.insert(
+        inserted_results = self.client.insert(
             self.collection_name, {"dense_vector": dense_vec, **metadata}
         )
+        
+        return inserted_results
     
     def batch_insert_data(self, batch_data):
         docs = [data["text"] for data in batch_data]
@@ -172,9 +174,11 @@ class HybridRetriever:
             data["dense_vector"] = dense_vecs[i]
         print(f"Keys of batch_data: {batch_data[0].keys()}")
         
-        self.client.insert(
+        inserted_results = self.client.insert(
             self.collection_name, batch_data
         )
+        
+        return inserted_results
         
     def search(self, query: str, k: int = 10, mode="hybrid", filter="", filter_params=dict()):
 

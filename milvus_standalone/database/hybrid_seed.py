@@ -67,7 +67,7 @@ def main():
     df = df.sample(frac=1, random_state=42).reset_index(drop=True)
     
     if args.test == "1":
-        df = df.head(2000)
+        df = df.head(20000)
     
     logger.info(f"IN SEEDING df.shape: {df.shape}")
 
@@ -109,9 +109,20 @@ def main():
     # for meta_data in data:
     #     standard_retriever.insert_data(meta_data["text"], meta_data)
     
-    for i in range(0, len(data), 5000):
-        logger.info(f"Inserting data from {i} to {i+5000}")
-        standard_retriever.batch_insert_data(data[i:i+5000])
+    for i in range(0, len(data), 1000):
+        batch = data[i:i+1000]
+        batch_end = min(i+1000, len(data))
+        try:
+            logger.info(f"Inserting batch {i//1000 + 1}: records {i} to {batch_end}")
+            inserted_results = standard_retriever.batch_insert_data(batch)
+            logger.info(f"Successfully inserted {len(batch)} records. Result: {inserted_results}")
+        except Exception as e:
+            logger.error(f"Error inserting batch {i//1000 + 1} (records {i} to {batch_end})")
+            logger.error(f"Exception details: {str(e)}")
+            logger.error(f"Batch size: {len(batch)} records")
+            # Continue with the next batch - no need to increment i as the loop will do that
+            continue
+            
     
     end_time = time.time()
     logger.info(f"End time: {end_time}")
