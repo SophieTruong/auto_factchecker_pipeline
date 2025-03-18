@@ -63,8 +63,8 @@ def search(collection, vector_field, search_vectors):
         "param": {"metric_type": _METRIC_TYPE, 
                   "params": {
                       "nprobe": _NPROBE,
-                      "radius": 0.5,
-                      "range_filter": 0.9
+                    #   "radius": 0.5,
+                    #   "range_filter": 0.8
                       }},
         "limit": _TOPK,
         "consistency_level": "Strong",

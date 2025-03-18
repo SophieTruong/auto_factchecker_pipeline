@@ -132,7 +132,7 @@ def main():
     
     load_collection(collection)
     
-    queries=["Russia has signed an agreement to supply the U.N. children’s fund UNICEF with enough doses of its Sputnik V"]
+    queries=["Covid is a hoax"]
     
     query_embeddings = sentence_transformer_ef.encode_queries(queries)
 
