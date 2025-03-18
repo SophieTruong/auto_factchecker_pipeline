@@ -102,11 +102,11 @@ class SemanticSearchService:
                     single_claim_search_result = SingleClaimSearchResult(
                         id=item.id,
                         distance=item.distance,
-                        source=item.source,
-                        created_at=item.created_at,
-                        text=item.text,
-                        label=item.label,
-                        url=item.url
+                        source=item.entity["source"],
+                        created_at=item.entity["created_at"],
+                        text=item.entity["text"],
+                        label=item.entity["label"],
+                        url=item.entity["url"]
                         )
                     
                     single_claim_search_results.append(single_claim_search_result)
