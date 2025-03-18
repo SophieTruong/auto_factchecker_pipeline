@@ -73,7 +73,7 @@ def search(collection, vector_field, search_vectors, factcheck_date):
         "limit": _TOPK,
         "expr": f"created_at < {factcheck_date}",
         "consistency_level": "Strong",
-        "output_fields": ["text", "label", "source", "created_at"],
+        "output_fields": ["text", "label", "source", "created_at", "url"],
         }
 
     results = collection.search(**search_param)
