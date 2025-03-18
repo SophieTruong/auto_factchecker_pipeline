@@ -1,7 +1,6 @@
 import argparse
-from datetime import datetime
 
-import pandas as pd
+import time
 
 from pymilvus import utility
 
@@ -115,6 +114,8 @@ def _create_and_insert_collection():
     return collection
     
 def main():
+    start_time = time.time()
+    
     # Create Milvus connection
     logger.info("Creating connection...")
     create_connection()
@@ -132,7 +133,7 @@ def main():
     
     load_collection(collection)
     
-    queries=["Covid is a hoax"]
+    queries=["Global COVID-19 cases surpassed 500 million"]
     
     query_embeddings = sentence_transformer_ef.encode_queries(queries)
 
@@ -141,6 +142,10 @@ def main():
     search(collection, _VECTOR_FIELD_NAME, query_embeddings)
     
     release_collection(collection)
+    
+    end_time = time.time()
+    
+    logger.info(f"Time taken for DB seeding: {end_time - start_time} seconds")
 
 if __name__ == "__main__":
     main()
