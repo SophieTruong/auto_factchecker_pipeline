@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import dotenv
+import re
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
@@ -16,6 +17,31 @@ print(f"FINNISH_DATA: {FINNISH_DATA}")
 print(f"INTERNATIONAL_DATA: {INTERNATIONAL_DATA}")
 print(f"DATA_DIR: {DATA_DIR}")
 
+def remove_emojis(text):
+    """
+    Remove emojis from text
+    """
+    emoj = re.compile("["
+        u"\U0001F600-\U0001F64F"  # emoticons
+        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        u"\U0001F680-\U0001F6FF"  # transport & map symbols
+        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+        u"\U00002500-\U00002BEF"  # chinese char
+        u"\U00002702-\U000027B0"
+        u"\U000024C2-\U0001F251"
+        u"\U0001f926-\U0001f937"
+        u"\U00010000-\U0010ffff"
+        u"\u2640-\u2642" 
+        u"\u2600-\u2B55"
+        u"\u200d"
+        u"\u23cf"
+        u"\u23e9"
+        u"\u231a"
+        u"\ufe0f"  # dingbats
+        u"\u3030"
+                      "]+", re.UNICODE)
+    return re.sub(emoj, '', text) 
+
 def process_facepager_data(data_path):
     src_df = pd.read_csv(data_path, delimiter=";")
     
@@ -25,6 +51,12 @@ def process_facepager_data(data_path):
     # Drop rows where 'text' is duplicated
     src_df = src_df[~src_df.duplicated(subset=['message'])]
     print(f"AFTER DROP DUPLICATES src_df.shape: {src_df.shape}")
+    
+    # Remove emojis from text
+    src_df.loc[:, "message"] = src_df["message"].apply(remove_emojis)
+    
+    # Remove text with length less than 10
+    src_df = src_df[src_df["message"].str.len() > 10]
     
     # Covert created_time to created_at
     src_df.loc[:, "created_time"] = pd.to_datetime(src_df["created_time"], utc=True)
