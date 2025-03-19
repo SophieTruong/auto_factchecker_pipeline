@@ -1,26 +1,26 @@
 from typing import Optional, List   
 from model import Claim, SearchResponse, SingleClaimSearchResult, ClaimSearchResult
 
-from database.queries import (
-    search, 
-    release_collection, 
-    list_collections,
-    set_properties
-)
-from database.db_client import sentence_transformer_ef
-from database.collection import get_collection
+from pymilvus.model.hybrid import BGEM3EmbeddingFunction
+
+from milvus_hybrid_retrieval import HybridRetriever # hybrid search and returned filtered and ranked results from milvus
+
+from web_search_retrieval import rank_web_search_results
 
 from translator import translate_claim
 
 from make_request import make_request
 
-from utils import validate_and_fix_date, logger
+from utils import validate_and_mk_hybrid_date, get_date_from_hybrid_ts, logger
 
 from datetime import datetime
 import dotenv
 import os
 
 dotenv.load_dotenv(dotenv.find_dotenv())
+
+MODEL_DIR = os.getenv("MODEL_DIR")
+
 WEB_SEARCH_URL = os.getenv("WEB_SEARCH_URL")
 
 # Const names
@@ -28,8 +28,8 @@ _COLLECTION_NAME = 'text_embeddings'
 _VECTOR_FIELD_NAME = 'embedding'
 
 class SemanticSearchService:
-    def __init__(self, distance_threshold: float = 50.00):
-        self.distance_threshold = distance_threshold
+    def __init__(self):
+        pass
 
     async def semantic_search(self, search_input: Claim) -> ClaimSearchResult:        
         # vector db search  
@@ -45,7 +45,7 @@ class SemanticSearchService:
         # parse results
         claim_search_result = ClaimSearchResult(
                 claim=search_input.claim,
-                vector_db_results=search_results[0], # TODO: properly 
+                vector_db_results=search_results,
                 web_search_results=web_search_results
             )
         
@@ -55,37 +55,44 @@ class SemanticSearchService:
 
         web_search_results = await make_request(WEB_SEARCH_URL, search_input.model_dump())
         
-        return web_search_results
+        ranked_web_search_results = rank_web_search_results(web_search_results)
+        
+        return ranked_web_search_results
     
     def _vector_db_search(self, search_input: Claim) -> List[Optional[SingleClaimSearchResult]]:
-        translated_claim = translate_claim(search_input.claim)
         
-        query_vectors = sentence_transformer_ef.encode_queries([translated_claim])
+        logger.info(f"Before dense embedding function INIT")
         
-        factcheck_date =  validate_and_fix_date(search_input.timestamp)
+        logger.info(f"MODEL_DIR: {MODEL_DIR}")
         
-        logger.info(f"Factcheck date:  {factcheck_date}")
+        dense_ef = BGEM3EmbeddingFunction(
+            model_name="BAAI/bge-m3",
+            device="cpu",
+            normalize_embeddings=True,
+            cache_dir=MODEL_DIR,
+        )
         
-        #create collection
-        collection = get_collection(_COLLECTION_NAME)
+        standard_retriever = HybridRetriever(
+            uri="http://milvus_standalone:19530",
+            collection_name="milvus_hybrid",
+            dense_embedding_function=dense_ef,
+            # dense_embedding_function=sentence_transformer_ef,
+        )
         
-        collection.load()
+        query = search_input.claim
         
-        # alter ttl properties of collection level
-        set_properties(collection)
-
-        # show collections
-        list_collections()
-
-        # search
-        search_results = search(collection, _VECTOR_FIELD_NAME, query_vectors, factcheck_date)
+        filter = "created_at <= {created_at}"
         
-        logger.info(f"search_results for evidence retrieval module: {search_results}")
+        filter_params = {"created_at": validate_and_mk_hybrid_date(search_input.timestamp)}
+    
+        results = standard_retriever.search(query, k=10, mode="hybrid", filter=filter, filter_params=filter_params)
+                
+        logger.info(f"search_results for evidence retrieval module: {results}")
        
         # parse results
         parsed_results = []
        
-        for i, result in enumerate(search_results):
+        for i, result in enumerate(results):
             
             if len(result) == 0:
                 
@@ -93,29 +100,27 @@ class SemanticSearchService:
             
             else:
                 
-                single_claim_search_results = []
+                # single_claim_search_results = []
                 
-                for item in result:
+                # for item in result:
                     
-                    print(f"DEBUG: item: {item}")
+                print(f"DEBUG: result: {result}")
                     
-                    single_claim_search_result = SingleClaimSearchResult(
-                        id=item.id,
-                        distance=item.distance,
-                        source=item.entity.source,
-                        created_at=item.entity.created_at,
-                        text=item.entity.text,
-                        label=item.entity.label,
-                        url=item.entity.url
-                        )
+                single_claim_search_result = SingleClaimSearchResult(
+                    id=result["id"],
+                    score=result["score"],
+                    source=result["source"],
+                    created_at=get_date_from_hybrid_ts(result["created_at"]), # int to datetime
+                    text=result["text"],
+                    label=result["label"],
+                    url=result["url"]
+                    )
                     
-                    single_claim_search_results.append(single_claim_search_result)
+                    # single_claim_search_results.append(single_claim_search_result)
                 
-                parsed_results.append(single_claim_search_results)
+                parsed_results.append(single_claim_search_result)
             
             logger.info(f"DEBUG: i = {i}")
-            
-        release_collection(collection)
-       
+                   
         return parsed_results
     

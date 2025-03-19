@@ -15,7 +15,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 
-def validate_and_fix_date(date_str: str) -> int:
+def validate_and_mk_hybrid_date(date_str: str) -> int:
     """
     Validates a date string and returns current date if invalid.
     Args:
@@ -39,3 +39,6 @@ def validate_and_fix_date(date_str: str) -> int:
         
     except ValueError:
         return current_date
+    
+def get_date_from_hybrid_ts(hybrid_ts: int) -> str:
+    return utility.hybridts_to_datetime(hybrid_ts).strftime("%Y-%m-%d")

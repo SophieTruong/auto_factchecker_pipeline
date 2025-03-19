@@ -8,7 +8,6 @@ from aio_pika.abc import AbstractIncomingMessage, AbstractChannel, AbstractConne
 
 import asyncio
 
-from database.db_client import create_connection
 from services import SemanticSearchService
 from model import Claim
 from app_logging import logger
@@ -16,24 +15,24 @@ from app_logging import logger
 import os
 import dotenv
 
+from datetime import datetime
+
+# Import the DateTimeEncoder
+from web_search_retrieval import DateTimeEncoder
+
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 RABBITMQ_URL = os.getenv("RABBITMQ_URL")
 
 async def main():
     logger.info("Starting queue consumer")
-    
-    # 1. Create connection to milvus_db
-    create_connection()
-    
-    logger.info("Connected to milvus_db")
-    
-    # 2. Initialize Semantic search service
+            
+    # 1. Initialize Semantic search service
     semantic_search_service = SemanticSearchService()
     
     logger.info("Initialized Semantic search service")
     
-    # 3. Create connection to rabbitmq
+    # 2. Create connection to rabbitmq
     try:
         
         connection = await connect(RABBITMQ_URL)
@@ -94,7 +93,7 @@ async def main():
 
                             Message(
 
-                                body=json.dumps(response).encode(), 
+                                body=json.dumps(response, cls=DateTimeEncoder).encode(), 
 
                                 correlation_id=message.correlation_id,
                 
