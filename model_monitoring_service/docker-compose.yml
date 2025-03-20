@@ -10,7 +10,7 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL:-sqlite:///data/model_monitoring.db}
     ports:
-      - "8093:8093"
+      - "8096:8096"
     networks:
       - backend
   

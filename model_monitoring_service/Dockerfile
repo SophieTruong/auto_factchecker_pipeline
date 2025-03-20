@@ -12,6 +12,6 @@ COPY ./app /app
 COPY .env /app
 
 # Expose the port the app runs on
-EXPOSE 8093
+EXPOSE 8096
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8093"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8096"]
