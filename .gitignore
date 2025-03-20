@@ -38,3 +38,6 @@ mlruns/
 model_training_service/submit.sh
 
 nginx.conf
+load_test_remote.sh
+cursorignore
+auth/.htpasswd
