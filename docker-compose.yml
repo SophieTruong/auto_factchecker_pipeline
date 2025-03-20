@@ -68,12 +68,15 @@ services:
     image: nginx:latest
     ports:
       - "443:443"
-      - "8081:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./auth:/etc/nginx/auth
       - /etc/ssl/:/etc/ssl
     depends_on:
-      - evidence_retrieval
+     - web_scrape
+     - api
+    restart: 
+      always
     networks:
       - backend
 
@@ -81,12 +84,29 @@ services:
     extends:
       file: ./rabbitmq_server/docker-compose.yml
       service: rabbitmq-server
-
+  
+  mongodb:
+    image: mongo:6.0.21-jammy
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - backend
 networks:
   backend:
     # Specify driver options
     driver: bridge    
 volumes:
+  mongodb_data:
+    driver: local  # Explicitly specify volume driver
+  mongodb_config:
+    driver: local  # Explicitly specify volume driver
   database:
     driver: local  # Explicitly specify volume driver
   model_monitoring_data:
