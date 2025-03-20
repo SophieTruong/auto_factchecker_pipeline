@@ -11,7 +11,7 @@ COPY ./app /app
 
 COPY .env /app
 
-# Expose the port the app runs on
-# EXPOSE 8092
+# Expose only the single port the app runs on
+EXPOSE 8092
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8092"]
