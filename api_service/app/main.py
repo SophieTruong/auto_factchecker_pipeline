@@ -34,9 +34,8 @@ from database.crud import get_all_api_keys
 # Import services
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
-# from services.semantic_search import SemanticSearchService
-from services.evidence_retrieval_rpc_client import EvidenceRetrievalRpcClient
 from services.claim_model_monitoring_data import ClaimModelMonitoringService
+from services.evidence_retrieval_service import EvidenceRetrievalService
 
 # Import utils
 from utils.app_logging import logger
@@ -96,14 +95,26 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
             )
             
 async def semantic_search_callback(claim_input: SemanticSearchInputs):
+    # Create the service with lazy initialization
+    evidence_service = EvidenceRetrievalService()
     
-    semantic_search_queue_service = await EvidenceRetrievalRpcClient().connect()
-    logger.info(f"semantic_search_queue_service: {semantic_search_queue_service}")
-    
-    for claim in claim_input.claims:
-        result = await semantic_search_queue_service.get_search_result(claim)
-        yield result
-    
+    try:
+        # Connections will be established on first use
+        for claim in claim_input.claims:
+            try:
+                result = await evidence_service.process_search_request(claim)
+                
+                yield result
+            
+            except Exception as e:
+            
+                logger.error(f"Error processing claim {claim.claim}: {e}")
+                # Continue with other claims even if one fails
+                continue
+    finally:
+        # Always close connections when done
+        await evidence_service.close_connections()
+
 # GET /
 @app.get("/")
 async def root(
@@ -149,6 +160,8 @@ async def create_claim_detection_predicts(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to insert claims: {str(e)}"
         )
+    finally:
+        await claim_detection_service.close_connections()
 
 @app.post(
     "/claim_detection/update", 
@@ -180,6 +193,8 @@ async def update_claim_detection_predicts(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update claims: {str(e)}"
         )
+    finally:
+        await claim_detection_service.close_connections()
 
 @app.get(
     "/claim_detection/get",
@@ -248,7 +263,9 @@ async def create_claim_annotations(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create claim annotations: {str(e)}"
         )
-        
+    finally:
+        await claim_annotation_service.close_connections()
+
 @app.post(
     "/claim_annotation/update",
     response_model=Optional[List[ClaimAnnotation]],

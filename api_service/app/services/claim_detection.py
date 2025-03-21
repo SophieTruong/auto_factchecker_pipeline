@@ -29,11 +29,30 @@ from utils.app_logging import logger
 from utils.validator import validate_date_range
 
 from services.claim_prediction_rcp_client import ClaimPredictionRcpClient
-
+from services.publish_monitoring_event import PublishMonitoringEvent
 class ClaimDetectionService:
     def __init__(self, db: Session, inference_service_uri: str):
         self.db = db
         self.inference_service_uri = inference_service_uri
+        # Initialize clients but don't connect yet
+        self.claim_prediction_client = ClaimPredictionRcpClient()
+        self.publish_monitoring_event = PublishMonitoringEvent()
+
+    async def ensure_connections(self):
+        """Ensure all RabbitMQ connections are established"""
+        if not self.claim_prediction_client.is_connected:
+            await self.claim_prediction_client.connect()
+            
+        if not self.publish_monitoring_event.is_connected:
+            await self.publish_monitoring_event.connect()
+            
+    async def close_connections(self):
+        """Close all RabbitMQ connections"""
+        if hasattr(self, 'claim_prediction_client') and self.claim_prediction_client.is_connected:
+            await self.claim_prediction_client.close()
+            
+        if hasattr(self, 'publish_monitoring_event') and self.publish_monitoring_event.is_connected:
+            await self.publish_monitoring_event.close()
 
     async def get_predictions(
         self, 
@@ -71,6 +90,9 @@ class ClaimDetectionService:
     async def update_claims(self, claims: List[Claim]) -> Optional[BatchClaimResponse]:
         """Update claims in database and update claim predictions if applicable"""
         try:
+            # Use the shared monitoring event publisher
+            await self.ensure_connections()
+            
             with self.db.begin():
                 if len(claims) > 0:        
                     # Update claims in database
@@ -86,7 +108,13 @@ class ClaimDetectionService:
                     if len(to_delete) > 0:
                         deleted_claims = delete_claims(self.db, to_delete)
                         logger.info(f"*** deleted claim: {deleted_claims}")
-                
+                        
+                        await self.publish_monitoring_event.publish_event(
+                            event_type="deleted",
+                            module_name="claim_detection",
+                            event_data={"claims": deleted_claims}
+                        )
+
                     # Iterate update non-empty claims
                     if len(to_update) > 0:
                         for claim in to_update:
@@ -94,6 +122,12 @@ class ClaimDetectionService:
                             updated_claim = update_claim(self.db, claim.model_dump())
                             updated_claims.append(updated_claim)
                             logger.info(f"*** updated claim: {updated_claim}")
+                        
+                        await self.publish_monitoring_event.publish_event(
+                            event_type="updated",
+                            module_name="claim_detection",
+                            event_data={"claims": updated_claims}
+                        )
                                 
                     # Get model predictions   
                     predictions = await self._process_predictions(updated_claims)
@@ -189,14 +223,12 @@ class ClaimDetectionService:
 
     async def _get_model_predictions_from_rabbitmq(self, claims: List[Claim]) -> dict:
         """Get predictions from inference service."""
+        # Use the already initialized client
+        await self.ensure_connections()
         
-        claim_prediction_rcp_client = ClaimPredictionRcpClient()
+        logger.info("*** claim_prediction_rpc_client ready")
         
-        await claim_prediction_rcp_client.connect()
-        
-        logger.info("*** claim_prediction_rcp_client connected")
-        
-        return await claim_prediction_rcp_client.get_model_predictions(
+        return await self.claim_prediction_client.get_model_predictions(
             [claim.text for claim in claims]
         )
 

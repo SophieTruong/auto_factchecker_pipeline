@@ -35,8 +35,13 @@ class ClaimPredictionRcpClient:
     
     def __init__(self):
         self.futures: MutableMapping[str, asyncio.Future] = {}
+        self.is_connected = False
+        self.consumer_tag = None
 
     async def connect(self):
+        if self.is_connected:
+            return self
+            
         try:
             self.connection = await connect(RABBITMQ_URL)
             
@@ -50,9 +55,15 @@ class ClaimPredictionRcpClient:
 
             self.callback_queue = await self.channel.declare_queue(exclusive=True)
 
-            await self.callback_queue.consume(self.on_response, no_ack=True)
+            # Store the consumer tag returned from consume
+            self.consumer_tag = await self.callback_queue.consume(
+                self.on_response, 
+                no_ack=True
+            )
             
-            logger.info(f"Callback queue created")
+            logger.info(f"Callback queue created with consumer tag: {self.consumer_tag}")
+            
+            self.is_connected = True
 
             return self
         
@@ -89,33 +100,71 @@ class ClaimPredictionRcpClient:
             return
         
     async def get_model_predictions(self, claim_list: List[str]):
+        try:
+            if not self.is_connected:
+                await self.connect()
                 
-        correlation_id = str(uuid.uuid4())
-        
-        logger.info(f"A correlation_id is generated for get_model_predictions: {correlation_id}")  
-        
-        loop = asyncio.get_running_loop()
+            correlation_id = str(uuid.uuid4())
+            
+            logger.info(f"A correlation_id is generated for get_model_predictions: {correlation_id}")  
+            
+            loop = asyncio.get_running_loop()
 
-        future = loop.create_future()
+            future = loop.create_future()
 
-        self.futures[correlation_id] = future
-        
-        # Publish message
-        message = Message(
-                body=json.dumps({
-                    'claim': claim_list,
-                    'correlation_id': correlation_id
-                }).encode(),
-                content_type='application/json', # describe the mime-type of the encoding
-                correlation_id=correlation_id, # correlate RPC responses with requests
-                reply_to=self.callback_queue.name, # automatically generated queue name for response from RPC server
+            self.futures[correlation_id] = future
+            
+            # Publish message
+            message = Message(
+                    body=json.dumps({
+                        'claim': claim_list,
+                        'correlation_id': correlation_id
+                    }).encode(),
+                    content_type='application/json', # describe the mime-type of the encoding
+                    correlation_id=correlation_id, # correlate RPC responses with requests
+                    reply_to=self.callback_queue.name, # automatically generated queue name for response from RPC server
+                )
+            
+            await self.channel.default_exchange.publish(
+                message,
+                routing_key="rpc_claim_detection_queue"
             )
-        
-        await self.channel.default_exchange.publish(
-            message,
-            routing_key="rpc_claim_detection_queue"
-        )
-        
-        logger.info(f"Published message")
-        
-        return await future
+                
+            logger.info(f"Published message")
+            
+            return await future
+
+        except Exception as e:
+            logger.error(f"Error in get_model_predictions: {e}")
+            raise
+
+    async def close(self):
+        """Close the RabbitMQ connection and channel safely."""
+        if self.is_connected:
+            try:
+                # Cancel consumer if active
+                if hasattr(self, 'callback_queue') and self.callback_queue is not None and self.consumer_tag is not None:
+                    await self.callback_queue.cancel(self.consumer_tag)
+                    logger.info(f"Canceled consumer with tag: {self.consumer_tag}")
+                    
+                # Close channel if open
+                if hasattr(self, 'channel') and self.channel is not None and not self.channel.is_closed:
+                    await self.channel.close()
+                    
+                # Close connection if open
+                if hasattr(self, 'connection') and self.connection is not None and not self.connection.is_closed:
+                    await self.connection.close()
+                
+                # Clear any pending futures
+                for future in self.futures.values():
+                    if not future.done():
+                        future.set_exception(Exception("Connection closed"))
+                self.futures.clear()
+                
+                self.is_connected = False
+                self.consumer_tag = None
+                logger.info("RabbitMQ connection closed successfully")
+                
+            except Exception as e:
+                logger.error(f"Error closing RabbitMQ connection: {e}")
+                raise e
