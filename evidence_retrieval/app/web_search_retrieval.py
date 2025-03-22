@@ -79,7 +79,10 @@ def calculate_tf_idf(preprocessed_texts: list, query_text: str) -> dict:
     doc_vectors = tfidf_matrix[:-1]
     
     # Calculate cosine similarity between query and each document
-    similarities = cosine_similarity(query_vector, doc_vectors).flatten()
+    if doc_vectors.shape[0] > 0:
+        similarities = cosine_similarity(query_vector, doc_vectors).flatten()
+    else:
+        similarities = []
     
     # Return results as a dictionary
     results = {
