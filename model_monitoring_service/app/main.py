@@ -1,37 +1,73 @@
+from fastapi import FastAPI, HTTPException, Depends
+
+from pydantic.functional_validators import BeforeValidator
+
+from typing_extensions import Annotated
+
+from dateutil.parser import parse
+
 from datetime import datetime
-from typing import List
 
-from fastapi import FastAPI, Depends,  HTTPException, status
-from sqlalchemy.orm import Session
-from services import ClaimModelMonitoringService
-from model import ClaimModelMetric
-from database.sqlite import get_db, engine, Base, SessionLocal
+from database.mongodb import MongoDBManager
 
-import os
-import dotenv
-dotenv.load_dotenv(dotenv.find_dotenv() )
+from pipeline_metric_service import PipelineMetricService
 
-CLAIM_MODEL_MONITORING_SERVICE_URI = os.getenv("CLAIM_MODEL_MONITORING_SERVICE_URI")
+from model import PipelineMetricsResponse
 
-# Set up FastAPI
+import motor.motor_asyncio
+
 app = FastAPI()
 
-# Set up db dependancies
-Base.metadata.create_all(bind=engine)
-
-@app.get("/metrics", response_model=List[ClaimModelMetric])
-async def metrics(
-    start_date: datetime | None = None,
-    end_date: datetime | None = None,
-    db: Session = Depends(get_db)
-) -> List[ClaimModelMetric]:
-    try:
-        model_monitoring_service = ClaimModelMonitoringService(db, CLAIM_MODEL_MONITORING_SERVICE_URI, start_date, end_date)
-        metrics = await model_monitoring_service.get_metrics()
-        return metrics
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get metrics: {str(e)}"
-        )
+# Initialize MongoDBManager and load collections
+try:
+    mongo_manager = MongoDBManager()
+    client = mongo_manager.connect_to_db()
+    db = client.model_monitoring
     
+except Exception as e:
+    print(f"Error initializing MongoDBManager: {e}")
+    raise
+
+# Represents an ObjectId field in the database.
+# It will be represented as a `str` on the model so that it can be serialized to JSON.
+# Source: https://github.com/mongodb-developer/mongodb-with-fastapi/blob/master/app.py
+PyObjectId = Annotated[str, BeforeValidator(str)]
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello, World!"}
+
+@app.get(
+    "/pipeline_metrics",
+    response_model=PipelineMetricsResponse,
+)
+async def get_pipeline_metrics(start_date: str, end_date: str, db: motor.motor_asyncio.AsyncIOMotorDatabase = Depends(MongoDBManager)):
+    """
+    Get the record for a specific student, looked up by `id`.
+    """
+    # validate start_date and end_date
+    try:
+        
+        start_date = parse(start_date)
+        
+        end_date = parse(end_date)
+        
+        if not isinstance(start_date, datetime) or not isinstance(end_date, datetime):
+            raise HTTPException(status_code=400, detail="Invalid date format")
+        
+        if start_date > end_date:
+        
+            raise HTTPException(status_code=400, detail="Start date must be before end date")
+    
+    except ValueError as e:
+    
+        raise HTTPException(status_code=400, detail=f"Invalid date format: {e}")
+        
+    # validate start_date and end_date
+    pipeline_metric_service = PipelineMetricService(
+        db, 
+        start_date, 
+        end_date
+        )
+        
+    return await pipeline_metric_service.get_metrics()
