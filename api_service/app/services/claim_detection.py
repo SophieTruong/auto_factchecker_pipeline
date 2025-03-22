@@ -112,7 +112,7 @@ class ClaimDetectionService:
                         await self.publish_monitoring_event.publish_event(
                             event_type="deleted",
                             module_name="claim_detection",
-                            event_data={"claims": deleted_claims}
+                            event_data={"deleted_counts": len(deleted_claims)}
                         )
 
                     # Iterate update non-empty claims
@@ -126,7 +126,7 @@ class ClaimDetectionService:
                         await self.publish_monitoring_event.publish_event(
                             event_type="updated",
                             module_name="claim_detection",
-                            event_data={"claims": updated_claims}
+                            event_data={"updated_counts": len(updated_claims)}
                         )
                                 
                     # Get model predictions   

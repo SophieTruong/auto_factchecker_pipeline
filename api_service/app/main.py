@@ -25,7 +25,7 @@ from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
 from models.semantic_search_input import SemanticSearchInputs
 from models.semantic_search_response import SemanticSearchResponse, BatchSemanticSearchResponse
-from models.claim_model_monitoring import ClaimModelMonitoring
+from models.pipeline_metrics_response import PipelineMetricsResponse
 
 # Import database models
 from database.postgres import engine, Base, SessionLocal, get_db
@@ -34,7 +34,7 @@ from database.crud import get_all_api_keys
 # Import services
 from services.claim_detection import ClaimDetectionService
 from services.claim_annotation import ClaimAnnotationService
-from services.claim_model_monitoring_data import ClaimModelMonitoringService
+from services.pipeline_metrics_monitoring import PipelineMetricsMonitoringService
 from services.evidence_retrieval_service import EvidenceRetrievalService
 
 # Import utils
@@ -326,8 +326,8 @@ async def semantic_search_queue(
         )
 
 @app.get(
-    "/claim_model_monitoring/get_data",
-    response_model=Optional[List[ClaimModelMonitoring]],
+    "/pipeline_metrics",
+    response_model=Optional[PipelineMetricsResponse],
     responses={
         200: {"description": "Successfully retrieved claims"},
         400: {"description": "Bad request"},
@@ -336,24 +336,24 @@ async def semantic_search_queue(
     },
     status_code=status.HTTP_200_OK
 )
-async def get_claim_model_monitoring_data(
+async def get_pipeline_metrics(
     start_date: str,
     end_date: str,
     db: Session = Depends(get_db),
     key: str = Depends(header_scheme)
-) -> Optional[List[ClaimModelMonitoring]]:
+) -> Optional[PipelineMetricsResponse]:
     """
-    Get claims with inference and annotation by date range
+        Get claims with inference and annotation by date range
     """
     try:
         api_key_auth(key, db)
-        claim_model_monitoring_service = ClaimModelMonitoringService(db)        
-        results = claim_model_monitoring_service.get_claims_with_inference_and_annotation(start_date, end_date)
-        logger.info(f"results from get_claim_model_monitoring_data: {results}")
+        pipeline_metrics_service = PipelineMetricsMonitoringService(start_date, end_date)        
+        results = await pipeline_metrics_service.get_pipeline_metrics()
+        logger.info(f"results from get_pipeline_metrics: {results}")
         logger.info(f"type of results: {type(results)}")
         return results
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get claim model monitoring data: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get pipeline metrics: {str(e)}")
 
 # @app.post(
 #     "/semantic_search/create",

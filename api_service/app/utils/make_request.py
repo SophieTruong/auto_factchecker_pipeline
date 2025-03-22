@@ -2,7 +2,7 @@ import aiohttp
 from typing import Optional, Dict, List, Union
 from fastapi import HTTPException
 
-async def make_request(url: str, data: Optional[Union[Dict, List]]) -> Dict:
+async def make_request(url: str, data: Optional[Union[Dict, List]], method: str = "POST") -> Dict:
     """
     Make an async HTTP POST request and return the response data.
     
@@ -18,20 +18,34 @@ async def make_request(url: str, data: Optional[Union[Dict, List]]) -> Dict:
     """
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=data) as response:
-                if response.status != 200:
-                    error_text = await response.text()
-                    raise HTTPException(
-                        status_code=response.status,
-                        detail=f"Model inference failed: {error_text}"
-                    )
-                
+            if method == "POST":
+                async with session.post(url, json=data) as response:
+                    if response.status != 200:
+                        error_text = await response.text()
+                        raise HTTPException(
+                            status_code=response.status,
+                            detail=f"Model inference failed: {error_text}"
+                        )
+                    return await response.json()
+            elif method == "GET":
+                async with session.get(url, params=data) as response:
+                    if response.status != 200:
+                        error_text = await response.text()
+                        raise HTTPException(
+                            status_code=response.status,
+                            detail=f"Model inference failed: {error_text}"
+                        )
+                    print(f"Response: {await response.json()}")
                 return await response.json()
-                
+            else:
+                raise HTTPException(
+                    status_code=405,
+                    detail="Method not allowed"
+                )
     except aiohttp.ClientError as e:
         raise HTTPException(
             status_code=503,
-            detail=f"Failed to connect to inference service: {str(e)}"
+            detail=f"Failed to connect to internal service: {str(e)}"
         )
     except Exception as e:
         raise HTTPException(
