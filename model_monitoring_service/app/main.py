@@ -42,9 +42,6 @@ def read_root():
     response_model=PipelineMetricsResponse,
 )
 async def get_pipeline_metrics(start_date: str, end_date: str, db: motor.motor_asyncio.AsyncIOMotorDatabase = Depends(MongoDBManager)):
-    """
-    Get the record for a specific student, looked up by `id`.
-    """
     # validate start_date and end_date
     try:
         
