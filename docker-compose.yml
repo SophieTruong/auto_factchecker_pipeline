@@ -39,6 +39,11 @@ services:
       file: ./model_monitoring_service/docker-compose.yml
       service: model_monitoring_service
   
+  rabbitmq_consumer:
+    extends:
+      file: ./model_monitoring_service/docker-compose.yml
+      service: rabbitmq_consumer
+  
   evidence_retrieval:
     extends:
       file: ./evidence_retrieval/docker-compose.yml
