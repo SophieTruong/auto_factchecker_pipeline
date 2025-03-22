@@ -74,7 +74,7 @@ services:
       - backend
     env_file: ".env"
     volumes:
-      - ${HF_HOME}:/app/sentence-transformer-model
+      - hf_cache:/app/sentence-transformer-model
       - ${SRC_FINNISH_NEWS_DIR}:/app/finnish_news_archieve
       - ${SRC_FACEPAGER_DATA}:/app/facepager_data
     depends_on:
@@ -91,3 +91,7 @@ services:
 networks:
   backend:
     driver: bridge
+
+volumes:
+  hf_cache:
+    driver: local

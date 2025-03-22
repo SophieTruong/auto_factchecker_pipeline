@@ -7,18 +7,15 @@ services:
       - .env
     depends_on:
       - mongodb
+      - rabbitmq
     networks:
       - backend
-    volumes:
-      - mongodb_data:/app/data
   model_monitoring_service:
     build:
       context: .
       dockerfile: Dockerfile
     env_file:
       - .env
-    volumes:
-      - mongodb_data:/app/data
     ports:
       - "8096:8096"
     depends_on:
@@ -30,7 +27,3 @@ services:
 networks:
   backend:
     driver: bridge
-
-volumes:
-  mongodb_data:
-    name: mongodb_data

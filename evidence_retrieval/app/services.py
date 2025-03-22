@@ -19,7 +19,7 @@ import os
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
-MODEL_DIR = os.getenv("MODEL_DIR")
+S_TRANSFORMERS_MDL_DIR = os.getenv("S_TRANSFORMERS_MDL_DIR")
 
 WEB_SEARCH_URL = os.getenv("WEB_SEARCH_URL")
 
@@ -63,13 +63,13 @@ class SemanticSearchService:
         
         logger.info(f"Before dense embedding function INIT")
         
-        logger.info(f"MODEL_DIR: {MODEL_DIR}")
+        logger.info(f"S_TRANSFORMERS_MDL_DIR: {S_TRANSFORMERS_MDL_DIR}")
         
         dense_ef = BGEM3EmbeddingFunction(
             model_name="BAAI/bge-m3",
             device="cpu",
             normalize_embeddings=True,
-            cache_dir=MODEL_DIR,
+            cache_dir=S_TRANSFORMERS_MDL_DIR,
         )
         
         standard_retriever = HybridRetriever(

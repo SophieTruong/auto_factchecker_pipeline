@@ -27,7 +27,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--test", type=str)
 args = parser.parse_args()
 
-MODEL_DIR = os.getenv("MODEL_DIR")
+S_TRANSFORMERS_MDL_DIR = os.getenv("S_TRANSFORMERS_MDL_DIR")
 
 def main():
     
@@ -35,7 +35,7 @@ def main():
         model_name="BAAI/bge-m3",
         device="cpu",
         normalize_embeddings=True,
-        cache_dir=MODEL_DIR,
+        cache_dir=S_TRANSFORMERS_MDL_DIR,
     )
     
     # MODEL = 'msmarco-MiniLM-L6-cos-v5' # normalize_embedding
@@ -46,7 +46,7 @@ def main():
     #     query_instruction = "",
     #     doc_instruction = "",
     #     device='cpu', # Specify the device to use, e.g., 'cpu' or 'cuda:0'
-    #     cache_folder=MODEL_DIR,
+    #     cache_folder=S_TRANSFORMERS_MDL_DIR,
     # )
     
     start_time = time.time()

@@ -3,20 +3,6 @@ services:
     extends:
       file: ./api_service/docker-compose.yml
       service: db
-
-  # pgvectorseeding:
-    # build:
-    #   context: .
-    #   dockerfile: api/databases/pgvector/Dockerfile
-    # depends_on:
-    #   -  "db"
-    # volumes:
-    #   - ./api/databases/data:/db/data
-    #   - sentence-transformer-model:/db/sentence-transformer-model
-    #   - logging:/db/logging
-    # networks:
-    #   - backend
-
   api:
     extends:
       file: ./api_service/docker-compose.yml
@@ -95,9 +81,11 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    env_file:
+      - .env
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
@@ -114,8 +102,5 @@ volumes:
     driver: local  # Explicitly specify volume driver
   database:
     driver: local  # Explicitly specify volume driver
-  model_monitoring_data:
-    name: model_monitoring_data
-  # sentence-transformer-model:
-  # xml-roberta-model:
-  # logging:
+  hf_cache:
+    driver: local

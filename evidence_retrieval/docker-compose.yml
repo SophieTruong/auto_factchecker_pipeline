@@ -5,7 +5,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ${HF_HOME}:/app/sentence-transformer-model
+      - hf_cache:/app/sentence-transformer-model
     networks:
       - backend
     depends_on:
@@ -14,3 +14,7 @@ services:
 networks:
   backend:
     driver: bridge
+
+volumes:
+  hf_cache:
+    driver: local
