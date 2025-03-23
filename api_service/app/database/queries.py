@@ -158,6 +158,12 @@ def delete_claim_model_inference_query(claim_model_inference_id: UUID):
     """
     return delete(ClaimModelInference).where(ClaimModelInference.id == claim_model_inference_id).returning(ClaimModelInference)
 
+def delete_claim_model_inference_by_claim_id_query(claim_ids: List[UUID]):
+    """
+    Create a query for deleting a claim model inference by its claim ID
+    """
+    return delete(ClaimModelInference).where(ClaimModelInference.claim_id.in_(claim_ids)).returning(ClaimModelInference)
+
 ## Claim Detection Model Queries
 def get_claim_detection_model_by_id_query(claim_detection_model_id: UUID):
     """

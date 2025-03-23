@@ -40,6 +40,7 @@ from .queries import (
     update_claim_model_inference_by_claim_id_query,
     update_claim_model_inference_query,
     delete_claim_model_inference_query,
+    delete_claim_model_inference_by_claim_id_query,
     # Claim Detection Model Queries
     insert_claim_detection_model_query,
     get_claim_detection_model_by_id_query,
@@ -300,6 +301,19 @@ def delete_claim_model_inference(db: Session, claim_model_inference_id: UUID) ->
     """
     try:
         deleted_claim_model_inference = db.scalar(delete_claim_model_inference_query(claim_model_inference_id))
+        db.commit()
+        return deleted_claim_model_inference
+    except Exception as e:
+        traceback.print_exc()
+        db.rollback()
+        raise Exception(f"{str(e)}")
+
+def delete_claim_model_inference_by_claim_id(db: Session, claim_ids: List[UUID]) -> Optional[List[ClaimModelInference]]:
+    """
+    Delete a claim model inference from the database by its claim ID.
+    """
+    try:
+        deleted_claim_model_inference = db.scalars(delete_claim_model_inference_by_claim_id_query(claim_ids)).all()
         db.commit()
         return deleted_claim_model_inference
     except Exception as e:

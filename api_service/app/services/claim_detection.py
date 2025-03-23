@@ -10,6 +10,7 @@ from database.crud import (
     insert_claims,
     update_claim,
     delete_claims,
+    delete_claim_model_inference_by_claim_id,
     get_claim_by_text,
     get_claims_by_created_at,
     get_claim_detection_model_by_name,
@@ -97,7 +98,7 @@ class ClaimDetectionService:
                 if len(claims) > 0:        
                     # Update claims in database
                     to_update = []
-                    to_delete = []
+                    to_delete = [] # list of claim ids to delete
                     updated_claims = []
                     for claim in claims:
                         if claim.text.strip():
@@ -114,6 +115,11 @@ class ClaimDetectionService:
                             module_name="claim_detection",
                             event_data={"deleted_counts": len(deleted_claims)}
                         )
+                        
+                        deleted_claim_model_inference = delete_claim_model_inference_by_claim_id(self.db, to_delete)
+                        logger.info(f"*** deleted claim model inference: {deleted_claim_model_inference}")
+                        
+                        return None
 
                     # Iterate update non-empty claims
                     if len(to_update) > 0:
@@ -129,12 +135,10 @@ class ClaimDetectionService:
                             event_data={"updated_counts": len(updated_claims)}
                         )
                                 
-                    # Get model predictions
-                    if len(updated_claims) > 0:
+                        # Get model predictions
                         predictions = await self._process_predictions(updated_claims)
                         logger.info(f"*** predictions: {predictions}")
-                                        
-                    return self._create_response(updated_claims, predictions)
+                        return self._create_response(updated_claims, predictions)            
                 else:
                     return None
         except Exception as e:
