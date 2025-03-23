@@ -1,4 +1,4 @@
-from aio_pika import connect_robust, ExchangeType
+from aio_pika import connect, ExchangeType
 from aio_pika.abc import (
     AbstractRobustConnection, 
     AbstractRobustChannel,
@@ -43,7 +43,7 @@ class RabbitMqReceiverManager:
             
             print("Connecting to RabbitMQ...")
             # Perform connection
-            self.connection = await connect_robust(RABBITMQ_URL)
+            self.connection = await connect(RABBITMQ_URL, )
             
             # Create a channel
             self.channel = await self.connection.channel()

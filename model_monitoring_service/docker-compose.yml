@@ -7,7 +7,7 @@ services:
       - .env
     depends_on:
       - mongodb
-      - rabbitmq-server
+      - rabbitmq
     networks:
       - backend
   model_monitoring_service:
