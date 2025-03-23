@@ -6,10 +6,12 @@ services:
     env_file:
       - .env
     depends_on:
-      - mongodb
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
     networks:
-      - backend
+      - backend 
   model_monitoring_service:
     build:
       context: .

@@ -4,6 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: rabbitmq-server
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5672:5672"
       - "15672:15672"
