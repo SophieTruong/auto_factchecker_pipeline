@@ -129,9 +129,10 @@ class ClaimDetectionService:
                             event_data={"updated_counts": len(updated_claims)}
                         )
                                 
-                    # Get model predictions   
-                    predictions = await self._process_predictions(updated_claims)
-                    logger.info(f"*** predictions: {predictions}")
+                    # Get model predictions
+                    if len(updated_claims) > 0:
+                        predictions = await self._process_predictions(updated_claims)
+                        logger.info(f"*** predictions: {predictions}")
                                         
                     return self._create_response(updated_claims, predictions)
                 else:
