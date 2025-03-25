@@ -46,7 +46,7 @@ class SourceDocument(Base, StringRepresentation):
     updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow(), nullable=False)
     
     __table_args__ = (
-        UniqueConstraint('text', name='uq_source_document_text'),
+        Index('ix_source_document_text_md5', func.md5(text), unique=True),
     )
 
 class Claim(Base, StringRepresentation):
