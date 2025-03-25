@@ -45,9 +45,7 @@ class SourceDocument(Base, StringRepresentation):
     created_at = Column(DateTime(timezone=True), server_default=utcnow(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow(), nullable=False)
     
-    # Add index on text column
     __table_args__ = (
-        Index('idx_source_document_text_unique', func.to_tsvector(cast_language_literal("finnish"), text), postgresql_using='gin'),
         UniqueConstraint('text', name='uq_source_document_text'),
     )
 
