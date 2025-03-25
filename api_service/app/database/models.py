@@ -47,7 +47,7 @@ class SourceDocument(Base, StringRepresentation):
     
     # Add index on text column
     __table_args__ = (
-        Index('ix_source_document_text_hash', func.md5(text)),
+        Index('ix_source_document_text_hash', func.md5(text), unique=True),
     )
 
 class Claim(Base, StringRepresentation):
