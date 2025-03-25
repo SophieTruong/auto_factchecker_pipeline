@@ -8,7 +8,6 @@ from sqlalchemy.dialects.postgresql import UUID, TEXT
 from sqlalchemy.sql import func
 from sqlalchemy.types import DateTime
 
-import hashlib
 import uuid
 
 from .postgres import Base
@@ -43,18 +42,13 @@ class SourceDocument(Base, StringRepresentation):
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     text = Column(TEXT, nullable=False)
-    text_hash = Column(String(32), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=utcnow(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=utcnow(), onupdate=utcnow(), nullable=False)
     
     # Add index on text column
     __table_args__ = (
-        UniqueConstraint('text_hash', name='uq_source_document_text_hash'),
+        Index('ix_source_document_text_hash', func.md5(text)),
     )
-
-    def __init__(self, text: str):
-        self.text = text
-        self.text_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
 
 class Claim(Base, StringRepresentation):
     """
