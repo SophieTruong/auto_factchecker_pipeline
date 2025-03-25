@@ -48,7 +48,7 @@ def insert_source_document_query(source_document_data: dict):
     """
     Create a query for inserting source documents
     """
-    return insert(SourceDocument).values(source_document_data).on_conflict_do_nothing(constraint='uq_source_document_text').returning(SourceDocument)
+    return insert(SourceDocument).values(source_document_data).on_conflict_do_nothing(constraint='uq_source_document_text_hash').returning(SourceDocument)
 
 def update_source_document_query(source_document_id: UUID, source_document_data: dict):
     """
