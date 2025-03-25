@@ -15,6 +15,9 @@ running_script.txt
 .env
 .env.*
 !.env.example
+!.env.sample
+
+file_structure*
 
 api/claim_detection/xml_model_finetune/data
 api/claim_detection/xml_model_finetune/xml-roberta-model/
