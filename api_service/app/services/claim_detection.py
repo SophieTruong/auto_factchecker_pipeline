@@ -158,8 +158,8 @@ class ClaimDetectionService:
         """Create source document record."""
         logger.info(f"*** input_data: {input_data}")
         inserted_source_document = insert_source_document(self.db, input_data.model_dump())
-        
-        if not inserted_source_document:
+        logger.info(f"*** _create_source_document inserted_source_document: {inserted_source_document}")
+        if not inserted_source_document or inserted_source_document.text[:100] != input_data.text[:100]:
             return get_source_document_by_text(self.db, input_data.text)
         
         return inserted_source_document

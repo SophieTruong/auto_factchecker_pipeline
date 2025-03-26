@@ -104,6 +104,7 @@ def insert_source_document(db: Session, source_document_data: dict) -> Optional[
     
     try:
         inserted_source_document = db.scalar(insert_source_document_query(source_document_data))
+        logger.info(f"*** inserted_source_document: {inserted_source_document}")
         return inserted_source_document
     except Exception as e:
         traceback.print_exc()
