@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: api
+    spec:
+      containers:
+        - name: api-pod
+          image: "{{ .Values.api_image_url }}:{{ .Values.api_image_tag }}"
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 1
+          env:
+            - { name: INFERENCE_MODEL_URI, value: "http://{{ .Values.model_inference_service_name }}/predict" }
+            - { name: MODEL_MONITORING_URI, value: "http:///{{ .Values.model_monitoring_service_name }}/pipeline_metrics" }
+            - name: RABBITMQ_URL
+              value: "{{ printf \"amqp://%s:%s@%s:%s/remote_host\" .Values.api_postgres_user (lookup \"v1\" \"Secret\" .Release.Namespace \"databases\" | .data.api_postgres_password | b64dec) .Values.rabbitmq_service_name .Values.rabbitmq_service_port }}"
+          command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]          

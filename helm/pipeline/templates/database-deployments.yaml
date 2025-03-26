@@ -1,0 +1,52 @@
+# API postgres db
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-database
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: api-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: api-database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: api-database
+    spec:
+      containers:
+        - name: api-database-pod
+          image: ankane/pgvector
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: 1
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: api_postgres_db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: api_postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: api_postgres_password      
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: {{ .Values.api_db_volume }}
+      volumes:
+        - name: {{ .Values.api_db_volume }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.api_db_volume }}

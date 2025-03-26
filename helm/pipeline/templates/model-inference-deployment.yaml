@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-inference
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: model-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: model-inference
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: model-inference
+    spec:
+      containers:
+        - name: model-inference-pod
+          image: "{{ .Values.model_inference_image_url }}:{{ .Values.model_inference_image_tag }}"          
+          resources:
+            requests:
+              cpu: 1
+          env:
+            - { name: MODEL_METADATA, value: {{ .Values.model_metadata }} }
+            - { name: MODEL_URI,  value: {{ .Values.model_uri }} }
+            - name: RABBITMQ_URL
+              value: "{{ printf \"amqp://%s:%s@%s:%s/remote_host\" .Values.api_postgres_user (lookup \"v1\" \"Secret\" .Release.Namespace \"databases\" | .data.api_postgres_password | b64dec) .Values.rabbitmq_service_name .Values.rabbitmq_service_port }}"
+          volumeMounts:
+            - mountPath: /app/mlruns
+              name: {{ .Values.model_volume }}
+      volumes:
+        - name: {{ .Values.model_volume }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.model_volume }}

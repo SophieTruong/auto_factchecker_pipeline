@@ -1,0 +1,39 @@
+# Image locations
+api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/api
+api_image_tag: latest
+model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/model_inference
+model_inference_image_tag: latest
+web_scrape_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/web_scrape
+web_scrape_tag: latest
+
+
+# Ingress settings
+api_url: api.localhost
+
+
+# Service names
+api_service_name: api-svc
+api_postgres_service_name: api-postgres-svc
+model_monitoring_service_name: model-monitoring-svc
+model_inference_service_name: model-inference-svc
+rabbitmq_service_name: rabbitmq
+rabbitmq_service_port: 5432
+
+
+# DB Settings
+api_postgres_user: vector
+api_postgres_db : vectordb
+
+
+# Volumes
+api_db_volume: api-db-volume
+model_volume: model-volume
+
+# StorageClass and volumeMode
+storage_class: "nfs"
+volume_mode: "Filesystem"
+
+# model data locations (in the model volume)
+model_uri: ./mlruns/223326325726326848/658fdf3d1618421db6f5fb1290c8e7f3/artifacts/setfit_model
+model_metadata: ./mlruns/models/claim-detection-setfit-TurkuNLP/version-3/meta.yaml
+
