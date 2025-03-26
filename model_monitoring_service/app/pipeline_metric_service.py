@@ -58,8 +58,8 @@ class PipelineMetricService:
         # Are we more likely to find close match in websearch? Frequency of cosine similarity > 0.6 <= TODO: Justify this magic number
         sample_metrics["frq_close_match_websearch"] = sum(1 if metric["web_search_cosine_similarity_max"] > 0.6 else 0 for metric in metrics_data) / len(metrics_data) if len(metrics_data) > 0 else 0
         
-        # Are we more likely to find close match in websearch? Frequency of cosine similarity > 0.02 <= TODO: Justify this magic number
-        sample_metrics["frq_close_match_milvus_hybrid_search"] = sum(1 if metric["vector_db_search_scores_max"] > 0.02 else 0 for metric in metrics_data) / len(metrics_data) if len(metrics_data) > 0 else 0
+        # Are we more likely to find close match in websearch? Frequency of reranker score > 0.03 <= TODO: Justify this magic number
+        sample_metrics["frq_close_match_milvus_hybrid_search"] = sum(1 if metric["vector_db_search_scores_max"] > 0.03 else 0 for metric in metrics_data) / len(metrics_data) if len(metrics_data) > 0 else 0
 
         # How many exact match we found from websearch? 
         sample_metrics["n_exact_match_websearch"] = sum(1 if metric["web_search_cosine_similarity_max"] == 1 else 0 for metric in metrics_data)
@@ -77,7 +77,7 @@ class PipelineMetricService:
         sample_metrics["example_claim_no_evidence_web_search"] = next((metric for metric in metrics_data if metric["web_search_size"] == 0), None)
         
         # Give an example of query claim with high match in websearch
-        sample_metrics["example_claim_high_match_websearch"] = next((metric for metric in metrics_data if metric["web_search_cosine_similarity_max"] > 0.9), None)
+        sample_metrics["example_claim_high_match_websearch"] = next((metric for metric in metrics_data if metric["web_search_cosine_similarity_max"] > 0.6), None)
         
         # Give an example of query claim with high match in milvus_hybrid_search
         sample_metrics["example_claim_high_match_milvus_hybrid_search"] = next((metric for metric in metrics_data if metric["vector_db_search_scores_max"] > 0.03), None)
