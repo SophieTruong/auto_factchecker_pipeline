@@ -2,31 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: web-scrape
   namespace: {{ $.Release.Namespace }}
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: api
+    app.kubernetes.io/name: web-scrape
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: server
-      app.kubernetes.io/name: api
+      app.kubernetes.io/name: web-scrape
   template:
     metadata:
       labels:
         app.kubernetes.io/component: server
-        app.kubernetes.io/name: api
+        app.kubernetes.io/name: web-scrape
     spec:
       containers:
-        - name: api-pod
-          image: "{{ .Values.api_image_url }}:{{ .Values.api_image_tag }}"
-          ports:
-            - containerPort: 8080
+        - name: web-scrape-pod
+          image: "{{ .Values.web_scrape_image_url }}:{{ .Values.web_scrape_image_tag }}"          
           resources:
             requests:
               cpu: 1
+          ports:
+            - containerPort: 8092
           env:           
             - name: CSE_API_KEY
               valueFrom:

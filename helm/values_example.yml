@@ -3,9 +3,14 @@ api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/api
 api_image_tag: latest
 model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/model_inference
 model_inference_image_tag: latest
-web_scrape_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/web_scrape
-web_scrape_tag: latest
-
+web_scrape_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/web_scrape
+web_scrape_image_tag: latest
+model_monitoring_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/model_monitoring
+model_monitoring_image_tag: latest
+rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/rabbitmq_consumer
+rabbitmq_consumer_image_tag: latest
+evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/evidence_retrieval
+evidence_retrieval_image_tag: latest
 
 # Ingress settings
 api_url: api.localhost
@@ -16,18 +21,25 @@ api_service_name: api-svc
 api_postgres_service_name: api-postgres-svc
 model_monitoring_service_name: model-monitoring-svc
 model_inference_service_name: model-inference-svc
+web_scrape_service_name: web-scrape-svc
 rabbitmq_service_name: rabbitmq
 rabbitmq_service_port: 5432
-
+mongo_service_name: mongo
+mongo_service_port: 27017
 
 # DB Settings
 api_postgres_user: vector
 api_postgres_db : vectordb
+mongo_user: factcheck
+mongo_monitoring_db: model_monitoring
+rabbitmq_user: factcheck
+rabbitmq_vhost: remote_host
 
 
 # Volumes
 api_db_volume: api-db-volume
 model_volume: model-volume
+hf_cache: hf-cache
 
 # StorageClass and volumeMode
 storage_class: "nfs"

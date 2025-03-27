@@ -2,32 +2,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-inference
+  name: evidence-retrieval
   namespace: {{ $.Release.Namespace }}
   labels:
     app.kubernetes.io/component: server
-    app.kubernetes.io/name: model-inference
+    app.kubernetes.io/name: evidence-retrieval
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: server
-      app.kubernetes.io/name: model-inference
+      app.kubernetes.io/name: evidence-retrieval
   template:
     metadata:
       labels:
         app.kubernetes.io/component: server
-        app.kubernetes.io/name: model-inference
+        app.kubernetes.io/name: evidence-retrieval
     spec:
       containers:
-        - name: model-inference-pod
-          image: "{{ .Values.model_inference_image_url }}:{{ .Values.model_inference_image_tag }}"          
+        - name: evidence-retrieval-pod
+          image: "{{ .Values.evidence_retrieval_image_url }}:{{ .Values.evidence_retrieval_image_tag }}"                    
           resources:
             requests:
               cpu: 1
-          env:
-            - { name: MODEL_METADATA, value: {{ .Values.model_metadata }} }
-            - { name: MODEL_URI,  value: {{ .Values.model_uri }} }
+          env:            
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"
             - name: RABBITMQ_USER
@@ -36,13 +34,18 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: databases
-                  key: rabbitmq_password   
+                  key: rabbitmq_password
             - name: RABBITMQ_VHOST
               value: "{{ .Values.rabbitmq_vhost }}"
+            - name: WEB_SEARCH_URL
+              value: "http://{{ .Values.web_scrape_service_name }}/search"
+            - name: S_TRANSFORMERS_MDL_DIR
+              value: "/app/sentence-transformer-model"
           volumeMounts:
-            - mountPath: /app/mlruns
-              name: {{ .Values.model_volume }}
+            - mountPath: /app/sentence-transformer-model
+              name: {{ .Values.hf_cache }}
       volumes:
-        - name: {{ .Values.model_volume }}
+        - name: {{ .Values.hf_cache }}
           persistentVolumeClaim:
-            claimName: {{ .Values.model_volume }}
+            claimName: {{ .Values.hf_cache }}
+

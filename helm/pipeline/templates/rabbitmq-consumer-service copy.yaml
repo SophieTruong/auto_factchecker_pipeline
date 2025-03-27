@@ -1,18 +1,16 @@
+# unclear if needed
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.api_service_name }}
+  name: {{ .Values.model_monitoring_service_name }}
   labels:
-    app.kubernetes.io/name: {{.Values.api_service_name}}
+    app.kubernetes.io/name: {{.Values.model_monitoring_service_name}}
     app.kubernetes.io/component: server
   namespace: {{ $.Release.Namespace }}
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: api
-    ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8092
+
 ---

@@ -1,9 +1,8 @@
 {
-    "rabbit_version": "4.0.7",
     "users": [
       {
-        "name": "app_user",
-        "password_hash": "exIE87Z8oN8PG4jffKH0/bTlSkJZGcIY0TEdC30F6GgD2p94",
+        "name": "user",
+        "password_hash": "6qN16OOsd7N01jnbtICgV3F/2kDPz1wfxDemDVQMQWInSg+d",
         "hashing_algorithm": "rabbit_password_hashing_sha256",
         "tags": "administrator"
       }
@@ -13,7 +12,7 @@
     ],
     "permissions": [
       {
-        "user": "app_user",
+        "user": "user",
         "vhost": "remote_host",
         "configure": ".*",
         "write": ".*",
