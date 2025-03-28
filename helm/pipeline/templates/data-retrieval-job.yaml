@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dataretrieval
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: dataretrieval
+    app.kubernetes.io/name: dataretrieval
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: dataretrieval
+        app.kubernetes.io/name: dataretrieval
+    spec:
+      containers:
+        - name: dataretrieval-job
+          image: {{ .Values.setup_container.image }}      
+          env:
+            - name: HF_FOLDER              
+              value: /app/sentence-transformer-model
+            - name: HF_URL
+              value: {{ .Values.hf_data_url }}
+            - name: NEWS_DATA_DIR
+              value: /app/finnish_news_archieve
+            - name: NEWS_DATA_URL
+              value: {{ .Values.news_data_url }}              
+            - name: FACEPAGER_DIR
+              value: /app/facepager_data
+            - name: FACEPAGER_URL
+              value: {{ .Values.facepager_data_url }}              
+            - name: MODEL_DIR
+              value: /app/mlruns
+            - name: MODEL_URL
+              value: {{ .Values.model_data_url }}              
+          volumeMounts:
+            - name: hf-cache-volume
+              mountPath: /app/sentence-transformer-model
+            - name: finnish-news-volume
+              mountPath: /app/finnish_news_archieve
+            - name: facepager-data-volume
+              mountPath: /app/facepager_data
+            - name: {{ .Values.model_volume }}
+              mountPath: /app/mlruns
+      restartPolicy: Never
+      volumes:
+        - name: hf-cache-volume
+          persistentVolumeClaim:
+            claimName: hf-cache
+        - name: finnish-news-volume
+          persistentVolumeClaim:
+            claimName: finnish-news-pvc
+        - name: facepager-data-volume
+          persistentVolumeClaim:
+            claimName: facepager-data-pvc
+        - name: {{ .Values.model_volume }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.model_volume }}              
+             
