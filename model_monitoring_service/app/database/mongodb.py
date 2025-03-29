@@ -102,22 +102,22 @@ class MongoDBManager:
         Each claim is inserted as a separate document
         """
         try:
-            # Use timestamp if available, otherwise current time
-            timestamp = metrics.get("timestamp", datetime.now().isoformat())
-            
             processed_metrics = [
                 {
-                    "created_at": timestamp,
+                    "created_at": metrics["timestamp"],
+                    "claim_model_id": metrics["claim_model_ids"][i],
                     "claim_id": metrics["claim_ids"][i],
-                    "prediction": metrics["claim_annotations"][i],
-                    "annotation": metrics["claim_model_inferences"][i]
+                    "annotation": metrics["claim_annotations"][i],
+                    "prediction": metrics["claim_model_inferences"][i]
                 }
                 for i in range(len(metrics["claim_ids"]))
             ]
             
             collection = self.get_claim_collection()
             results = await collection.insert_many(processed_metrics)  # coroutine -> await
-            print(f"Inserted {len(results.inserted_ids)} claim metrics")
+            
+            print(f"**MYDEBUG_Inserted claim metrics: {results}")
+            
             return results.inserted_ids
         except Exception as e:
             print(f"Error inserting claim metrics: {e}")

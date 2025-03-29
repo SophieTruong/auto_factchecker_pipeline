@@ -1,9 +1,16 @@
 from datetime import datetime
+import pandas as pd
 
 import motor.motor_asyncio
 
 from metric_calculator import calculate_metrics
 from model import ModelMetrics, EvidenceRetrievalMetrics, PipelineMetricsResponse
+
+# Set display options
+pd.set_option('display.max_columns', None)  # Show all columns
+pd.set_option('display.max_rows', None)     # Show all rows
+pd.set_option('display.width', None)        # Width of the display in characters
+pd.set_option('display.max_colwidth', None) # Full width of each column
 
 class PipelineMetricService:
     def __init__(
@@ -18,15 +25,24 @@ class PipelineMetricService:
     
     async def get_claim_metrics(self) -> ModelMetrics:
         claim_metrics = await self.db.get_claim_metrics(self.start_date, self.end_date)
-
-        sample_count = len(claim_metrics)
-        prediction_list = []
-        annotation_list = []
         
-        for metric in claim_metrics:
-            prediction_list.append(metric["prediction"])
-            annotation_list.append(metric["annotation"])
-            
+        claim_metrics_df = pd.DataFrame(claim_metrics)
+        
+        # For annotations: use majority voting: e.g. if 2 out of 3 annotations for same claim_model_id and claim_id are positive, then the annotation is positive
+        claim_mv_annotation_prediction_df = claim_metrics_df.groupby(['claim_model_id', 'claim_id']).agg({
+                'annotation': lambda x: x.mode()[0], # Majority voting
+                'prediction': lambda x: x.mode()[0] # Majority voting
+            }).reset_index()
+        
+        print(f"*** MYDEBUG claim_mv_annotation_prediction_df: {claim_mv_annotation_prediction_df}")
+        
+        # Number of claims
+        sample_count = claim_mv_annotation_prediction_df.shape[0]
+        
+        # Calculate metrics
+        prediction_list = claim_mv_annotation_prediction_df["prediction"].tolist()
+        annotation_list = claim_mv_annotation_prediction_df["annotation"].tolist()
+        
         metrics = calculate_metrics(prediction_list, annotation_list)
         
         model_metrics = ModelMetrics(

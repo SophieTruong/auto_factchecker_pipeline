@@ -60,12 +60,19 @@ class ClaimAnnotationService:
                 
                 claim_annotations = [claim.binary_label for claim in inserted_claim_annotations]
                 
-                claim_model_inferences = [get_claim_model_inference_by_claim_id(self.db, claim_id).label for claim_id in claim_ids]
+                claim_model_inferences = [get_claim_model_inference_by_claim_id(self.db, claim_id) for claim_id in claim_ids]
+                
+                logger.info(f"*** MYDEBUG_claim_model_inferences: {claim_model_inferences}")
+                
+                claim_model_labels = [claim_model_inference.label for claim_model_inference in claim_model_inferences]
+                
+                claim_model_ids = [str(claim_model_inference.claim_detection_model_id) for claim_model_inference in claim_model_inferences]
                 
                 message = {
                     "claim_ids": claim_ids,
                     "claim_annotations": claim_annotations,
-                    "claim_model_inferences": claim_model_inferences
+                    "claim_model_inferences": claim_model_labels,
+                    "claim_model_ids": claim_model_ids
                 }
                 
                 logger.info(f"Message to be published: {message}")
