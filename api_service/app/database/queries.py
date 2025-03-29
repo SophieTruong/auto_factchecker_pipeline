@@ -97,7 +97,18 @@ def insert_claims_query(claims_data: List[dict]):
     """
     Create a query for inserting claims
     """
-    return insert(Claim).values(claims_data).on_conflict_do_nothing(constraint='uq_claim_text_source').returning(Claim)
+    stmt = insert(Claim).values(claims_data)
+    
+    # If the claim text already exists, update the source document ID and updated at
+    stmt = stmt.on_conflict_do_update(
+        constraint='uq_claim_text',
+        set_=dict(
+            source_document_id=stmt.excluded.source_document_id, 
+            updated_at=stmt.excluded.updated_at
+        )
+    ).returning(Claim)
+    
+    return stmt
 
 def update_claim_query(claim_data: dict) -> Optional[Claim]:
     """
@@ -124,7 +135,6 @@ def get_claim_model_inference_by_claim_id_query(claim_id: UUID):
     """
     return select(ClaimModelInference).where(ClaimModelInference.claim_id == claim_id)
 
-#TODO: Test this query
 def insert_claim_model_inference_query(claim_model_inference_data: List[dict]):
     """
     Create a query for inserting claim model inferences

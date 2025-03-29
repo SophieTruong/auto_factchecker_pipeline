@@ -82,7 +82,7 @@ class Claim(Base, StringRepresentation):
     # Add index on text column
     __table_args__ = (
         Index('idx_claim_text_unique', func.to_tsvector(cast_language_literal("finnish"), text), postgresql_using='gin'),
-        UniqueConstraint('text', 'source_document_id', name='uq_claim_text_source'),
+        UniqueConstraint('text', name='uq_claim_text'),
     )
     
 class ClaimModelInference(Base, StringRepresentation):

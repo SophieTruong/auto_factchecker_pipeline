@@ -73,17 +73,22 @@ class ClaimDetectionService:
                 # Insert source document
                 source_document = self._create_source_document(input_data)
                 
-                if not source_document:
-                    raise Exception("*** Failed to insert source document. Try editing the input text.")
-                
+                if not source_document: # Duplicated insert will return None
+                    
+                    logger.info(f"*** MYDEBUG_create_source_document returned None: {source_document}")
+                    
+                    source_document = get_source_document_by_text(self.db, input_data.text)
+                    
                 # Process claims
                 claims = self._create_claims(source_document.id, input_data.text)
+                
                 logger.info(f"*** claims after self._create_claims: {claims}")
                 
                 # Get model predictions   
                 predictions = await self._process_predictions(claims)
 
                 return self._create_response(claims, predictions)
+        
         except Exception as e:
             self.db.rollback()
             raise Exception(f"{e}")
@@ -158,10 +163,6 @@ class ClaimDetectionService:
         """Create source document record."""
         logger.info(f"*** input_data: {input_data}")
         inserted_source_document = insert_source_document(self.db, input_data.model_dump())
-        logger.info(f"*** _create_source_document inserted_source_document: {inserted_source_document}")
-        if not inserted_source_document or inserted_source_document.text[:100] != input_data.text[:100]:
-            return get_source_document_by_text(self.db, input_data.text)
-        
         return inserted_source_document
         
     def _create_claims(self, source_document_id: UUID, text: str) -> List[Claim]:
