@@ -1,16 +1,16 @@
 cd ../api_service
-docker build -t harbor.cs.aalto.fi/aaltorse-public/api_service:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api_service:latest .
 cd ../data_retrieval 
-docker build -t harbor.cs.aalto.fi/aaltorse-public/data_retrieval:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval:latest .
 cd ../evidence_retrieval
-docker build -t harbor.cs.aalto.fi/aaltorse-public/evidence_retrieval:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/evidence_retrieval:latest .
 cd ../milvus_standalone
-docker build -t harbor.cs.aalto.fi/aaltorse-public/db_seed:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/db_seed:latest .
 cd ../model_inference_service
-docker build -t harbor.cs.aalto.fi/aaltorse-public/model_inference:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_inference:latest .
 cd ../model_monitoring_service
-docker build -t harbor.cs.aalto.fi/aaltorse-public/model_monitoring:latest .
-docker build -f app/rabbitmq_consumer/Dockerfile -t harbor.cs.aalto.fi/aaltorse-public/rabbitmq_consumer:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_monitoring:latest .
+docker build -f app/rabbitmq_consumer/Dockerfile -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/rabbitmq_consumer:latest .
 cd ../../web_scrape
-docker build -t harbor.cs.aalto.fi/aaltorse-public/web_scrape:latest .
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape:latest .
 cd ../helm
