@@ -11,6 +11,6 @@ docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_inferen
 cd ../model_monitoring_service
 docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_monitoring:latest .
 docker build -f app/rabbitmq_consumer/Dockerfile -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/rabbitmq_consumer:latest .
-cd ../../web_scrape
+cd ../web_scrape
 docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape:latest .
 cd ../helm
