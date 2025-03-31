@@ -6,7 +6,7 @@ cd ../evidence_retrieval
 docker build -t harbor.cs.aalto.fi/aaltorse-public/evidence_retrieval:latest .
 cd ../milvus_standalone
 docker build -t harbor.cs.aalto.fi/aaltorse-public/db_seed:latest .
-cd ../model_inference_server
+cd ../model_inference_service
 docker build -t harbor.cs.aalto.fi/aaltorse-public/model_inference:latest .
 cd ../model_monitoring_service
 docker build -t harbor.cs.aalto.fi/aaltorse-public/model_monitoring:latest .
