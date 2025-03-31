@@ -28,6 +28,5 @@ COPY --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY ./app /app
-COPY .env .
 
 CMD ["python", "claim_prediction_rcp_server.py"]

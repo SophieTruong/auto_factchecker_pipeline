@@ -21,7 +21,7 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -U pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
-    
+
 # Stage 2: Runtime
 FROM python:3.12-slim-bullseye
 
@@ -34,7 +34,6 @@ ENV PYTHONPATH=/app
 
 # Copy only necessary files
 COPY ./app /app
-COPY .env .
 COPY test_script.py .
 
 # Expose the port the app runs on

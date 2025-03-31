@@ -9,8 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./app /app
 
-COPY .env /app
-
 # Expose only the single port the app runs on
 EXPOSE 8092
 

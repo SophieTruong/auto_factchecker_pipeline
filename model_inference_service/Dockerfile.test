@@ -17,8 +17,6 @@ COPY ./test/run_tests.sh /app/
 # Set PYTHONPATH to include app directory
 ENV PYTHONPATH=/app/app
 
-COPY .env /app
-
 # Command to run the application
 VOLUME ["/app/mlruns"]
 

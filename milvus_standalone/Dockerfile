@@ -31,6 +31,5 @@ COPY --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY ./database /app
-COPY .env .
 
 CMD ["python", "hybrid_seed.py", "--test", "1"]
