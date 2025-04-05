@@ -1,0 +1,45 @@
+services:
+  workflow:
+    build: .
+    depends_on:
+      - redis
+      - model_inference
+    environment:
+      - MODEL_TRAINING_SERVICE_DIR=${MODEL_TRAINING_SERVICE_DIR}
+    volumes:
+      - ${MODEL_TRAINING_SERVICE_DIR}:/app/model_training_service
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  celery_worker:
+    build: .
+    depends_on:
+      - redis
+      - model_inference
+    environment:
+      - CONDA_ENV=/opt/conda/envs/claim-model-training-env
+      - MODEL_TRAINING_SERVICE_DIR=${MODEL_TRAINING_SERVICE_DIR}
+    volumes:
+      - ${MODEL_TRAINING_SERVICE_DIR}:/app/model_training_service
+    networks:
+      - backend
+    command: ["celery", "-A", "celery_app", "worker", "--loglevel=debug"]
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  model_inference:
+    extends:
+      file: ../model_inference_service/docker-compose.yml
+      service: model_inference
+
+networks:
+  backend:
+    driver: bridge 

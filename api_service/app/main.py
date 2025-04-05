@@ -14,9 +14,6 @@ from fastapi.security import APIKeyHeader
 
 from sqlalchemy.orm import Session
 
-import json
-import asyncio
-
 # Import pydantic models
 from models.claim import Claim
 from models.claim_detection_response import BatchClaimResponse
@@ -24,16 +21,14 @@ from models.source_document import SourceDocumentCreate
 from models.claim_annotation_input import BatchClaimAnnotationInput
 from models.claim_annotation import ClaimAnnotation
 from models.semantic_search_input import SemanticSearchInputs
-from models.semantic_search_response import SemanticSearchResponse, BatchSemanticSearchResponse
 from models.pipeline_metrics_response import PipelineMetricsResponse
 
 # Import database models
-from database.postgres import engine, Base, SessionLocal, get_db
+from database.postgres import engine, Base, get_db
 from database.crud import get_all_api_keys
 
 # Import services
-from services.claim_detection import ClaimDetectionService
-from services.claim_annotation import ClaimAnnotationService
+from services import ClaimDetectionService
 from services.pipeline_metrics_monitoring import PipelineMetricsMonitoringService
 from services.evidence_retrieval_service import EvidenceRetrievalService
 
@@ -41,32 +36,19 @@ from services.evidence_retrieval_service import EvidenceRetrievalService
 from utils.app_logging import logger
 from utils.password_hashing import verify_password
 
-from datetime import datetime
-
-import dotenv
-import os
-dotenv.load_dotenv(dotenv.find_dotenv())
-
 # Setup logging
 logger.info('API is starting up')
 
-# Setup inference model uri
-INFERENCE_MODEL_URI = "http://model_inference:8090/predict" if not os.getenv('INFERENCE_MODEL_URI') else os.getenv('INFERENCE_MODEL_URI')
-logger.info(f"*** INFERENCE_MODEL_URI: {INFERENCE_MODEL_URI}")
-
-SEMANTIC_SEARCH_URI = "http://evidence_retrieval:8091/semantic_search"
-logger.info(f"*** SEMANTIC_SEARCH_URI: {SEMANTIC_SEARCH_URI}")
-
 # Set up FastAPI
 app = FastAPI()
-origins = ["*"]
+origins = ["*"] # TODO: Restrict to only allowed origins
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins, 
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"], 
+    allow_headers=["*"], # TODO: Restrict to only allowed headers
 )
 
 # Set up postgresql db dependancies
@@ -95,26 +77,25 @@ def api_key_auth(api_key: str, db: Session = Depends(get_db)):
             )
             
 async def semantic_search_callback(claim_input: SemanticSearchInputs):
+    
     # Create the service with lazy initialization
     evidence_service = EvidenceRetrievalService()
     
-    try:
-        # Connections will be established on first use
-        for claim in claim_input.claims:
-            try:
-                result = await evidence_service.process_search_request(claim)
-                
-                yield result
+    # Connections will be established on first use
+    for claim in claim_input.claims:
+        
+        try:
+            # Send data to RCP server
+            result = await evidence_service.process_search_request(claim)
             
-            except Exception as e:
-            
-                logger.error(f"Error processing claim {claim.claim}: {e}")
-                # Continue with other claims even if one fails
-                continue
-    finally:
-        # Always close connections when done
-        await evidence_service.close_connections()
-
+            yield result
+        
+        except Exception as e:
+        
+            logger.error(f"Error processing claim {claim.claim}: {e}")
+            # Continue with other claims even if one fails
+            continue
+        
 # GET /
 @app.get("/")
 async def root(
@@ -153,15 +134,16 @@ async def create_claim_detection_predicts(
     """
     try:
         api_key_auth(key, db)
-        claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
+        
+        claim_detection_service = ClaimDetectionService()
+        
         return await claim_detection_service.get_predictions(input)
+    
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to insert claims: {str(e)}"
         )
-    finally:
-        await claim_detection_service.close_connections()
 
 @app.post(
     "/claim_detection/update", 
@@ -186,15 +168,16 @@ async def update_claim_detection_predicts(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No claims provided for update"
             )
-        claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
-        return await claim_detection_service.update_claims(claims)
+        
+        claim_detection_service = ClaimDetectionService()
+        
+        return await claim_detection_service.update_predictions(claims)
+    
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update claims: {str(e)}"
         )
-    finally:
-        await claim_detection_service.close_connections()
 
 @app.get(
     "/claim_detection/get",
@@ -215,7 +198,7 @@ async def get_claim_detection(
 ) -> Optional[List[Claim]]:
     try:
         api_key_auth(key, db)
-        claim_detection_service = ClaimDetectionService(db, INFERENCE_MODEL_URI)
+        claim_detection_service = ClaimDetectionService()
         return await claim_detection_service.get_claims(start_date, end_date)
     except Exception as e:
         raise HTTPException(
@@ -256,15 +239,13 @@ async def create_claim_annotations(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No claim annotation inputs provided"
             )
-        claim_annotation_service = ClaimAnnotationService(db)
-        return await claim_annotation_service.create_claim_annotation(claim_annotation_inputs)
+        claim_detection_service = ClaimDetectionService()
+        return await claim_detection_service.create_claim_annotation(claim_annotation_inputs)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create claim annotations: {str(e)}"
         )
-    finally:
-        await claim_annotation_service.close_connections()
 
 @app.post(
     "/claim_annotation/update",
@@ -289,8 +270,8 @@ async def update_claim_annotations(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No claim annotations provided for update"
             )
-        claim_annotation_service = ClaimAnnotationService(db)
-        return await claim_annotation_service.update_claim_annotation(claim_annotations)
+        claim_detection_service = ClaimDetectionService()
+        return await claim_detection_service.update_claim_annotation(claim_annotations)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -354,141 +335,3 @@ async def get_pipeline_metrics(
         return results
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to get pipeline metrics: {str(e)}")
-
-# @app.post(
-#     "/semantic_search/create",
-#     response_model=Optional[dict],
-#     responses={
-#         200: {"description": "Successfully"},
-#         400: {"description": "Bad request"},
-#         401: {"description": "Unauthorized - Invalid API key"},
-#         500: {"description": "Internal server error"}
-#     },
-#     status_code=status.HTTP_200_OK,
-# )
-# async def semantic_search(
-#     claim_input: SemanticSearchInputs,
-#     db: Session = Depends(get_db),
-#     key: str = Depends(header_scheme)
-# ) -> Optional[BatchSemanticSearchResponse]:
-#     try:
-#         api_key_auth(key, db)
-#         print(f"claim_input: {claim_input}")
-#         semantic_search_service = SemanticSearchService(SEMANTIC_SEARCH_URI)
-#         return await semantic_search_service.get_search_result(claim_input)
-
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail=f"Failed to get semantic search results: {str(e)}"
-#         )
- 
-
-
-# # READ claim by id or date range
-# @app.get("/claim_detection/", response_model=Optional[List[Claim]])
-# async def read_claim_text(
-#     claim_id: Optional[str] = None,
-#     start_date: Optional[str] = None,
-#     end_date: Optional[str] = None,
-#     db: Session = Depends(get_db)
-# ) -> Optional[List[Claim]]:
-#     """
-#     Read a claim by its ID or by date range.
-    
-#     Args:
-#         claim_id (str): ID of the claim to retrieve
-#         start_date (str): Start date of the range
-#         end_date (str): End date of the range
-#         db (Session): Database session
-    
-#     Returns:
-#         Optional[List[Claim]]: A list of claims if found, None otherwise
-#     """
-#     if claim_id:
-#         try:
-#             # Validate claim_id    
-#             claim_id = validate_claim_id(claim_id)
-            
-#             db_text = get_claim_by_id(db=db, claim_id=claim_id)
-            
-#             if db_text:
-#                 return [db_text]
-#             else:
-#                 return []
-#         except Exception as e:
-#             raise HTTPException(status_code=500, detail=f"Failed to get claim by ID: {str(e)}")
-    
-#     elif start_date and end_date:        
-#         try:
-#             # Validate date range
-#             start_date, end_date = validate_date_range(start_date, end_date)
-            
-#             claims = get_claims_by_created_at(db=db, start_date=start_date, end_date=end_date)
-            
-#             claims = [claim for claim in claims if len(claim.text) > 0]
-#             return claims
-#         except Exception as e:
-#             raise HTTPException(status_code=500, detail=f"Failed to get claims by date range: {str(e)}")
-#     else:
-#         raise HTTPException(status_code=400, detail="Either claim_id or start_date and end_date must be provided")
-
-# # UPDATE claim by id
-# @app.put("/claim_detection/{claim_id}", response_model=Optional[dict])
-# async def update_claim_by_id(
-#     claim_id: int, 
-#     claim_data: ClaimCreate, # TODO: add validation in case of pydantic ValidationError
-#     db: Session = Depends(get_db)
-# ) -> Optional[dict]:
-#     """
-#     Update a claim by its ID.
-    
-#     Args:
-#         claim_id (int): ID of the claim to update
-#         claim_data (dict): New claim data (text, label)
-#         db (Session): Database session
-    
-#     Returns:
-#         Optional[dict]: A dictionary with a message indicating the update
-#     """
-#     try:
-#         # Validate claim data
-#         update_data = claim_data.model_dump()
-
-#         claim = update_claim(db=db, claim_id=claim_id, claim_data=update_data)
-        
-#         if claim:
-#             return {"message": f"Claim at ID={claim.id} updated successfully"}
-#         else:
-#             raise ValueError(f"Claim ID={claim_id} not found")
-#     except ValueError as e:
-#         raise HTTPException(status_code=404, detail=f"{str(e)}")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Failed to update claim: {str(e)}")
-
-# # DELETE claim by id
-# @app.delete("/claim_detection/{claim_id}", response_model=Optional[dict])
-# async def delete_claim_by_id(
-#     claim_id: int, 
-#     db: Session = Depends(get_db)
-# ) -> Optional[dict]:
-#     """
-#     Delete a claim by its ID.
-    
-#     Args:
-#         claim_id (int): ID of the claim to delete
-#         db (Session): Database session
-    
-#     Returns:
-#         Optional[dict]: A dictionary with a message indicating the deletion
-#     """
-#     try:
-#         claim = delete_claim(db=db, claim_id=claim_id)
-#         if claim:
-#             return {"message": f"Claim at ID={claim_id} deleted successfully"}
-#         else:
-#             raise ValueError(f"Claim ID={claim_id} not found")
-#     except ValueError as e:
-#         raise HTTPException(status_code=404, detail=f"{str(e)}")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Failed to delete claim: {str(e)}")

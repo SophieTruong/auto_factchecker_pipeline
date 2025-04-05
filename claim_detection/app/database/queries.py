@@ -9,7 +9,6 @@ from sqlalchemy.sql import func
 from uuid import UUID
 
 from .models import (
-    APIKey,
     AnnotationSession, 
     Claim, 
     ClaimAnnotation, 

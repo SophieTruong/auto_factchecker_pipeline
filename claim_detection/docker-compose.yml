@@ -1,0 +1,18 @@
+services:
+  claim_detection:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+      - api
+      - model_inference
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

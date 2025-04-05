@@ -7,7 +7,6 @@ WORKDIR /app
 # Install build dependencies in a single layer
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    git \
     python3-dev \
     build-essential \
     && rm -rf /var/lib/apt/lists/*

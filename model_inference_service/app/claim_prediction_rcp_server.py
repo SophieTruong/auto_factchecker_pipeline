@@ -1,15 +1,20 @@
 import asyncio
+
 import json
 
-from aio_pika import Message, connect
+import aio_pika
 
-from aio_pika.abc import AbstractIncomingMessage
+from aio_pika import Message, connect_robust
+
+from aio_pika.abc import AbstractRobustConnection, AbstractIncomingMessage
+
+from aio_pika.pool import Pool
 
 import mlflow
 
 from model import InferenceResult, ModelMetadata
 
-from utils import load_yaml_file, parse_datetime, logger
+from utils import load_yaml_file, parse_datetime, logger, UUIDEncoder
 
 # Read model environment variables
 import dotenv
@@ -18,7 +23,7 @@ import os
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
-# Load model environment variables
+# Load SetFit model environment variables
 MODEL_URI = os.getenv("MODEL_URI")
 
 MODEL_METADATA = os.getenv("MODEL_METADATA")
@@ -27,7 +32,7 @@ logger.info(f"MODEL_URI: {MODEL_URI}")
 
 logger.info(f"MODEL_METADATA: {MODEL_METADATA}")
 
-# Load model
+# Load SetFit model
 model = mlflow.pyfunc.load_model(MODEL_URI)
 
 model_metadata = load_yaml_file(MODEL_METADATA)
@@ -47,36 +52,36 @@ RABBITMQ_URL = os.getenv("RABBITMQ_URL")
 logger.info(f"RABBITMQ_URL: {RABBITMQ_URL}")
 
 async def main() -> None:
+    
+    # 1. Create connection pool: 1 connection
+    async def get_connection() -> AbstractRobustConnection:
+        return await aio_pika.connect_robust(RABBITMQ_URL)
 
-    try:
-        
-        # Perform connection
+    connection_pool: Pool = Pool(get_connection, max_size=2)
 
-        connection = await connect(RABBITMQ_URL)
+    async def get_channel() -> aio_pika.Channel:
+        async with connection_pool.acquire() as connection:
+            return await connection.channel()
 
-        # Creating a channel
+    channel_pool: Pool = Pool(get_channel, max_size=10)
 
-        channel = await connection.channel()
-
-        exchange = channel.default_exchange
-
-        # Declaring queue
+    queue_name = "rpc_claim_prediction_queue"
+    
+    async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
+            
+        await channel.set_qos(10)
 
         queue = await channel.declare_queue(
-            "rpc_claim_detection_queue",
-            durable=True,  # Must match the durable=true in definitions.json
-            auto_delete=False  # Must match auto_delete=false in definitions.json
+            queue_name, 
+            durable=True, 
+            auto_delete=False
         )
 
-
-        logger.info(" [x] Awaiting RPC requests for claim detection")
-
-
-        # Start listening the queue with name 'hello'
+        logger.info(" [x] Awaiting RPC requests for claim prediction client")
+            
+        # Start listening the queue rpc_claim_prediction_queue
 
         async with queue.iterator() as qiterator:
-
-            message: AbstractIncomingMessage
 
             async for message in qiterator:
 
@@ -85,7 +90,6 @@ async def main() -> None:
                     async with message.process(requeue=False):
 
                         assert message.reply_to is not None
-
 
                         message_body = message.body.decode() #List[str]
 
@@ -105,21 +109,19 @@ async def main() -> None:
                         
                         response_body = {
                             "model_metadata": model_metadata.model_dump(),
-                            "inference_results": [InferenceResult(label=p).model_dump() for p in predictions]
+                            "inference_results": [
+                                InferenceResult(label=p).model_dump() 
+                                for p in predictions
+                            ]
                         }
                         
                         logger.info(f" [.] response_body: {response_body}")
                                             
-                        # Convert dict to JSON string first, then encode
-                        response_json = json.dumps(response_body)
-
-                        logger.info(f" [.] response_json: {response_json}")
-                        
-                        await exchange.publish(
+                        await channel.default_exchange.publish(
 
                             Message(
 
-                                body=response_json.encode(),
+                                body=json.dumps(response_body, cls=UUIDEncoder).encode('utf-8'),
 
                                 correlation_id=message.correlation_id,
 
@@ -129,16 +131,11 @@ async def main() -> None:
 
                         )
 
-                        print("Request complete")
+                        logger.info("Request complete")
 
                 except Exception:
 
                     logger.exception("Processing error for message %r", message)
-    except Exception as e:
-        
-        logger.error(f"Error connecting to RabbitMQ: {e}")
-        
-        raise e
 
 if __name__ == "__main__":
 

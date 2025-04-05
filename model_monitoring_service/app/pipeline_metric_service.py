@@ -26,34 +26,43 @@ class PipelineMetricService:
     async def get_claim_metrics(self) -> ModelMetrics:
         claim_metrics = await self.db.get_claim_metrics(self.start_date, self.end_date)
         
-        claim_metrics_df = pd.DataFrame(claim_metrics)
+        print(f"*** MYDEBUG claim_metrics: {claim_metrics}")
         
-        # For annotations: use majority voting: e.g. if 2 out of 3 annotations for same claim_model_id and claim_id are positive, then the annotation is positive
-        claim_mv_annotation_prediction_df = claim_metrics_df.groupby(['claim_model_id', 'claim_id']).agg({
-                'annotation': lambda x: x.mode()[0], # Majority voting
-                'prediction': lambda x: x.mode()[0] # Majority voting
-            }).reset_index()
-        
-        print(f"*** MYDEBUG claim_mv_annotation_prediction_df: {claim_mv_annotation_prediction_df}")
-        
-        # Number of claims
-        sample_count = claim_mv_annotation_prediction_df.shape[0]
-        
-        # Calculate metrics
-        prediction_list = claim_mv_annotation_prediction_df["prediction"].tolist()
-        annotation_list = claim_mv_annotation_prediction_df["annotation"].tolist()
-        
-        metrics = calculate_metrics(prediction_list, annotation_list)
-        
-        model_metrics = ModelMetrics(
-            start_date=self.start_date,
-            end_date=self.end_date,
-            sample_count=sample_count,
-            **metrics
-        )
-        
-        print(f"Parsed claim metrics: {model_metrics}")
-        
+        if claim_metrics and isinstance(claim_metrics, list) and len(claim_metrics) > 0:
+            claim_metrics_df = pd.DataFrame(claim_metrics)
+            
+            # For annotations: use majority voting: e.g. if 2 out of 3 annotations for same claim_model_id and claim_id are positive, then the annotation is positive
+            claim_mv_annotation_prediction_df = claim_metrics_df.groupby(['claim_model_id', 'claim_id']).agg({
+                    'annotation': lambda x: x.mode()[0], # Majority voting
+                    'prediction': lambda x: x.mode()[0] # Majority voting
+                }).reset_index()
+            
+            print(f"*** MYDEBUG claim_mv_annotation_prediction_df: {claim_mv_annotation_prediction_df}")
+            
+            # Number of claims
+            sample_count = claim_mv_annotation_prediction_df.shape[0]
+            
+            # Calculate metrics
+            prediction_list = claim_mv_annotation_prediction_df["prediction"].tolist()
+            annotation_list = claim_mv_annotation_prediction_df["annotation"].tolist()
+            
+            metrics = calculate_metrics(prediction_list, annotation_list)
+            
+            model_metrics = ModelMetrics(
+                start_date=self.start_date,
+                end_date=self.end_date,
+                sample_count=sample_count,
+                **metrics
+            )
+            
+            print(f"Parsed claim metrics: {model_metrics}")
+        else:
+            print(f"No claim metrics found")
+            model_metrics = ModelMetrics(
+                start_date=self.start_date,
+                end_date=self.end_date
+            )
+            
         return model_metrics
     
     async def get_evidence_metrics(self) -> EvidenceRetrievalMetrics:
