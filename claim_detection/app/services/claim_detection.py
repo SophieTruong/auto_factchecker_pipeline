@@ -170,8 +170,18 @@ class ClaimDetectionService:
         # Filter out sentences that are too short
         sentences = [sentence for sentence in sentences if len(sentence.strip()) > 5]
         
-        # Remove duplicate sentences
-        unique_sentences = list(set(sentences))
+        def normalize_sentence(text):
+            # Convert to lowercase
+            text = text.lower()
+            # Remove extra whitespace
+            text = ' '.join(text.split())
+            # Optional: Remove punctuation if needed
+            # import string
+            # text = text.translate(str.maketrans('', '', string.punctuation))
+            return text
+
+        # Use dictionary to maintain original text while checking normalized versions
+        unique_sentences = list({normalize_sentence(s): s for s in sentences}.values())
         
         claims = [
             ClaimCreate(
