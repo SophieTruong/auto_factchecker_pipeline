@@ -165,13 +165,20 @@ class ClaimDetectionService:
             List of Claim objects, either newly inserted or existing
         """
         # Get sentences and create claim objects
+        sentences = get_sentences(text)
+        
+        # Filter out sentences that are too short
+        sentences = [sentence for sentence in sentences if len(sentence.strip()) > 5]
+        
+        # Remove duplicate sentences
+        unique_sentences = list(set(sentences))
+        
         claims = [
             ClaimCreate(
                 text=txt, 
                 source_document_id=source_document_id
             ) 
-            for txt in get_sentences(text) 
-            if txt.strip() and len(txt.strip()) > 5
+            for txt in unique_sentences
         ]
         claims_data = [claim.model_dump() for claim in claims]
         

@@ -8,8 +8,6 @@ services:
     depends_on:
       - rabbitmq
       - db
-      - api
-      - model_inference
     networks:
       - backend
 
