@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.api-postgres-svc }}
+  name: {{ .Values.api_postgres_service_name }}
   labels:
-    app.kubernetes.io/name: {{ .Values.api-postgres-svc }}
+    app.kubernetes.io/name: {{ .Values.api_postgres_service_name }}
     app.kubernetes.io/component: server
   namespace: {{ $.Release.Namespace }}
 spec:
