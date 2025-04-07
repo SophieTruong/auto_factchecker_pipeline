@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: dataretrieval
     app.kubernetes.io/name: dataretrieval
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": post-install
     "helm.sh/hook-weight": "1"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
@@ -20,11 +20,7 @@ spec:
       containers:
         - name: dataretrieval-job
           image: {{ .Values.setup_container.image }}      
-          env:
-            - name: HF_FOLDER              
-              value: /app/sentence-transformer-model
-            - name: HF_URL
-              value: {{ .Values.hf_data_url }}
+          env:            
             - name: NEWS_DATA_DIR
               value: /app/finnish_news_archieve
             - name: NEWS_DATA_URL
@@ -39,7 +35,7 @@ spec:
               value: {{ .Values.model_data_url }}              
           volumeMounts:
             - name: hf-cache-volume
-              mountPath: /app/sentence-transformer-model
+              mountPath: /cache
             - name: finnish-news-volume
               mountPath: /app/finnish_news_archieve
             - name: facepager-data-volume
