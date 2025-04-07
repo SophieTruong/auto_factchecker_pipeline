@@ -23,7 +23,7 @@ model_monitoring_service_name: model-monitoring-svc
 model_inference_service_name: model-inference-svc
 web_scrape_service_name: web-scrape-svc
 rabbitmq_service_name: rabbitmq
-rabbitmq_service_port: 5432
+rabbitmq_service_port: 5672
 mongo_service_name: mongo
 mongo_service_port: 27017
 
@@ -41,9 +41,8 @@ api_db_volume: api-db-volume
 model_volume: model-volume
 hf_cache: hf-cache
 
-# StorageClass and volumeMode
-storage_class: "nfs"
-volume_mode: "Filesystem"
+# StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
+storage_class: "standard" 
 
 # model data locations (in the model volume)
 model_uri: ./mlruns/223326325726326848/658fdf3d1618421db6f5fb1290c8e7f3/artifacts/setfit_model
