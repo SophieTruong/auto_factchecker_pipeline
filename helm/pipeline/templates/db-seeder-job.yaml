@@ -21,7 +21,7 @@ spec:
         - name: db-seed-container
           image: {{ .Values.dbSeed.image }}       
           volumeMounts:
-            - name: hf-cache-volume
+            - name:  hf-cache
               mountPath: /app/sentence-transformer-model
             - name: finnish-news-volume
               mountPath: /app/finnish_news_archieve
@@ -29,9 +29,9 @@ spec:
               mountPath: /app/facepager_data
       restartPolicy: Never
       volumes:
-        - name: hf-cache-volume
+        - name: hf-cache
           persistentVolumeClaim:
-            claimName: hf-cache
+            claimName: {{ .Values.hf_cache }}
         - name: finnish-news-volume
           persistentVolumeClaim:
             claimName: finnish-news-pvc

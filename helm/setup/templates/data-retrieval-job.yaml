@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: hf-cache-volume
           persistentVolumeClaim:
-            claimName: hf-cache
+            claimName: {{ .Values.hf_cache }}
         - name: finnish-news-volume
           persistentVolumeClaim:
             claimName: finnish-news-pvc
