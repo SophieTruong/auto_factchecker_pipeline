@@ -5,11 +5,7 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   labels:
     app.kubernetes.io/component: dataretrieval
-    app.kubernetes.io/name: dataretrieval
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "1"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    app.kubernetes.io/name: dataretrieval      
 spec:
   template:
     metadata:
