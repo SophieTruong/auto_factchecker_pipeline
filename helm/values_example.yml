@@ -11,7 +11,8 @@ rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker
 rabbitmq_consumer_image_tag: latest
 evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/evidence_retrieval
 evidence_retrieval_image_tag: latest
-
+setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
+setup_container_image_tag: latest
 # Ingress settings
 api_url: api.localhost
 

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: dataretrieval-job
-          image: {{ .Values.setup_container.image }}      
+          image: {{ .Values.setup_container_image_url }}:{{ .Values.setup_container_image_tag }} 
           env:            
             - name: NEWS_DATA_DIR
               value: /app/finnish_news_archieve
