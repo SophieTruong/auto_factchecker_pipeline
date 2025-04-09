@@ -13,7 +13,7 @@ spec:
       storage: 10Gi
   # TODO: Need to update depending on cluster setup
   # WE WILL NEED TO PUT THE MODELS IN HERE.
-  storageClassName: {{ .Values.model_volume}}
+  storageClassName: {{ .Values.storage_class}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
