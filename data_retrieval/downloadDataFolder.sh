@@ -23,7 +23,7 @@ else
 
   # Extract the downloaded file into the folder
   echo "Extracting file into '$TARGET_FOLDER'..."
-  tar -xzf "$DOWNLOADED_FILE" -C "$TARGET_FOLDER"
+  unzip -o "$DOWNLOADED_FILE" -d "$TARGET_FOLDER"
 
   # Remove the downloaded file
   echo "Removing the downloaded file..."
