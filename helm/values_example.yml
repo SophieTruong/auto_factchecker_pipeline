@@ -1,3 +1,8 @@
+# Ingress settings
+api_url: api.localhost
+# StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
+storage_class: "standard" 
+
 # Image locations
 api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/api
 api_image_tag: latest
@@ -13,9 +18,6 @@ evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecke
 evidence_retrieval_image_tag: latest
 setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
 setup_container_image_tag: latest
-# Ingress settings
-api_url: api.localhost
-
 
 # Service names
 api_service_name: api-svc
@@ -41,9 +43,6 @@ rabbitmq_vhost: remote_host
 api_db_volume: api-db-volume
 model_volume: model-volume
 hf_cache: hf-cache
-
-# StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
-storage_class: "standard" 
 
 # model data locations (in the model volume)
 model_uri: ./mlruns/223326325726326848/658fdf3d1618421db6f5fb1290c8e7f3/artifacts/setfit_model
