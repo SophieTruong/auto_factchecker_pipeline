@@ -16,8 +16,10 @@ spec:
     - protocol: TCP
       port: {{ .Values.rabbitmq_service_port }}
       targetPort: {{ .Values.rabbitmq_service_port }}
+      name: rabbitmq-port
 # unclear if needed
     - protocol: TCP
       port: 15672
+      name: rabbitmq-ui
       targetPort: {{ .Values.rabbitmq_service_port }}
 ---

@@ -50,9 +50,11 @@ spec:
     - protocol: TCP
       port: 9001
       targetPort: 9001
+      name: console
     - protocol: TCP
       port: 9000
       targetPort: 9000
+      name: api
 ---
 apiVersion: v1
 kind: Service
@@ -69,10 +71,12 @@ spec:
   ports:
     - protocol: TCP
       port: 9091
-      targetPort: 9091
+      targetPort: 9091      
+      name: rest
     - protocol: TCP
       port: 19530
       targetPort: 19530
+      name: grpc
 ---
 apiVersion: v1
 kind: Service
