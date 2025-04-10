@@ -33,6 +33,6 @@ spec:
             # the service defined below (matching the name).
             backend:
               service:
-                name: {{ Values.api_service_name}}
+                name: {{ .Values.api_service_name}}
                 port:
                   number: 80
