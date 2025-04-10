@@ -94,7 +94,7 @@ spec:
               cpu: 1
           env:            
             - name: RABBITMQ_NODE_PORT_NUMBER
-              value: {{ .Values.rabbitmq_service_port }}
+              value: "{{ .Values.rabbitmq_service_port }}"
             - name: RABBITMQ_DEFAULT_USER
               value: "{{ .Values.rabbitmq_user }}"
             - name: RABBITMQ_DEFAULT_PASS
