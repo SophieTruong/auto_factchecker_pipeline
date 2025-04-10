@@ -2,6 +2,9 @@
 api_url: api.localhost
 # StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
 storage_class: "standard" 
+# DB Seed facepager folder
+facepager_folder: "/OneDrive_1_2-14-2025"
+
 
 # Image locations
 api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/api
