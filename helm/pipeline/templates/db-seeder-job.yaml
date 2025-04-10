@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: db-seed-container
-          image: {{ .Values.dbSeed.image }}
+          image: "{{ .Values.db_seed_image_url }}:{{ .Values.db_seed_image_tag }}"
           envFrom:
             - configMapRef:
                 name: db-seed-config

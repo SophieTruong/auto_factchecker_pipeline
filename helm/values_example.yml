@@ -21,6 +21,8 @@ evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecke
 evidence_retrieval_image_tag: latest
 setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
 setup_container_image_tag: latest
+db_seed_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/db_seed
+db_seed_image_tag: latest
 
 # Service names
 api_service_name: api-svc
