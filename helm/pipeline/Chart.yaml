@@ -1,6 +1,6 @@
 apiVersion: v2
-name: whisper-api
-description: A Deployment Chart for a gated Whisper Worker instance on a kubernetes cluster
+name: fact-checker-pipeline
+description: A Deployment Chart for a Fact checking pipeline
 
 # A chart can be either an 'application' or a 'library' chart.
 #
