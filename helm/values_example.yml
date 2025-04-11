@@ -5,6 +5,14 @@ storage_class: "standard"
 # DB Seed facepager folder
 facepager_folder: "/OneDrive_1_2-14-2025"
 
+# unfortunately rabbitmq requires, that you provide a password hash 
+# to the system. This hash needs to be defined BEFORE the server is deployed
+# To do this, you will need to do the following AFTER the setup:
+# kubectl get pods 
+# Look for a pod called rabbitmq-hash-password
+# kubectl logs <rabbitmq-hash-password-tag>
+# This contains the hash you have to enter here.
+rabbitmq_password_hash: <unknown>
 
 # Image locations
 api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api_service
