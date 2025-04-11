@@ -30,7 +30,7 @@ spec:
             - name: FACEPAGER_DATA
               value: "/app/facepager_data{{ .Values.facepager_folder }}"            
           volumeMounts:
-            - name: hf-cache-volume
+            - name: {{ .Values.hf_cache }}
               mountPath: /app/sentence-transformer-model
             - name: finnish-news-volume
               mountPath: /app/finnish_news_archieve
@@ -38,9 +38,9 @@ spec:
               mountPath: /app/facepager_data
       restartPolicy: Never
       volumes:
-        - name: hf-cache-volume
+        - name: {{ .Values.hf_cache }}
           persistentVolumeClaim:
-            claimName: hf-cache-pvc
+            claimName: {{ .Values.hf_cache }}
         - name: finnish-news-volume
           persistentVolumeClaim:
             claimName: finnish-news-pvc
