@@ -51,7 +51,7 @@ spec:
                   name: databases
                   key: api_postgres_password   
             - name: POSTGRES_PORT
-              value: 5432
+              value: "5432"
             - name: POSTGRES_SERVER
               value: {{ .Values.api_postgres_service_name }}
           command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]          
