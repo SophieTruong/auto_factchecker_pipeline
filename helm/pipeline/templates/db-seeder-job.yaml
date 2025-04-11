@@ -29,9 +29,11 @@ spec:
               value: "/app/finnish_news_archieve"
             - name: FACEPAGER_DATA
               value: "/app/facepager_data{{ .Values.facepager_folder }}"            
+            - name: S_TRANSFORMERS_MDL_DIR
+              value: "/hf_cache"
           volumeMounts:
             - name: {{ .Values.hf_cache }}
-              mountPath: /app/sentence-transformer-model
+              mountPath: /hf_cache
             - name: finnish-news-volume
               mountPath: /app/finnish_news_archieve
             - name: facepager-data-volume
