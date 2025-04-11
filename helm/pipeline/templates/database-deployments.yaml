@@ -86,7 +86,8 @@ spec:
               value: "50000"
             - name: ETCD_LISTEN_CLIENT_URLS
               value: "http://0.0.0.0:2379"
-            
+            - name: ETCD_ADVERTISE_CLIENT_URLS
+              value: "http://milvus-etcd:2379"            
           volumeMounts:
             - mountPath: /etcd
               name: milvus-etcd-volume
