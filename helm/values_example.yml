@@ -7,17 +7,17 @@ facepager_folder: "/OneDrive_1_2-14-2025"
 
 
 # Image locations
-api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/api
+api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api
 api_image_tag: latest
-model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/model_inference
+model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_inference
 model_inference_image_tag: latest
-web_scrape_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/web_scrape
+web_scrape_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape
 web_scrape_image_tag: latest
-model_monitoring_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/model_monitoring
+model_monitoring_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_monitoring
 model_monitoring_image_tag: latest
-rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/rabbitmq_consumer
+rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/rabbitmq_consumer
 rabbitmq_consumer_image_tag: latest
-evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto-factchecker/evidence_retrieval
+evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/evidence_retrieval
 evidence_retrieval_image_tag: latest
 setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
 setup_container_image_tag: latest
