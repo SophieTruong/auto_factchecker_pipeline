@@ -84,6 +84,8 @@ spec:
               value: "4294967296"
             - name: ETCD_SNAPSHOT_COUNT
               value: "50000"
+            - name: ETCD_LISTEN_CLIENT_URLS
+              value: "http://0.0.0.0:2379"
             
           volumeMounts:
             - mountPath: /etcd
