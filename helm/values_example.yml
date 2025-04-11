@@ -7,7 +7,7 @@ facepager_folder: "/OneDrive_1_2-14-2025"
 
 
 # Image locations
-api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api
+api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api_service
 api_image_tag: latest
 model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_inference
 model_inference_image_tag: latest
