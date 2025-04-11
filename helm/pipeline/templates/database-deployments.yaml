@@ -179,7 +179,17 @@ spec:
             - name: ETCD_ENDPOINTS
               value: "milvus-etcd-svc:2379"                
             - name: MINIO_ADDRESS
-              value: "milvus-minio-svc:9000"              
+              value: "milvus-minio-svc:9000"  
+            - name: MINIO_ACCESS_KEY_ID   
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_access_key    
+            - name: MINIO_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_secret_key      
           volumeMounts:
             - mountPath: /var/lib/milvus
               name: milvus-standalone-volume
