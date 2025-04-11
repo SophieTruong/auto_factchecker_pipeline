@@ -31,9 +31,9 @@ spec:
               cpu: 1000m
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.api_postgres_user }}
+              value: "{{ .Values.api_postgres_user }}"
             - name: POSTGRES_DB
-              value: {{ .Values.api_postgres_db }}
+              value: "{{ .Values.api_postgres_db }}"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

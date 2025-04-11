@@ -44,9 +44,9 @@ spec:
             - name: RABBITMQ_VHOST
               value: "{{ .Values.rabbitmq_vhost }}"
             - name: POSTGRES_USER
-              value: {{ .Values.api_postgres_user }}
+              value: "{{ .Values.api_postgres_user }}"
             - name: POSTGRES_DB
-              value: {{ .Values.api_postgres_db }}
+              value: "{{ .Values.api_postgres_db }}"
             - name: POSTGRES_PASSWORD   
               valueFrom:
                 secretKeyRef:
