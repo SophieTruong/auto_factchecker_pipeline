@@ -24,7 +24,7 @@ data:
       ],
       "permissions": [
         {
-          "user": "user",
+          "user": "{{ .Values.rabbitmq_user }}",
           "vhost": "remote_host",
           "configure": ".*",
           "write": ".*",
