@@ -28,6 +28,8 @@ spec:
               value: "/app/facepager_data{{ .Values.facepager_folder }}"            
             - name: S_TRANSFORMERS_MDL_DIR
               value: "/hf_cache"
+            - name: MILVUS_SERVICE
+              value: "milvus-standalone-svc"
           volumeMounts:
             - name: {{ .Values.hf_cache }}
               mountPath: /hf_cache
