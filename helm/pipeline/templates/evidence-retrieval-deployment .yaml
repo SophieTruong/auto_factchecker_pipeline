@@ -24,7 +24,9 @@ spec:
           image: "{{ .Values.evidence_retrieval_image_url }}:{{ .Values.evidence_retrieval_image_tag }}"                    
           resources:
             requests:
-              cpu: 1
+              cpu: 125m
+            limits: 
+              cpu: 1000m
           env:            
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"

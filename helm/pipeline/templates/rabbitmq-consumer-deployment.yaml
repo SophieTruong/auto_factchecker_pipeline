@@ -24,7 +24,9 @@ spec:
           image: "{{ .Values.rabbitmq_consumer_image_url }}:{{ .Values.rabbitmq_consumer_image_tag }}"                    
           resources:
             requests:
-              cpu: 1
+              cpu: 125m
+            limits: 
+              cpu: 1000m
           env:            
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"

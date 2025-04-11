@@ -24,7 +24,9 @@ spec:
           image: "{{ .Values.model_inference_image_url }}:{{ .Values.model_inference_image_tag }}"          
           resources:
             requests:
-              cpu: 1
+              cpu: 125m
+            limits: 
+              cpu: 1000m
           env:
             - { name: MODEL_METADATA, value: {{ .Values.model_metadata }} }
             - { name: MODEL_URI,  value: {{ .Values.model_uri }} }

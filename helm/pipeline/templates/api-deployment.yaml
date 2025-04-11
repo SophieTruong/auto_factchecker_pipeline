@@ -26,7 +26,9 @@ spec:
             - containerPort: 8080
           resources:
             requests:
-              cpu: 1
+              cpu: 125m
+            limits: 
+              cpu: 1000m
           env:
             - { name: INFERENCE_MODEL_URI, value: "http://{{ .Values.model_inference_service_name }}/predict" }
             - { name: MODEL_MONITORING_URI, value: "http:///{{ .Values.model_monitoring_service_name }}/pipeline_metrics" }

@@ -91,7 +91,9 @@ spec:
           image: rabbitmq:4-management
           resources:
             requests:
-              cpu: 1
+              cpu: 125m
+            limits: 
+              cpu: 1000m
           env:            
             - name: RABBITMQ_NODE_PORT_NUMBER
               value: "{{ .Values.rabbitmq_service_port }}"
