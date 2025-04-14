@@ -43,7 +43,7 @@ rabbitmq_service_port: 5672
 mongo_service_name: mongo
 mongo_service_port: 27017
 milvus_service_name: milvus-svc
-milvus_service_port: 19530
+milvus_service_grpc_port: 19530
 
 # DB Settings
 api_postgres_user: vector
