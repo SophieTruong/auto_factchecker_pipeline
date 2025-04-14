@@ -52,7 +52,7 @@ def main():
     logger.info(f"Start time: {start_time}")
 
     standard_retriever = HybridRetriever(
-        uri=f"http://{os.environ.get("MILVUS_SERVICE")}:19530",
+        uri=f"{os.environ.get('MILVUS_SERVICE','http://milvus_standalone')}:{os.environ.get('MILVUS_PORT',19530)}",
         collection_name="milvus_hybrid",
         dense_embedding_function=dense_ef,
         # dense_embedding_function=sentence_transformer_ef,

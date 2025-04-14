@@ -29,7 +29,9 @@ spec:
             - name: S_TRANSFORMERS_MDL_DIR
               value: "/hf_cache"
             - name: MILVUS_SERVICE
-              value: "milvus-standalone-svc"
+              value: {{ .Values.milvus_service_name}}
+            - name: MILVUS_PORT
+              value: "{{ .Values.milvus_service_grpc_port}}"
           volumeMounts:
             - name: {{ .Values.hf_cache }}
               mountPath: /hf_cache

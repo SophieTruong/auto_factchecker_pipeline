@@ -28,7 +28,7 @@ spec:
             - name: MODEL_DIR
               value: /app/mlruns
             - name: MODEL_URL
-              value: {{ .Values.model_data_url }}              
+              value: {{ .Values.model_data_url }}     
           volumeMounts:
             - name: hf-cache-volume
               mountPath: /cache

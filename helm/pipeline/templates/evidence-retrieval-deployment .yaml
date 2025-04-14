@@ -41,6 +41,10 @@ spec:
               value: "{{ .Values.rabbitmq_vhost }}"
             - name: WEB_SEARCH_URL
               value: "http://{{ .Values.web_scrape_service_name }}/search"
+            - name: MILVUS_URL
+              value: "http://{{ .Values.milvus_service_name }}"
+            - name: MILVUS_PORT
+              value: "{{ .Values.milvus_service_grpc_port }}"
             - name: S_TRANSFORMERS_MDL_DIR
               value: "/app/sentence-transformer-model"
           volumeMounts:

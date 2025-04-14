@@ -1,5 +1,5 @@
 # Ingress settings
-api_url: api.localhost
+api_url: craics
 # StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
 storage_class: "standard" 
 # DB Seed facepager folder
@@ -42,6 +42,8 @@ rabbitmq_service_name: rabbitmq
 rabbitmq_service_port: 5672
 mongo_service_name: mongo
 mongo_service_port: 27017
+milvus_service_name: milvus-svc
+milvus_service_port: 19530
 
 # DB Settings
 api_postgres_user: vector

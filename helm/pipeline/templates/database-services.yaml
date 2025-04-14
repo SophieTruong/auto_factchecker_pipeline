@@ -59,9 +59,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: milvus-standalone-svc
+  name: {{ .Values.milvus_service_name }}
   labels:
-    app.kubernetes.io/name: milvus-standalone-svc
+    app.kubernetes.io/name: {{ .Values.milvus_service_name }}
     app.kubernetes.io/component: server
   namespace: {{ $.Release.Namespace }}
 spec:
@@ -74,7 +74,7 @@ spec:
       targetPort: 9091      
       name: rest
     - protocol: TCP
-      port: 19530
+      port: {{ .Values.milvus_service_grpc_port }}
       targetPort: 19530
       name: grpc
 ---
