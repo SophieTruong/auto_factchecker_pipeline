@@ -27,6 +27,7 @@ spec:
               cpu: 125m
             limits: 
               cpu: 1000m
+          imagePullPolicy: Always
           env:            
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"

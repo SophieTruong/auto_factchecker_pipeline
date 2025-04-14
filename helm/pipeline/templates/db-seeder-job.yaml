@@ -21,6 +21,7 @@ spec:
       containers:
         - name: db-seed-container
           image: "{{ .Values.db_seed_image_url }}:{{ .Values.db_seed_image_tag }}"          
+          imagePullPolicy: Always
           env:
             - name: DATA_DIR
               value: "/app/finnish_news_archieve"
