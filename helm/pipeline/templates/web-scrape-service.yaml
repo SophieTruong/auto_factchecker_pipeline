@@ -10,7 +10,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: api
+    app.kubernetes.io/name: web-scrape
   ports:
     - protocol: TCP
       port: 80
