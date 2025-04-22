@@ -1,0 +1,17 @@
+python-dateutil==2.9.0
+python-dotenv==1.0.1
+
+# data validation
+pydantic==2.10.3
+
+#database
+SQLAlchemy==2.0.36
+psycopg2-binary==2.9.10
+
+# sentencizer
+spacy==3.7.5
+fi_core_news_md @ https://github.com/explosion/spacy-models/releases/download/fi_core_news_md-3.7.0/fi_core_news_md-3.7.0-py3-none-any.whl
+
+# rabbitmq
+asyncio==3.4.3
+aio-pika==9.5.5

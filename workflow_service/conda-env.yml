@@ -1,0 +1,7 @@
+name: claim-model-training-env
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - mlflow==2.19.0
+  - conda-pack

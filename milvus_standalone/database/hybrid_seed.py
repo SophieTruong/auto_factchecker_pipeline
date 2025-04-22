@@ -65,7 +65,7 @@ def main():
     df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
     if args.test == "1":
-        df = df.head(1000)
+        df = df.head(3000)
 
     logger.info(f"IN SEEDING df.shape: {df.shape}")
 

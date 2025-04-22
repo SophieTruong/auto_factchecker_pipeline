@@ -1,4 +1,6 @@
-from aio_pika import connect, ExchangeType
+import asyncio
+
+from aio_pika import connect_robust, ExchangeType
 from aio_pika.abc import (
     AbstractRobustConnection,
     AbstractRobustChannel,
@@ -52,8 +54,8 @@ class RabbitMqReceiverManager:
 
             print("Connecting to RabbitMQ...")
             # Perform connection
-            self.connection = await connect(
-                RABBITMQ_URL,
+            self.connection = await connect_robust(
+                RABBITMQ_URL, loop=asyncio.get_running_loop()
             )
 
             # Create a channel
@@ -141,10 +143,6 @@ class RabbitMqReceiverManager:
     async def close(self):
         """Close the RabbitMQ connection and channel safely."""
         if self.is_connected:
-            if self.queue is not None and not self.queue.is_closed:
-                await self.queue.close()
-                self.queue = None
-
             if self.channel is not None and not self.channel.is_closed:
                 await self.channel.close()
                 self.channel = None

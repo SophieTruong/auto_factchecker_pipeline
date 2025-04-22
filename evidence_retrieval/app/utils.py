@@ -1,18 +1,23 @@
+from uuid import UUID
 from datetime import datetime
-from typing import List
+import json
+
 from pymilvus import utility
 
 import logging
 import sys
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+# StreamHandler for the console
+stream_handler = logging.StreamHandler(sys.stdout)
+
+log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
+
+logger.addHandler(stream_handler)
+
+logger.info("Logger initialized")
 
 
 def validate_and_mk_hybrid_date(date_str: str) -> int:
@@ -42,3 +47,13 @@ def validate_and_mk_hybrid_date(date_str: str) -> int:
     
 def get_date_from_hybrid_ts(hybrid_ts: int) -> str:
     return utility.hybridts_to_datetime(hybrid_ts).strftime("%Y-%m-%d")
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return str(obj)
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)

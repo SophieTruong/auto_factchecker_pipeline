@@ -11,3 +11,4 @@ def get_sentences(text: str) -> list[str]:
     doc = nlp(text)
     return [sent.text for sent in doc.sents]
 
+
