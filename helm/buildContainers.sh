@@ -21,4 +21,7 @@ docker push harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/rabbitmq_consumer
 cd ../web_scrape
 docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape:latest .
 docker push harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape:latest
+cd ../claim_detection
+docker build -t harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/claim_detection:latest .
+docker push harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/claim_detection:latest
 cd ../helm
