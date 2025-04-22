@@ -16,7 +16,7 @@ spec:
       containers:
         - name: api-key-setter-job
           image: {{ .Values.setup_container_image_url }}:{{ .Values.setup_container_image_tag }} 
-          command: ["python", "api_key_tools", "{{ .Values.key_command }}"]          
+          command: ["python", "api_key_tools.py", "{{ .Values.key_command }}", "{{ .Values.api_key }}"]          
           env:            
             - { name: INFERENCE_MODEL_URI, value: "http://{{ .Values.model_inference_service_name }}/predict" }
             - { name: MODEL_MONITORING_URI, value: "http:///{{ .Values.model_monitoring_service_name }}/pipeline_metrics" }

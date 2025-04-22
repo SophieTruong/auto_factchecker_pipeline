@@ -1,1 +1,2 @@
-key_command: "ADD helloWorld" 
+key_command: "ADD" 
+key: "helloWorld" 
