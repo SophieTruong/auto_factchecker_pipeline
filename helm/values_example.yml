@@ -27,7 +27,7 @@ rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/
 rabbitmq_consumer_image_tag: latest
 evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/evidence_retrieval
 evidence_retrieval_image_tag: latest
-claim_detection_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/evidence_retrieval
+claim_detection_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/claim_detection
 claim_detection_image_tag: latest
 setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
 setup_container_image_tag: latest
