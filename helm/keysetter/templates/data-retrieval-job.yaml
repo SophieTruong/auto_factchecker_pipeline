@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: api-key-setter
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: api-key-setter
+    app.kubernetes.io/name: api-key-setter      
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: api-key-setter
+        app.kubernetes.io/name: api-key-setter
+    spec:
+      containers:
+        - name: api-key-setter-job
+          image: {{ .Values.setup_container_image_url }}:{{ .Values.setup_container_image_tag }} 
+          command: ["python", "api_key_tools", "{{ .Values.key_command }}"]          
+          env:            
+            - { name: INFERENCE_MODEL_URI, value: "http://{{ .Values.model_inference_service_name }}/predict" }
+            - { name: MODEL_MONITORING_URI, value: "http:///{{ .Values.model_monitoring_service_name }}/pipeline_metrics" }
+            - name: RABBITMQ_HOST
+              value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"
+            - name: MILVUS_URL
+              value: "http://{{ .Values.milvus_service_name }}"
+            - name: MILVUS_PORT
+              value: "{{ .Values.milvus_service_grpc_port }}"
+            - name: RABBITMQ_USER
+              value: "{{ .Values.rabbitmq_user }}"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: rabbitmq_password   
+            - name: RABBITMQ_VHOST
+              value: "{{ .Values.rabbitmq_vhost }}"
+            - name: POSTGRES_USER
+              value: "{{ .Values.api_postgres_user }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.api_postgres_db }}"
+            - name: POSTGRES_PASSWORD   
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: api_postgres_password   
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_SERVER
+              value: {{ .Values.api_postgres_service_name }}           
+      restartPolicy: Never
+            
