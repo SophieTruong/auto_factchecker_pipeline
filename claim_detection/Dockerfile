@@ -29,6 +29,5 @@ ENV PATH="/opt/venv/bin:$PATH"
 ENV PYTHONPATH=/app
 
 COPY ./app /app
-COPY .env .
 
 CMD ["python", "claim_detection_rcp_server.py"]

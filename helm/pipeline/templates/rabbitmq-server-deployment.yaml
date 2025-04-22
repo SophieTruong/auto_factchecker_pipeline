@@ -43,6 +43,12 @@ data:
           "vhost": "remote_host",
           "durable": true,
           "auto_delete": false
+        },
+        {
+          "name": "rpc_claim_db_queue",
+          "vhost": "remote_host",
+          "durable": true,
+          "auto_delete": false
         }
       ],
       "exchanges": [],
@@ -61,6 +67,14 @@ data:
           "destination": "rpc_evidence_retrieval_queue",
           "destination_type": "queue",
           "routing_key": "rpc_evidence_retrieval_queue",
+          "arguments": {}
+        },
+        {
+          "source": "amq.direct",
+          "vhost": "remote_host",
+          "destination": "rpc_claim_db_queue",
+          "destination_type": "queue",
+          "routing_key": "rpc_claim_db_queue",
           "arguments": {}
         }
       ]
