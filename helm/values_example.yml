@@ -13,6 +13,7 @@ facepager_folder: "/OneDrive_1_2-14-2025"
 # kubectl logs <rabbitmq-hash-password-tag>
 # This contains the hash you have to enter here.
 rabbitmq_password_hash: <unknown>
+cs_cluster: false
 
 # Image locations
 api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api_service
