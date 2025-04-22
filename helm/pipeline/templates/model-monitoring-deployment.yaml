@@ -22,6 +22,7 @@ spec:
       containers:
         - name: model-monitoring-pod
           image: "{{ .Values.model_monitoring_image_url }}:{{ .Values.model_monitoring_image_tag }}"          
+          imagePullPolicy: Always
           ports:
             - containerPort: 8096
           resources:
