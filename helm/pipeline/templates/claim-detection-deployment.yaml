@@ -22,6 +22,7 @@ spec:
       containers:
         - name: claim-detection-pod
           image: "{{ .Values.claim_detection_image_url }}:{{ .Values.claim_detection_image_tag }}"          
+          imagePullPolicy: Always          
           resources:
             requests:
               cpu: 1
