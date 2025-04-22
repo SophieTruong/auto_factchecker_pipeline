@@ -30,7 +30,7 @@ def main():
                 print("Cannot use ALL as key, restricted")
                 sys.exit(-1)
             new_api_key = crud.add_api_key(db, args.key)
-            print(f"API key added successfully: {new_api_key.hashed_key}")
+            print(f"API key added successfully: {new_api_key.hashed_api_key}")
         elif args.command == "DELETE":
             if args.key == "ALL":
                 crud.reset_api_keys(db)
