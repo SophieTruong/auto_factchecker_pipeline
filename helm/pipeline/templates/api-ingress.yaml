@@ -25,9 +25,9 @@ spec:
   tls:
     - hosts:
         - {{ .Values.api_url }}
-    {{- with .Values.cs_cluster }}
-    secretName: fact-check-pipeline-tls-secret
-    {{- end }}
+      {{- with .Values.cs_cluster }}
+      secretName: fact-check-pipeline-tls-secret
+      {{- end }}
   rules:
     - host: {{ .Values.api_url }}
       http:
