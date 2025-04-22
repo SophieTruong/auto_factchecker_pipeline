@@ -15,13 +15,19 @@ metadata:
     # Set upstream host header to make sure saml works properly...
     nginx.ingress.kubernetes.io/upstream-vhost: {{ .Values.gateway_url }}
     # Allow access only from within aalto
-    #nginx.ingress.kubernetes.io/whitelist-source-range: 130.233.0.0/16
+    {{- if .Values.cs_cluster }}
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 130.233.0.0/16
+    {{- end }}
 spec:
   # Need to check if necessary
   ingressClassName: nginx
   tls:
     - hosts:
         - {{ .Values.api_url }}
+    {{- if .Values.cs_cluster }}
+    secretName: llm-azure-gateway-deployment
+    {{- end }}
   rules:
     - host: {{ .Values.api_url }}
       http:
