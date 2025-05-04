@@ -46,7 +46,8 @@ spec:
               value: "{{ .Values.mongo_service_name }}:{{ .Values.mongo_service_port }}"
             - name: MONGO_USER
               value: "{{ .Values.mongo_user }}"
-            - name: MONGO_DB
+            # Containerized code has error so MONGO_DB is mistakenly marked as MONGO_PORT
+            - name: MONGO_PORT
               value: "{{ .Values.mongo_monitoring_db }}"
             - name: MONGO_PASSWORD
               valueFrom:

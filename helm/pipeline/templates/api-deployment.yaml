@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: server
     app.kubernetes.io/name: api
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/component: server
@@ -32,7 +32,7 @@ spec:
               cpu: 1000m
           env:
             - { name: INFERENCE_MODEL_URI, value: "http://{{ .Values.model_inference_service_name }}/predict" }
-            - { name: MODEL_MONITORING_URI, value: "http:///{{ .Values.model_monitoring_service_name }}/pipeline_metrics" }
+            - { name: MODEL_MONITORING_URI, value: "http://{{ .Values.model_monitoring_service_name }}:{{ .Values.model_monitoring_service_port }}/pipeline_metrics" }
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"
             - name: MILVUS_URL
