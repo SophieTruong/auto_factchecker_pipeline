@@ -51,4 +51,4 @@ spec:
         - name: facepager-data-volume
           persistentVolumeClaim:
             claimName: facepager-data-pvc
-  backoffLimit: 0
+  backoffLimit: 10
