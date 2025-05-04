@@ -180,9 +180,9 @@ spec:
             - containerPort: 19530
           resources:
             requests:
-              cpu: 125m
-            limits: 
               cpu: 1000m
+            limits: 
+              cpu: 8000m
           env:
             - name: ETCD_ENDPOINTS
               value: "milvus-etcd-svc:2379"                

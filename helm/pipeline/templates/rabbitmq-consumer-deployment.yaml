@@ -27,7 +27,8 @@ spec:
               cpu: 125m
             limits: 
               cpu: 1000m
-          env:            
+          env:           
+            # RabbitMQ configuration 
             - name: RABBITMQ_HOST
               value: "{{ .Values.rabbitmq_service_name }}:{{ .Values.rabbitmq_service_port }}"
             - name: RABBITMQ_USER
@@ -39,3 +40,18 @@ spec:
                   key: rabbitmq_password
             - name: RABBITMQ_VHOST
               value: "{{ .Values.rabbitmq_vhost }}"
+
+            # MongoDB configuration
+            - name: MONGO_USER
+              value: "{{ .Values.mongo_user}}"
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: mongo_password
+            # FIXME: My name should be MONGO_DB. Check src code in databse/mongodb.py
+            - name: MONGO_PORT
+              value: "{{ .Values.mongo_monitoring_db }}"
+            - name: MONGO_HOST
+              value: "{{ .Values.mongo_service_name }}:{{ .Values.mongo_service_port }}"
+
