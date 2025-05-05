@@ -25,9 +25,10 @@ spec:
           resources:
             requests:
               cpu: 1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8092
-          env:           
+          env:         
             - name: CSE_API_KEY
               valueFrom:
                 secretKeyRef:
