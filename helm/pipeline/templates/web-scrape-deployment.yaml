@@ -28,7 +28,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8092
-          env:         
+          env:
+            - name: LOAD_TEST
+              value: "true"       
             - name: CSE_API_KEY
               valueFrom:
                 secretKeyRef:
