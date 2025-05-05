@@ -9,7 +9,7 @@ data:
     # Logging
     log.file.level = info
     max_message_size = 536870912
-    
+
   definitions.json: |
     {
       "users": [
@@ -109,6 +109,9 @@ spec:
               cpu: 125m
             limits: 
               cpu: 1000m
+          ports:
+            - containerPort: {{ .Values.rabbitmq_service_port }}
+            - containerPort: 15672
           env:            
             - name: RABBITMQ_NODE_PORT_NUMBER
               value: "{{ .Values.rabbitmq_service_port }}"
