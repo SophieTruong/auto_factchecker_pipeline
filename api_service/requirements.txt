@@ -6,10 +6,7 @@ python-dotenv==1.0.1
 SQLAlchemy==2.0.36
 psycopg2-binary==2.9.10
 pytest==8.3.4
-spacy==3.7.5
-fi_core_news_md @ https://github.com/explosion/spacy-models/releases/download/fi_core_news_md-3.7.0/fi_core_news_md-3.7.0-py3-none-any.whl
 httpx==0.28.1
-asyncio==3.4.3
 aiohttp==3.11.11
 bcrypt==4.2.1
 PyJWT==2.10.1

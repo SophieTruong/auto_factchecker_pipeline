@@ -44,3 +44,5 @@ nginx.conf
 load_test_remote.sh
 cursorignore
 auth/.htpasswd
+
+performance_testing/*

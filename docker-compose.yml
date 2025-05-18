@@ -7,6 +7,11 @@ services:
     extends:
       file: ./api_service/docker-compose.yml
       service: api  
+  
+  claim_detection:
+    extends:
+      file: ./claim_detection/docker-compose.yml
+      service: claim_detection
 
   model_inference:
     extends:

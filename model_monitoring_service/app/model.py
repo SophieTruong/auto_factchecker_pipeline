@@ -5,14 +5,14 @@ class ModelMetrics(BaseModel):
     """Metrics for a single model"""
     start_date: datetime
     end_date: datetime
-    accuracy: float
-    precision: float
-    recall: float
-    f1_score: float
-    f1_micro: float
-    f1_macro: float
-    f1_weighted: float
-    sample_count: int
+    sample_count: int = 0
+    accuracy: float = 0.0
+    precision: float = 0.0
+    recall: float = 0.0
+    f1_score: float = 0.0
+    f1_micro: float = 0.0
+    f1_macro: float = 0.0
+    f1_weighted: float = 0.0
 
 class EvidenceRetrievalMetrics(BaseModel):
     """Metrics for evidence retrieval model"""

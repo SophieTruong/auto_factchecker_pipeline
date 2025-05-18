@@ -9,7 +9,6 @@ from sqlalchemy.sql import func
 from uuid import UUID
 
 from .models import (
-    APIKey,
     AnnotationSession, 
     Claim, 
     ClaimAnnotation, 
@@ -103,7 +102,7 @@ def insert_claims_query(claims_data: List[dict]):
     stmt = stmt.on_conflict_do_update(
         constraint='uq_claim_text',
         set_=dict(
-            source_document_id=stmt.excluded.source_document_id, 
+            # source_document_id=stmt.excluded.source_document_id, 
             updated_at=stmt.excluded.updated_at
         )
     ).returning(Claim)

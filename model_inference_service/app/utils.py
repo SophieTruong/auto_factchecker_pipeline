@@ -1,4 +1,6 @@
 import yaml
+import json
+from uuid import UUID
 from datetime import datetime
 
 import logging
@@ -34,3 +36,12 @@ def load_yaml_file(file_path: str) -> dict:
 def parse_datetime(date_str: str) -> datetime:
     creation_ts = datetime.fromtimestamp(int(date_str) / 1000)
     return creation_ts.strftime("%Y-%m-%d %H:%M:%S")
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return str(obj)
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self, obj)
