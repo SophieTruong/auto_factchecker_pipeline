@@ -71,7 +71,7 @@ class SemanticSearchService:
             "news_archive": news_archive_filtered_search_res
         },
     
-    def _filtered_vector_db_search(self, search_input: Claim, source_filter: string) -> List[Optional[SingleClaimSearchResult]]:
+    def _filtered_vector_db_search(self, search_input: Claim, source_filter: str) -> List[Optional[SingleClaimSearchResult]]:
         
         logger.info(f"Before dense embedding function INIT")
         
