@@ -59,7 +59,7 @@ class SemanticSearchService:
         
         return ranked_web_search_results
     
-    def _vector_db_search(self, search_input: Claim) -> Dict[str, List[SingleClaimSearchResult]]:
+    def _vector_db_search(self, search_input: Claim) -> dict[str, List[SingleClaimSearchResult]]:
         """
         This function returns vector database search results using standard filter search (https://milvus.io/docs/filtered-search.md)
         The results include both top 10 most relevant news archive and facebook posts according to query and time filter
