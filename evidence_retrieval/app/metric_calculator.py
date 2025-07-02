@@ -7,7 +7,11 @@ def compute_metrics(result_json: Dict[str, Any]) -> Dict[str, Any]:
     claim_text = result_json['claim']
     
     # Produce the metrics logs      
-    vector_db_search_scores = [value["score"] for value in result_json['vector_db_results']]
+    vector_db_search_scores_fb = [value["score"] for value in result_json['vector_db_results']["facebook_post"]]
+    
+    vector_db_search_scores_news = [value["score"] for value in result_json['vector_db_results']["facebook_post"]]
+    
+    vector_db_search_scores = vector_db_search_scores_fb + vector_db_search_scores_fb
     
     vector_db_search_size = len(vector_db_search_scores)
                 
