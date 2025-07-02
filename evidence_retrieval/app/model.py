@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List, Dict
+from typing import Optional, List
 from datetime import datetime
 class Claim(BaseModel):
     claim: str
@@ -16,8 +16,8 @@ class SingleClaimSearchResult(BaseModel):
 
 class ClaimSearchResult(BaseModel):
     claim: str
-    vector_db_results: Optional[Dict[str, List[SingleClaimSearchResult]]]
-    web_search_results: Optional[List[Dict]]
+    vector_db_results: Optional[dict[str, List[SingleClaimSearchResult]]]
+    web_search_results: Optional[List[dict]]
     
 class SearchResponse(BaseModel):
     claims: List[ClaimSearchResult]
