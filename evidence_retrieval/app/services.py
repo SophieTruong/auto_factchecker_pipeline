@@ -59,7 +59,19 @@ class SemanticSearchService:
         
         return ranked_web_search_results
     
-    def _vector_db_search(self, search_input: Claim) -> List[Optional[SingleClaimSearchResult]]:
+    def _vector_db_search(self, search_input: Claim) -> Dict[str, List[SingleClaimSearchResult]]:
+        """
+        This function returns vector database search results using standard filter search (https://milvus.io/docs/filtered-search.md)
+        The results include both top 10 most relevant news archive and facebook posts according to query and time filter
+        """
+        news_archive_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, "NOT url LIKE 'https://www.facebook.com/%'")
+        fb_post_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, "url LIKE 'https://www.facebook.com/%'")
+        return {
+            "facebook_post": fb_post_filtered_search_res,
+            "news_archive": news_archive_filtered_search_res
+        },
+    
+    def _filtered_vector_db_search(self, search_input: Claim, source_filter: string) -> List[Optional[SingleClaimSearchResult]]:
         
         logger.info(f"Before dense embedding function INIT")
         
@@ -81,7 +93,9 @@ class SemanticSearchService:
         
         query = search_input.claim
         
-        filter = "created_at <= {created_at}"
+        # Use filtering template: https://milvus.io/docs/filtering-templating.md
+        
+        filter = source_filter + "created_at <= {created_at}"
         
         filter_params = {"created_at": validate_and_mk_hybrid_date(search_input.timestamp)}
     
