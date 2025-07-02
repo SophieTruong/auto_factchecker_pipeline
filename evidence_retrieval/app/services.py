@@ -95,7 +95,7 @@ class SemanticSearchService:
         
         # Use filtering template: https://milvus.io/docs/filtering-templating.md
         
-        filter = source_filter + "created_at <= {created_at}"
+        filter = source_filter + " AND " + "created_at <= {created_at}"
         
         filter_params = {"created_at": validate_and_mk_hybrid_date(search_input.timestamp)}
     
