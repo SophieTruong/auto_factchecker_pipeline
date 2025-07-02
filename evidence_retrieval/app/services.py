@@ -64,8 +64,8 @@ class SemanticSearchService:
         This function returns vector database search results using standard filter search (https://milvus.io/docs/filtered-search.md)
         The results include both top 10 most relevant news archive and facebook posts according to query and time filter
         """
-        news_archive_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, "NOT url LIKE 'https://www.facebook.com/%'")
-        fb_post_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, "url LIKE 'https://www.facebook.com/%'")
+        news_archive_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, source_filter="NOT url LIKE 'https://www.facebook.com/%'")
+        fb_post_filtered_search_res = self._filtered_vector_db_search(search_input = search_input, source_filter="url LIKE 'https://www.facebook.com/%'")
         return {
             "facebook_post": fb_post_filtered_search_res,
             "news_archive": news_archive_filtered_search_res
