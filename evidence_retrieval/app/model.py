@@ -16,7 +16,7 @@ class SingleClaimSearchResult(BaseModel):
 
 class ClaimSearchResult(BaseModel):
     claim: str
-    vector_db_results: Optional[List[SingleClaimSearchResult]]
+    vector_db_results: Optional[dict[str, List[SingleClaimSearchResult]]]
     web_search_results: Optional[List[dict]]
     
 class SearchResponse(BaseModel):
