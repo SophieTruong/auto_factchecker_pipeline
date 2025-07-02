@@ -69,7 +69,7 @@ class SemanticSearchService:
         return {
             "facebook_post": fb_post_filtered_search_res,
             "news_archive": news_archive_filtered_search_res
-        },
+        }
     
     def _filtered_vector_db_search(self, search_input: Claim, source_filter: str) -> List[Optional[SingleClaimSearchResult]]:
         
