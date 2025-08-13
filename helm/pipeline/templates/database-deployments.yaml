@@ -1,0 +1,255 @@
+# API postgres db
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-database
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: api-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: api-database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: api-database
+    spec:
+      containers:
+        - name: api-database-pod
+          image: ankane/pgvector
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: 125m
+            limits: 
+              cpu: 1000m
+          env:
+            - name: POSTGRES_USER
+              value: "{{ .Values.api_postgres_user }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.api_postgres_db }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: api_postgres_password      
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: {{ .Values.api_db_volume }}
+      volumes:
+        - name: {{ .Values.api_db_volume }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.api_db_volume }}
+
+---
+# Milvus etcd db
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-etcd
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: milvus-etcd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: milvus-etcd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: milvus-etcd
+    spec:
+      containers:
+        - name: milvus-etcd-pod
+          image: quay.io/coreos/etcd:v3.5.16
+          ports:
+            - containerPort: 2379
+          resources:
+            requests:
+              cpu: 125m
+            limits: 
+              cpu: 1000m
+          env:
+            - name : ETCD_AUTO_COMPACTION_MODE
+              value: revision
+            - name: ETCD_AUTO_COMPACTION_RETENTION
+              value: "1000"
+            - name: ETCD_QUOTA_BACKEND_BYTES
+              value: "4294967296"
+            - name: ETCD_SNAPSHOT_COUNT
+              value: "50000"
+            - name: ETCD_LISTEN_CLIENT_URLS
+              value: "http://0.0.0.0:2379"
+            - name: ETCD_ADVERTISE_CLIENT_URLS
+              value: "http://milvus-etcd:2379"            
+          volumeMounts:
+            - mountPath: /etcd
+              name: milvus-etcd-volume
+      volumes:
+        - name: milvus-etcd-volume
+          persistentVolumeClaim:
+            claimName: milvus-etcd-volume
+---
+# Milvus minio db
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-minio
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: milvus-minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: milvus-minio
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: milvus-minio
+    spec:
+      containers:
+        - name: milvus-minio-pod
+          image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+          ports:
+            - containerPort: 2379
+          resources:
+            requests:
+              cpu: 125m
+            limits: 
+              cpu: 1000m
+          env:
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_secret_key
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_access_key            
+          volumeMounts:
+            - mountPath: /minio_data
+              name: milvus-minio-volume
+          command: ["minio", "server", "/minio_data", "--console-address", "0.0.0.0:9001"]
+      volumes:
+        - name: milvus-minio-volume
+          persistentVolumeClaim:
+            claimName: milvus-minio-volume
+---
+# Milvus minio standalone
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-standalone
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: milvus-standalone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: milvus-standalone
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: milvus-standalone
+    spec:
+      containers:
+        - name: milvus-standalone-pod
+          image: milvusdb/milvus:v2.5.3
+          ports:
+            - containerPort: 9091
+            - containerPort: 19530
+          resources:
+            requests:
+              cpu: 1000m
+            limits: 
+              cpu: 8000m
+          env:
+            - name: ETCD_ENDPOINTS
+              value: "milvus-etcd-svc:2379"                
+            - name: MINIO_ADDRESS
+              value: "milvus-minio-svc:9000"  
+            - name: MINIO_ACCESS_KEY_ID   
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_access_key    
+            - name: MINIO_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: minio_secret_key      
+          volumeMounts:
+            - mountPath: /var/lib/milvus
+              name: milvus-standalone-volume
+          command:  ["milvus", "run", "standalone"]
+      volumes:
+        - name: milvus-standalone-volume
+          persistentVolumeClaim:
+            claimName: milvus-standalone-volume    
+---
+# MongoDB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: mongodb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: mongodb
+    spec:
+      containers:
+        - name: mongodb-pod
+          image: mongo:6.0.21-jammy
+          ports:
+            - containerPort: 27017            
+          resources:
+            requests:
+              cpu: 125m
+            limits: 
+              cpu: 1000m
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongo_user}}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: mongo_password             
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-volume
+      volumes:
+        - name: mongo-volume
+          persistentVolumeClaim:
+            claimName: mongo-volume       

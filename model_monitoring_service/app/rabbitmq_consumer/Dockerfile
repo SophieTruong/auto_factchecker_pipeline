@@ -25,8 +25,6 @@ COPY ./app/rabbitmq_consumer /app/
 
 COPY ./app/database /app/database
 
-COPY .env /app/.env
-
 # Set python path
 ENV PYTHONPATH=/app
 

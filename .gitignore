@@ -17,6 +17,8 @@ running_script.txt
 !.env.example
 !.env.sample
 
+nginx.conf
+
 file_structure*
 
 api/claim_detection/xml_model_finetune/data

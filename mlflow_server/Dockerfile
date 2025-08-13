@@ -6,8 +6,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy .env file
-COPY .env .
 
 # Copy training script
 COPY test_train.py .

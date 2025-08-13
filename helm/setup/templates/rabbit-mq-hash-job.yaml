@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rabbitmq-hash-password
+  namespace: {{ $.Release.Namespace }}
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: rabbitmq-server
+    spec:
+      containers:
+        - name: rabbitmq-hash
+          image: rabbitmq:4-management
+          command: ["/bin/sh", "-c", "rabbitmqctl hash_password \"$RABBITMQ_DEFAULT_PASS\""]
+          env:            
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: rabbitmq_password
+      restartPolicy: Never
+      

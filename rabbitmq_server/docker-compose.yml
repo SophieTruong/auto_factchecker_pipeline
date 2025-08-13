@@ -1,20 +1,18 @@
 services:
   rabbitmq-server:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: rabbitmq-server
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    command: >
+      rabbitmq-server
+      --definitions /etc/rabbitmq/definitions.json
     ports:
       - "5672:5672"
-      - "15672:15672"
+      - "80:15672"
     networks:
       - backend
 
-networks: 
+networks:
   backend:
     driver: bridge

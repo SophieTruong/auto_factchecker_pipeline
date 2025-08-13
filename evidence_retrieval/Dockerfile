@@ -32,6 +32,6 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code and environment file
 COPY ./app /app
-COPY .env .
+
 
 CMD ["python", "evidence_retrieval_rpc_server.py"]

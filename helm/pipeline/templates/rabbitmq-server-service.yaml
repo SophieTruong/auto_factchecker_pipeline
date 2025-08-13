@@ -1,0 +1,25 @@
+# unclear if needed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.rabbitmq_service_name }}
+  labels:
+    app.kubernetes.io/name: {{.Values.rabbitmq_service_name}}
+    app.kubernetes.io/component: server
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: rabbitmq-server
+  ports:
+    - protocol: TCP
+      port: {{ .Values.rabbitmq_service_port }}
+      targetPort: {{ .Values.rabbitmq_service_port }}
+      name: rabbitmq-port
+# unclear if needed
+    - protocol: TCP
+      port: 15672
+      name: rabbitmq-ui
+      targetPort: 15672
+---

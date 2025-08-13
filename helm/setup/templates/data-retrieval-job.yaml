@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dataretrieval
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: dataretrieval
+    app.kubernetes.io/name: dataretrieval      
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: dataretrieval
+        app.kubernetes.io/name: dataretrieval
+    spec:
+      containers:
+        - name: dataretrieval-job
+          image: {{ .Values.setup_container_image_url }}:{{ .Values.setup_container_image_tag }} 
+          env:            
+            - name: NEWS_DATA_DIR
+              value: /app/finnish_news_archieve
+            - name: NEWS_DATA_URL
+              value: {{ .Values.news_data_url }}              
+            - name: FACEPAGER_DIR
+              value: /app/facepager_data
+            - name: FACEPAGER_URL
+              value: {{ .Values.facepager_data_url }}              
+            - name: MODEL_DIR
+              value: /app/mlruns
+            - name: MODEL_URL
+              value: {{ .Values.model_data_url }}     
+          volumeMounts:
+            - name: hf-cache-volume
+              mountPath: /cache
+            - name: finnish-news-volume
+              mountPath: /app/finnish_news_archieve
+            - name: facepager-data-volume
+              mountPath: /app/facepager_data
+            - name: {{ .Values.model_volume }}
+              mountPath: /app/mlruns
+      restartPolicy: Never
+      volumes:
+        - name: hf-cache-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.hf_cache }}
+        - name: finnish-news-volume
+          persistentVolumeClaim:
+            claimName: finnish-news-pvc
+        - name: facepager-data-volume
+          persistentVolumeClaim:
+            claimName: facepager-data-pvc
+        - name: {{ .Values.model_volume }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.model_volume }}              
+             

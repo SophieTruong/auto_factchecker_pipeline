@@ -1,0 +1,4 @@
+config
+secrets.yml
+values.yml
+../kubectl.sha256

@@ -1,0 +1,68 @@
+# Ingress settings
+api_url: craics
+# StorageClass and volumeMode, e.g. standard for minikube or nfs for systems with an nfs provider
+storage_class: "standard" 
+# DB Seed facepager folder
+facepager_folder: "/OneDrive_1_2-14-2025"
+
+# unfortunately rabbitmq requires, that you provide a password hash 
+# to the system. This hash needs to be defined BEFORE the server is deployed
+# To do this, you will need to do the following AFTER the setup:
+# kubectl get pods 
+# Look for a pod called rabbitmq-hash-password
+# kubectl logs <rabbitmq-hash-password-tag>
+# This contains the hash you have to enter here.
+rabbitmq_password_hash: <unknown>
+cs_cluster: false
+
+# Image locations
+api_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/api_service
+api_image_tag: latest
+model_inference_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_inference
+model_inference_image_tag: latest
+web_scrape_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/web_scrape
+web_scrape_image_tag: latest
+model_monitoring_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/model_monitoring
+model_monitoring_image_tag: latest
+rabbitmq_consumer_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/rabbitmq_consumer
+rabbitmq_consumer_image_tag: latest
+evidence_retrieval_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/evidence_retrieval
+evidence_retrieval_image_tag: latest
+claim_detection_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/claim_detection
+claim_detection_image_tag: latest
+setup_container_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/data_retrieval
+setup_container_image_tag: latest
+db_seed_image_url: harbor.cs.aalto.fi/aaltorse-public/auto_fact_check/db_seed
+db_seed_image_tag: latest
+
+# Service names
+api_service_name: api-svc
+api_postgres_service_name: api-postgres-svc
+model_monitoring_service_name: model-monitoring-svc
+model_inference_service_name: model-inference-svc
+web_scrape_service_name: web-scrape-svc
+rabbitmq_service_name: rabbitmq
+rabbitmq_service_port: 5672
+mongo_service_name: mongo
+mongo_service_port: 27017
+milvus_service_name: milvus-svc
+milvus_service_grpc_port: 19530
+
+# DB Settings
+api_postgres_user: vector
+api_postgres_db : vectordb
+mongo_user: factcheck
+mongo_monitoring_db: model_monitoring
+rabbitmq_user: factcheck
+rabbitmq_vhost: remote_host
+
+
+# Volumes
+api_db_volume: api-db-volume
+model_volume: model-volume
+hf_cache: hf-cache
+
+# model data locations (in the model volume)
+model_uri: ./mlruns/223326325726326848/658fdf3d1618421db6f5fb1290c8e7f3/artifacts/setfit_model
+model_metadata: ./mlruns/models/claim-detection-setfit-TurkuNLP/version-3/meta.yaml
+

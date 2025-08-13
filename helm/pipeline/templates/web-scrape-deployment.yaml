@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-scrape
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: web-scrape
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: web-scrape
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: web-scrape
+    spec:
+      containers:
+        - name: web-scrape-pod
+          image: "{{ .Values.web_scrape_image_url }}:{{ .Values.web_scrape_image_tag }}"          
+          resources:
+            requests:
+              cpu: 1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8092
+          env:
+            - name: LOAD_TEST
+              value: "true"       
+            - name: CSE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: factcheck
+                  key: google_api_key
+            - name: CSE_ID_FCO
+              valueFrom:
+                secretKeyRef:
+                  name: factcheck
+                  key: id_fco
+            - name: CSE_ID_FF
+              valueFrom:
+                secretKeyRef:
+                  name: factcheck
+                  key: id_ff               
+            - name: CSE_ID_Snopes
+              valueFrom:
+                secretKeyRef:
+                  name: factcheck
+                  key: id_snopes 

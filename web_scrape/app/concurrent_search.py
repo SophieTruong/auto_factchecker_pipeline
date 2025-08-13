@@ -10,6 +10,18 @@ from utils import logger
 import time
 import random
 
+import os
+
+import dotenv
+
+dotenv.load_dotenv(dotenv.find_dotenv())
+
+LOAD_TEST = os.getenv("LOAD_TEST", "false")
+
+async def mock_request():
+    await asyncio.sleep(3)
+    return []
+
 async def concurrent_search(claim: Claim) -> Dict:
     """
     Perform concurrent searches across multiple fact-checking sources
@@ -22,20 +34,36 @@ async def concurrent_search(claim: Claim) -> Dict:
     logger.info(f"Translated claim: {english_claim}")
     
     # Create tasks for all searches
-    tasks = [
-        asyncio.create_task(
-            get_politifact_search_results(english_claim, claim.timestamp)
-        ),
-        asyncio.create_task(
-            get_cse_search_results(english_claim, "factcheckorg", claim.timestamp)
-        ),
-        asyncio.create_task(
-            get_cse_search_results(english_claim, "fullfact", claim.timestamp)
-        ),
-        asyncio.create_task(
-            get_cse_search_results(english_claim, "snopes", claim.timestamp)
-        )
-    ]
+    if LOAD_TEST == "true":
+        tasks = [
+            asyncio.create_task(
+                mock_request()
+            ),
+            asyncio.create_task(
+                mock_request()
+            ),
+            asyncio.create_task(
+                mock_request()
+            ),
+            asyncio.create_task(
+                mock_request()
+            )
+        ]
+    else:
+        tasks = [
+            asyncio.create_task(
+                get_politifact_search_results(english_claim, claim.timestamp)
+            ),
+            asyncio.create_task(
+                get_cse_search_results(english_claim, "factcheckorg", claim.timestamp)
+            ),
+            asyncio.create_task(
+                get_cse_search_results(english_claim, "fullfact", claim.timestamp)
+            ),
+            asyncio.create_task(
+                get_cse_search_results(english_claim, "snopes", claim.timestamp)
+            )
+        ]
     
     # Wait for all searches to complete
     results = await asyncio.gather(*tasks, return_exceptions=True)

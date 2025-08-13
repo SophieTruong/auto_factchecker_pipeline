@@ -36,8 +36,6 @@ COPY ./app/main.py \
 
 COPY ./app/database /app/database
 
-COPY .env /app/.env
-
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 

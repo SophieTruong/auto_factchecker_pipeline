@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-definitions
+data:
+  rabbitmq.conf: |
+    management.load_definitions = /etc/rabbitmq/definitions.json
+
+    # Logging
+    log.file.level = info
+    max_message_size = 536870912
+
+  definitions.json: |
+    {
+      "users": [
+        {
+          "name": "{{ .Values.rabbitmq_user }}",
+          "password_hash": "{{ .Values.rabbitmq_password_hash }}",
+          "hashing_algorithm": "rabbit_password_hashing_sha256",
+          "tags": "administrator"
+        }
+      ],
+      "vhosts": [
+        {"name": "remote_host"}
+      ],
+      "permissions": [
+        {
+          "user": "{{ .Values.rabbitmq_user }}",
+          "vhost": "remote_host",
+          "configure": ".*",
+          "write": ".*",
+          "read": ".*"
+        }
+      ],
+      "queues": [
+        {
+          "name": "rpc_claim_detection_queue",
+          "vhost": "remote_host",
+          "durable": true,
+          "auto_delete": false
+        },
+        {
+          "name": "rpc_evidence_retrieval_queue",
+          "vhost": "remote_host",
+          "durable": true,
+          "auto_delete": false
+        },
+        {
+          "name": "rpc_claim_db_queue",
+          "vhost": "remote_host",
+          "durable": true,
+          "auto_delete": false
+        }
+      ],
+      "exchanges": [],
+      "bindings": [
+        {
+          "source": "amq.direct",
+          "vhost": "remote_host",
+          "destination": "rpc_claim_detection_queue",
+          "destination_type": "queue",
+          "routing_key": "rpc_claim_detection_queue",
+          "arguments": {}
+        },
+        {
+          "source": "amq.direct",
+          "vhost": "remote_host",
+          "destination": "rpc_evidence_retrieval_queue",
+          "destination_type": "queue",
+          "routing_key": "rpc_evidence_retrieval_queue",
+          "arguments": {}
+        },
+        {
+          "source": "amq.direct",
+          "vhost": "remote_host",
+          "destination": "rpc_claim_db_queue",
+          "destination_type": "queue",
+          "routing_key": "rpc_claim_db_queue",
+          "arguments": {}
+        }
+      ]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-server
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: rabbitmq-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: rabbitmq-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/name: rabbitmq-server
+    spec:
+      containers:
+        - name: rabbitmq-consumer-pod
+          image: rabbitmq:4-management
+          resources:
+            requests:
+              cpu: 125m
+            limits: 
+              cpu: 1000m
+          ports:
+            - containerPort: {{ .Values.rabbitmq_service_port }}
+            - containerPort: 15672
+          env:            
+            - name: RABBITMQ_NODE_PORT_NUMBER
+              value: "{{ .Values.rabbitmq_service_port }}"
+            - name: RABBITMQ_DEFAULT_USER
+              value: "{{ .Values.rabbitmq_user }}"
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: databases
+                  key: rabbitmq_password
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: "{{ .Values.rabbitmq_vhost }}"
+            - name: RABBITMQ_LOAD_DEFINITIONS
+              value: "yes"
+            - name: RABBITMQ_DEFINITIONS_FILE
+              value: /etc/rabbitmq/definitions.json
+          volumeMounts:
+            - name: rabbitmq-config-volume
+              subPath: rabbitmq.conf
+              mountPath: /etc/rabbitmq/rabbitmq.conf
+              readOnly: true
+            - name: rabbitmq-config-volume
+              subPath: definitions.json
+              mountPath: /etc/rabbitmq/definitions.json
+              readOnly: true              
+      volumes:
+        - name: rabbitmq-config-volume
+          configMap:
+            name: rabbitmq-definitions
